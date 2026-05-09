@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>LASRHUNTR · National EDM Guide 2026</title>
+<title>LASRHUNTR · National EDM Guide</title>
 <meta name="description" content="The national EDM event guide for 2026. 382 events across Chicago, Miami, Las Vegas, New York, Los Angeles & San Francisco — Jan through Dec.">
 <meta property="og:title" content="LASRHUNTR · National EDM Guide 2026">
 <meta property="og:description" content="382 events · 6 cities · Jan–Dec 2026. Find your frequency.">
@@ -671,7 +671,7 @@ body::after {
   <div class="logo-wrap">
     <div class="logo-top">&#9660; National EDM Guide &#9660;</div>
     <div class="glitch-logo" data-text="LASRHUNTR">LASRHUNTR</div>
-    <div class="logo-main" style="font-size:clamp(13px,3.5vw,18px);margin-top:6px">NATIONAL EDM GUIDE 2026</div>
+    <div class="logo-main" style="font-size:clamp(13px,3.5vw,18px);margin-top:6px">NATIONAL EDM GUIDE</div>
     <div class="logo-sub" id="header-sub">6 CITIES &nbsp;·&nbsp; MAR–OCT</div>
   </div>
   <div class="laser-line"></div>
@@ -735,6 +735,26 @@ body::after {
   </div>
 </div>
 
+<!-- FILTERS ROW 4: MONTH -->
+<div class="filter-section" style="padding-top:10px">
+  <div class="filter-label">Filter by month</div>
+  <div class="filter-row" id="monthFilters">
+    <button class="filter-btn active" data-filter="all" data-group="month">All Months</button>
+    <button class="filter-btn" data-filter="JAN" data-group="month">Jan</button>
+    <button class="filter-btn" data-filter="FEB" data-group="month">Feb</button>
+    <button class="filter-btn" data-filter="MAR" data-group="month">Mar</button>
+    <button class="filter-btn" data-filter="APR" data-group="month">Apr</button>
+    <button class="filter-btn" data-filter="MAY" data-group="month">May</button>
+    <button class="filter-btn" data-filter="JUN" data-group="month">Jun</button>
+    <button class="filter-btn" data-filter="JUL" data-group="month">Jul</button>
+    <button class="filter-btn" data-filter="AUG" data-group="month">Aug</button>
+    <button class="filter-btn" data-filter="SEP" data-group="month">Sep</button>
+    <button class="filter-btn" data-filter="OCT" data-group="month">Oct</button>
+    <button class="filter-btn" data-filter="NOV" data-group="month">Nov</button>
+    <button class="filter-btn" data-filter="DEC" data-group="month">Dec</button>
+  </div>
+</div>
+
 <!-- EVENTS LIST -->
 <div id="eventList" style="padding-top:12px"></div>
 <div class="empty-state" id="emptyState">
@@ -744,8 +764,8 @@ body::after {
 
 <!-- FOOTER -->
 <div class="footer">
-  <div class="footer-logo">LASRHUNTR · EDM 2026</div>
-  <div class="footer-sub">Data sourced from Songkick · EDMtrain · Resident Advisor · Festicket<br>Updated May 2026 &nbsp;·&nbsp; Prices approximate &nbsp;·&nbsp; Always verify before purchasing</div>
+  <div class="footer-logo">LASRHUNTR · NATIONAL EDM GUIDE</div>
+  <div class="footer-sub">Data sourced from Songkick · EDMtrain · Resident Advisor · Festicket<br>Prices approximate &nbsp;·&nbsp; Always verify before purchasing</div>
 </div>
 
 <!-- FAB -->
@@ -1288,6 +1308,7 @@ const EVENTS = [
 let typeFilter  = 'all';
 let genreFilter = 'all';
 let cityFilter  = 'all';
+let monthFilter = 'all';
 let searchQuery = '';
 let pastExpanded = false;
 
@@ -1339,9 +1360,10 @@ function renderCards() {
 
     const genreOk = genreFilter === 'all' || ev.genre === genreFilter;
     const cityOk  = cityFilter  === 'all' || ev.city === cityFilter;
+    const monthOk = monthFilter === 'all' || ev.mon === monthFilter;
     const searchOk = !q || [ev.title, ev.venue, ev.genre, ev.sub, ev.fest||'', ev.city||''].join(' ').toLowerCase().includes(q);
 
-    return typeOk && genreOk && cityOk && searchOk;
+    return typeOk && genreOk && cityOk && monthOk && searchOk;
   });
 
   document.getElementById('stat-showing').textContent = filtered.length;
@@ -1399,7 +1421,7 @@ function renderMonthGroups(list, events) {
     // Month divider
     const div = document.createElement('div');
     div.className = 'month-divider';
-    div.innerHTML = `<span class="month-name">${mon} 2026</span><div class="month-line"></div><span class="month-count">${evs.length} event${evs.length!==1?'s':''}</span>`;
+    div.innerHTML = `<span class="month-name">${mon}</span><div class="month-line"></div><span class="month-count">${evs.length} event${evs.length!==1?'s':''}</span>`;
     list.appendChild(div);
 
     // Cards
@@ -1508,6 +1530,15 @@ document.getElementById('cityFilters').addEventListener('click', e => {
   document.querySelectorAll('#cityFilters .filter-btn').forEach(b => b.classList.remove('active','cyan','pink','green'));
   btn.classList.add('active', 'cyan');
   cityFilter = btn.dataset.filter;
+  renderCards();
+});
+
+document.getElementById('monthFilters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('#monthFilters .filter-btn').forEach(b => b.classList.remove('active','cyan','pink','green'));
+  btn.classList.add('active', 'cyan');
+  monthFilter = btn.dataset.filter;
   renderCards();
 });
 
