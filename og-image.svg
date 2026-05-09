@@ -1,0 +1,258 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#03000A;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0D0020;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#03000A;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Hot pink glow filter for title -->
+    <filter id="pinkGlow" x="-20%" y="-60%" width="140%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur1" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur2" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="40" result="blur3" />
+      <feMerge>
+        <feMergeNode in="blur3" />
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Cyan glow filter for subtitle -->
+    <filter id="cyanGlow" x="-15%" y="-60%" width="130%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur1" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="blur2" />
+      <feMerge>
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Soft white glow -->
+    <filter id="whiteGlow" x="-10%" y="-60%" width="120%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur1" />
+      <feMerge>
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Scanline pattern -->
+    <pattern id="scanlines" x="0" y="0" width="1200" height="4" patternUnits="userSpaceOnUse">
+      <rect width="1200" height="1" y="0" fill="rgba(255,255,255,0.018)" />
+      <rect width="1200" height="3" y="1" fill="transparent" />
+    </pattern>
+
+    <!-- Grid pattern -->
+    <pattern id="grid" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,0,200,0.06)" stroke-width="0.5" />
+    </pattern>
+
+    <!-- Perspective grid pattern (horizontal lines closer together toward center) -->
+    <pattern id="hgrid" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="80" y2="0" stroke="rgba(0,245,255,0.04)" stroke-width="0.5" />
+    </pattern>
+
+    <!-- Radial vignette -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" style="stop-color:transparent;stop-opacity:0" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0.7" />
+    </radialGradient>
+
+    <!-- Pink center glow blob -->
+    <radialGradient id="pinkBlob" cx="50%" cy="45%" r="40%">
+      <stop offset="0%" style="stop-color:#FF00C8;stop-opacity:0.08" />
+      <stop offset="100%" style="stop-color:#FF00C8;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Cyan accent glow -->
+    <radialGradient id="cyanBlob" cx="50%" cy="60%" r="35%">
+      <stop offset="0%" style="stop-color:#00F5FF;stop-opacity:0.05" />
+      <stop offset="100%" style="stop-color:#00F5FF;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Base background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+
+  <!-- Grid texture -->
+  <rect width="1200" height="630" fill="url(#grid)" />
+  <rect width="1200" height="630" fill="url(#hgrid)" />
+
+  <!-- Perspective floor grid lines radiating from bottom center -->
+  <g opacity="0.12">
+    <!-- Horizontal perspective lines -->
+    <line x1="0" y1="630" x2="1200" y2="480" stroke="#00F5FF" stroke-width="0.4" />
+    <line x1="0" y1="630" x2="1200" y2="510" stroke="#00F5FF" stroke-width="0.4" />
+    <line x1="0" y1="630" x2="1200" y2="540" stroke="#00F5FF" stroke-width="0.4" />
+    <line x1="0" y1="630" x2="1200" y2="565" stroke="#00F5FF" stroke-width="0.4" />
+    <line x1="0" y1="630" x2="1200" y2="590" stroke="#00F5FF" stroke-width="0.4" />
+    <line x1="0" y1="630" x2="1200" y2="610" stroke="#00F5FF" stroke-width="0.4" />
+    <!-- Vertical perspective lines converging to vanishing point at center-top -->
+    <line x1="600" y1="200" x2="0" y2="630" stroke="#FF00C8" stroke-width="0.4" />
+    <line x1="600" y1="200" x2="120" y2="630" stroke="#FF00C8" stroke-width="0.4" />
+    <line x1="600" y1="200" x2="240" y2="630" stroke="#FF00C8" stroke-width="0.4" />
+    <line x1="600" y1="200" x2="360" y2="630" stroke="#FF00C8" stroke-width="0.4" />
+    <line x1="600" y1="200" x2="480" y2="630" stroke="#FF00C8" stroke-width="0.4" />
+    <line x1="600" y1="200" x2="720" y2="630" stroke="#FF00C8" stroke-width="0.4" />
+    <line x1="600" y1="200" x2="840" y2="630" stroke="#FF00C8" stroke-width="0.4" />
+    <line x1="600" y1="200" x2="960" y2="630" stroke="#FF00C8" stroke-width="0.4" />
+    <line x1="600" y1="200" x2="1080" y2="630" stroke="#FF00C8" stroke-width="0.4" />
+    <line x1="600" y1="200" x2="1200" y2="630" stroke="#FF00C8" stroke-width="0.4" />
+  </g>
+
+  <!-- Ambient glow blobs -->
+  <rect width="1200" height="630" fill="url(#pinkBlob)" />
+  <rect width="1200" height="630" fill="url(#cyanBlob)" />
+
+  <!-- Scanlines overlay -->
+  <rect width="1200" height="630" fill="url(#scanlines)" />
+
+  <!-- Vignette -->
+  <rect width="1200" height="630" fill="url(#vignette)" />
+
+  <!-- Top decorative bar — thin neon line -->
+  <line x1="60" y1="52" x2="1140" y2="52" stroke="#FF00C8" stroke-width="1" opacity="0.5" />
+  <line x1="60" y1="54" x2="1140" y2="54" stroke="#FF00C8" stroke-width="0.3" opacity="0.3" />
+
+  <!-- Corner brackets top-left -->
+  <polyline points="60,52 60,72" stroke="#00F5FF" stroke-width="1.5" fill="none" opacity="0.7" />
+  <polyline points="60,52 100,52" stroke="#00F5FF" stroke-width="1.5" fill="none" opacity="0.7" />
+  <!-- Corner brackets top-right -->
+  <polyline points="1140,52 1140,72" stroke="#00F5FF" stroke-width="1.5" fill="none" opacity="0.7" />
+  <polyline points="1100,52 1140,52" stroke="#00F5FF" stroke-width="1.5" fill="none" opacity="0.7" />
+
+  <!-- Corner brackets bottom-left -->
+  <polyline points="60,578 60,558" stroke="#00F5FF" stroke-width="1.5" fill="none" opacity="0.7" />
+  <polyline points="60,578 100,578" stroke="#00F5FF" stroke-width="1.5" fill="none" opacity="0.7" />
+  <!-- Corner brackets bottom-right -->
+  <polyline points="1140,578 1140,558" stroke="#00F5FF" stroke-width="1.5" fill="none" opacity="0.7" />
+  <polyline points="1100,578 1140,578" stroke="#00F5FF" stroke-width="1.5" fill="none" opacity="0.7" />
+
+  <!-- Bottom decorative bar -->
+  <line x1="60" y1="578" x2="1140" y2="578" stroke="#FF00C8" stroke-width="1" opacity="0.5" />
+
+  <!-- Small top label -->
+  <text
+    x="600" y="38"
+    text-anchor="middle"
+    font-family="'Orbitron', 'Share Tech Mono', 'Courier New', monospace"
+    font-size="11"
+    font-weight="400"
+    letter-spacing="6"
+    fill="#00F5FF"
+    opacity="0.6"
+  >LASRHUNTR.COM</text>
+
+  <!-- Main title: LASRHUNTR — with pink neon glow -->
+  <!-- Glow layer (blurred, pink) -->
+  <text
+    x="600" y="278"
+    text-anchor="middle"
+    font-family="'Orbitron', 'Share Tech Mono', 'Courier New', monospace"
+    font-size="148"
+    font-weight="900"
+    letter-spacing="8"
+    fill="#FF00C8"
+    filter="url(#pinkGlow)"
+    opacity="0.9"
+  >LASRHUNTR</text>
+
+  <!-- Solid pink title on top -->
+  <text
+    x="600" y="278"
+    text-anchor="middle"
+    font-family="'Orbitron', 'Share Tech Mono', 'Courier New', monospace"
+    font-size="148"
+    font-weight="900"
+    letter-spacing="8"
+    fill="#FF00C8"
+  >LASRHUNTR</text>
+
+  <!-- Thin horizontal separator line -->
+  <line x1="200" y1="308" x2="1000" y2="308" stroke="#FF00C8" stroke-width="1" opacity="0.3" />
+
+  <!-- Subtitle: NATIONAL EDM GUIDE 2026 -->
+  <text
+    x="600" y="358"
+    text-anchor="middle"
+    font-family="'Orbitron', 'Share Tech Mono', 'Courier New', monospace"
+    font-size="36"
+    font-weight="700"
+    letter-spacing="10"
+    fill="#00F5FF"
+    filter="url(#cyanGlow)"
+  >NATIONAL EDM GUIDE 2026</text>
+
+  <!-- Stats line -->
+  <text
+    x="600" y="408"
+    text-anchor="middle"
+    font-family="'Orbitron', 'Share Tech Mono', 'Courier New', monospace"
+    font-size="16"
+    font-weight="400"
+    letter-spacing="5"
+    fill="#E8E0FF"
+    opacity="0.85"
+    filter="url(#whiteGlow)"
+  >6 CITIES · 382 EVENTS · JAN–DEC</text>
+
+  <!-- Decorative divider with diamond accent -->
+  <line x1="300" y1="448" x2="550" y2="448" stroke="#FF00C8" stroke-width="0.8" opacity="0.4" />
+  <polygon points="600,442 608,448 600,454 592,448" fill="#FF00C8" opacity="0.6" />
+  <line x1="650" y1="448" x2="900" y2="448" stroke="#FF00C8" stroke-width="0.8" opacity="0.4" />
+
+  <!-- Cities listing -->
+  <text
+    x="600" y="500"
+    text-anchor="middle"
+    font-family="'Orbitron', 'Share Tech Mono', 'Courier New', monospace"
+    font-size="13"
+    font-weight="400"
+    letter-spacing="3"
+    fill="#00F5FF"
+    opacity="0.7"
+  >CHICAGO · MIAMI · LAS VEGAS · NEW YORK · LOS ANGELES · SAN FRANCISCO</text>
+
+  <!-- Bottom tagline -->
+  <text
+    x="600" y="556"
+    text-anchor="middle"
+    font-family="'Orbitron', 'Share Tech Mono', 'Courier New', monospace"
+    font-size="10"
+    font-weight="400"
+    letter-spacing="4"
+    fill="#FF00C8"
+    opacity="0.45"
+  >FIND YOUR FREQUENCY</text>
+
+  <!-- Decorative side accent marks -->
+  <text x="68" y="286" font-family="monospace" font-size="10" fill="#FF00C8" opacity="0.35" letter-spacing="0">▶</text>
+  <text x="1118" y="286" font-family="monospace" font-size="10" fill="#FF00C8" opacity="0.35" letter-spacing="0">◀</text>
+
+  <!-- Small waveform bars — decorative, bottom left -->
+  <g opacity="0.25" transform="translate(68, 490)">
+    <rect x="0"  y="18" width="4" height="8"  fill="#FF00C8" />
+    <rect x="7"  y="10" width="4" height="16" fill="#FF00C8" />
+    <rect x="14" y="4"  width="4" height="22" fill="#FF00C8" />
+    <rect x="21" y="14" width="4" height="12" fill="#FF00C8" />
+    <rect x="28" y="8"  width="4" height="18" fill="#FF00C8" />
+    <rect x="35" y="16" width="4" height="10" fill="#FF00C8" />
+    <rect x="42" y="6"  width="4" height="20" fill="#FF00C8" />
+  </g>
+
+  <!-- Small waveform bars — decorative, bottom right (mirrored) -->
+  <g opacity="0.25" transform="translate(1082, 490) scale(-1,1) translate(-50,0)">
+    <rect x="0"  y="18" width="4" height="8"  fill="#FF00C8" />
+    <rect x="7"  y="10" width="4" height="16" fill="#FF00C8" />
+    <rect x="14" y="4"  width="4" height="22" fill="#FF00C8" />
+    <rect x="21" y="14" width="4" height="12" fill="#FF00C8" />
+    <rect x="28" y="8"  width="4" height="18" fill="#FF00C8" />
+    <rect x="35" y="16" width="4" height="10" fill="#FF00C8" />
+    <rect x="42" y="6"  width="4" height="20" fill="#FF00C8" />
+  </g>
+
+</svg>
