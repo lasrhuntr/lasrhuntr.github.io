@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CHICAGO EDM 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:    #03000A;
+  --deep:     #0D0020;
+  --panel:    #130029;
+  --border:   #2a0050;
+  --pink:     #FF00C8;
+  --cyan:     #00F5FF;
+  --green:    #39FF14;
+  --purple:   #B026FF;
+  --yellow:   #FFE500;
+  --orange:   #FF6B00;
+  --white:    #F0EEFF;
+  --dim:      #8888AA;
+  --spotify:  #1DB954;
+  --glow-pink:   0 0 8px #FF00C8, 0 0 20px #FF00C880;
+  --glow-cyan:   0 0 8px #00F5FF, 0 0 20px #00F5FF80;
+  --glow-green:  0 0 8px #39FF14, 0 0 20px #39FF1480;
+  --glow-purple: 0 0 8px #B026FF, 0 0 20px #B026FF80;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Rajdhani', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── SCANLINE GRID BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(176,38,255,0.15) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 40% at 80% 100%, rgba(0,245,255,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse 40% 30% at 20% 80%, rgba(255,0,200,0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ── */
+.header {
+  position: relative; z-index: 10;
+  padding: 24px 16px 0;
+  text-align: center;
+}
+
+.logo-wrap {
+  display: inline-flex; flex-direction: column; align-items: center;
+  gap: 4px;
+}
+
+.logo-top {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(11px, 3vw, 13px);
+  font-weight: 400;
+  color: var(--cyan);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.logo-main {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(26px, 8vw, 52px);
+  font-weight: 900;
+  line-height: 0.95;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--pink) 0%, var(--purple) 40%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(176,38,255,0.6));
+  animation: logoPulse 4s ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+  0%,100% { filter: drop-shadow(0 0 20px rgba(176,38,255,0.6)); }
+  50%      { filter: drop-shadow(0 0 35px rgba(0,245,255,0.8)) drop-shadow(0 0 60px rgba(255,0,200,0.4)); }
+}
+
+.logo-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(9px, 2.5vw, 11px);
+  color: var(--dim);
+  letter-spacing: 0.2em;
+  margin-top: 4px;
+}
+
+.laser-line {
+  width: 100%; height: 1px; margin: 20px 0 0;
+  background: linear-gradient(90deg, transparent, var(--pink), var(--cyan), var(--purple), transparent);
+  position: relative; overflow: hidden;
+}
+.laser-line::after {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+  animation: laserSweep 3s ease-in-out infinite;
+}
+@keyframes laserSweep { to { left: 200%; } }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  position: relative; z-index: 10;
+  display: flex; gap: 0;
+  overflow-x: auto; scrollbar-width: none;
+  padding: 16px 16px 0;
+  -webkit-overflow-scrolling: touch;
+}
+.stats-bar::-webkit-scrollbar { display: none; }
+
+.stat {
+  flex: 0 0 auto;
+  text-align: center;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-right: none;
+  background: rgba(13,0,32,0.7);
+  backdrop-filter: blur(8px);
+  min-width: 80px;
+}
+.stat:first-child { border-radius: 6px 0 0 6px; }
+.stat:last-child  { border-right: 1px solid var(--border); border-radius: 0 6px 6px 0; }
+
+.stat-val {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(16px, 4vw, 22px);
+  font-weight: 700;
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+  line-height: 1;
+}
+.stat-lbl {
+  font-size: 10px; font-weight: 500;
+  color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em;
+  margin-top: 3px;
+}
+
+/* ── SEARCH ── */
+.search-wrap {
+  position: relative; z-index: 10;
+  padding: 16px 16px 0;
+}
+.search-box {
+  width: 100%;
+  background: rgba(13,0,32,0.8);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px 12px 42px;
+  color: var(--white);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px; font-weight: 500;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+.search-box::placeholder { color: var(--dim); }
+.search-box:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 2px rgba(0,245,255,0.15), var(--glow-cyan);
+}
+.search-icon {
+  position: absolute; left: 28px; top: 50%; transform: translateY(-50%);
+  color: var(--dim); font-size: 16px; pointer-events: none;
+}
+
+/* ── FILTER TABS ── */
+.filter-section {
+  position: relative; z-index: 10;
+  padding: 14px 16px 0;
+}
+.filter-label {
+  font-size: 10px; font-weight: 600; color: var(--dim);
+  letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.filter-row {
+  display: flex; gap: 6px;
+  overflow-x: auto; scrollbar-width: none;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+.filter-row::-webkit-scrollbar { display: none; }
+
+.filter-btn {
+  flex: 0 0 auto;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px; font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: rgba(13,0,32,0.6);
+  color: var(--dim);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.filter-btn:active { transform: scale(0.95); }
+.filter-btn.active {
+  background: rgba(176,38,255,0.2);
+  border-color: var(--purple);
+  color: var(--white);
+  box-shadow: var(--glow-purple);
+}
+.filter-btn.active.cyan  { background: rgba(0,245,255,0.15); border-color: var(--cyan);   color: var(--white); box-shadow: var(--glow-cyan); }
+.filter-btn.active.pink  { background: rgba(255,0,200,0.15); border-color: var(--pink);   color: var(--white); box-shadow: var(--glow-pink); }
+.filter-btn.active.green { background: rgba(57,255,20,0.15); border-color: var(--green);  color: var(--white); box-shadow: var(--glow-green); }
+
+/* ── MONTH DIVIDER ── */
+.month-divider {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; gap: 12px;
+  padding: 20px 16px 10px;
+}
+.month-name {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(11px, 3vw, 13px);
+  font-weight: 700; letter-spacing: 0.2em;
+  color: var(--pink);
+  text-shadow: var(--glow-pink);
+  white-space: nowrap;
+}
+.month-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--pink), transparent);
+}
+.month-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; color: var(--dim);
+  white-space: nowrap;
+}
+
+/* ── EVENT CARDS ── */
+.cards-container {
+  position: relative; z-index: 10;
+  padding: 0 12px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+.event-card {
+  position: relative;
+  background: rgba(13,0,32,0.75);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.15s, border-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+.event-card:active { transform: scale(0.98); }
+
+.event-card.festival {
+  border-color: rgba(255,0,200,0.4);
+  background: rgba(30,0,50,0.85);
+}
+.event-card.must {
+  border-left: 3px solid var(--cyan);
+}
+.event-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.event-card.festival::before {
+  background: linear-gradient(90deg, transparent, var(--pink), transparent);
+  opacity: 1;
+  animation: cardShimmer 3s ease-in-out infinite;
+}
+@keyframes cardShimmer {
+  0%,100% { opacity: 0.4; } 50% { opacity: 1; }
+}
+
+.card-inner {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px;
+}
+
+/* Date pill */
+.date-pill {
+  flex: 0 0 44px; text-align: center;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 4px;
+}
+.date-day  { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700; color: var(--white); line-height: 1; }
+.date-mon  { font-size: 9px; font-weight: 600; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+.date-dow  { font-size: 9px; font-weight: 500; color: var(--purple); letter-spacing: 0.05em; margin-top: 1px; }
+
+/* Card body */
+.card-body { flex: 1; min-width: 0; }
+
+.card-title-row {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+  margin-bottom: 4px;
+}
+.card-title {
+  font-size: clamp(15px, 4vw, 17px);
+  font-weight: 700; line-height: 1.2;
+  color: var(--white);
+  flex: 1;
+}
+.event-card.festival .card-title { color: var(--pink); }
+.event-card.must .card-title { color: var(--cyan); }
+
+.stars-badge {
+  font-size: 11px; color: var(--yellow);
+  flex: 0 0 auto; padding-top: 2px;
+  text-shadow: 0 0 6px rgba(255,229,0,0.6);
+}
+
+.card-sub {
+  font-size: 12px; color: var(--dim);
+  margin-bottom: 8px; line-height: 1.3;
+}
+
+.card-tags {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin-bottom: 8px;
+}
+.tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 400;
+  padding: 3px 8px; border-radius: 3px;
+  border: 1px solid;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.tag-genre   { border-color: var(--purple); color: var(--purple); background: rgba(176,38,255,0.1); }
+.tag-venue   { border-color: var(--border); color: var(--dim);    background: transparent; }
+.tag-fest    { border-color: var(--orange); color: var(--orange); background: rgba(255,107,0,0.1); }
+.tag-type    { border-color: var(--border); color: var(--dim);    background: transparent; }
+
+.card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+}
+.price-tag {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px; font-weight: 700;
+  color: var(--green);
+  text-shadow: var(--glow-green);
+}
+.price-tag.free { color: var(--green); }
+
+.spotify-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(29,185,84,0.15);
+  border: 1px solid rgba(29,185,84,0.4);
+  border-radius: 4px;
+  padding: 5px 10px;
+  color: var(--spotify);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px; font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s;
+  letter-spacing: 0.05em;
+  -webkit-tap-highlight-color: transparent;
+}
+.spotify-btn:active { transform: scale(0.95); background: rgba(29,185,84,0.25); }
+.spotify-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--spotify); }
+
+/* Festival expand toggle */
+.festival-toggle {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
+  border-top: 1px solid rgba(255,0,200,0.15);
+  background: rgba(255,0,200,0.05);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.festival-toggle-label {
+  font-size: 11px; font-weight: 600; color: var(--pink);
+  letter-spacing: 0.08em; text-transform: uppercase; flex: 1;
+}
+.toggle-arrow {
+  font-size: 10px; color: var(--pink);
+  transition: transform 0.2s;
+}
+.toggle-arrow.open { transform: rotate(180deg); }
+
+.lineup-panel {
+  display: none;
+  border-top: 1px solid rgba(255,0,200,0.1);
+  padding: 10px 14px 14px;
+  background: rgba(0,0,0,0.3);
+}
+.lineup-panel.open { display: block; }
+.lineup-panel-title {
+  font-size: 10px; color: var(--dim); letter-spacing: 0.15em;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.lineup-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+@media (max-width: 360px) { .lineup-grid { grid-template-columns: 1fr; } }
+
+.lineup-artist {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 7px 9px;
+  background: rgba(13,0,32,0.8);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+.lineup-name { font-size: 12px; font-weight: 600; color: var(--white); line-height: 1.2; }
+.lineup-genre { font-size: 10px; color: var(--dim); }
+.lineup-stars { font-size: 10px; color: var(--yellow); }
+
+/* ── MUST-SEE BADGE ── */
+.must-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(0,245,255,0.12);
+  border: 1px solid rgba(0,245,255,0.3);
+  border-radius: 3px;
+  padding: 2px 7px;
+  font-size: 9px; font-weight: 700;
+  color: var(--cyan); letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  position: relative; z-index: 10;
+  text-align: center; padding: 60px 32px;
+  display: none;
+}
+.empty-state.visible { display: block; }
+.empty-glyph { font-size: 40px; margin-bottom: 16px; opacity: 0.5; }
+.empty-text { font-family: 'Orbitron', monospace; font-size: 14px; color: var(--dim); }
+
+/* ── FOOTER ── */
+.footer {
+  position: relative; z-index: 10;
+  text-align: center;
+  padding: 32px 16px 40px;
+  margin-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.footer-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  color: var(--purple);
+  letter-spacing: 0.2em;
+  margin-bottom: 8px;
+}
+.footer-sub {
+  font-size: 11px; color: var(--dim); line-height: 1.6;
+}
+
+/* ── FLOATING ACTION BUTTON ── */
+.fab {
+  position: fixed; bottom: 24px; right: 16px;
+  z-index: 100;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  border: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(176,38,255,0.5), var(--glow-purple);
+  transition: transform 0.15s, box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.fab:active { transform: scale(0.92); }
+.fab-tooltip {
+  position: fixed; bottom: 86px; right: 16px;
+  z-index: 100;
+  background: var(--panel);
+  border: 1px solid var(--purple);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px; font-weight: 600; color: var(--white);
+  white-space: nowrap;
+  opacity: 0; pointer-events: none;
+  transform: translateY(8px);
+  transition: all 0.2s;
+}
+.fab:hover ~ .fab-tooltip,
+.fab-tooltip.show { opacity: 1; transform: translateY(0); }
+
+/* ── GENRE PILL COLORS ── */
+.genre-House            { border-color: #00F5FF; color: #00F5FF; background: rgba(0,245,255,0.08); }
+.genre-TechHouse        { border-color: #00C4CC; color: #00C4CC; background: rgba(0,196,204,0.08); }
+.genre-Techno           { border-color: #FF00C8; color: #FF00C8; background: rgba(255,0,200,0.08); }
+.genre-MelodicTechno    { border-color: #B026FF; color: #B026FF; background: rgba(176,38,255,0.08); }
+.genre-HardTechno       { border-color: #FF1744; color: #FF1744; background: rgba(255,23,68,0.08); }
+.genre-BassDubstep      { border-color: #39FF14; color: #39FF14; background: rgba(57,255,20,0.08); }
+.genre-DrumBass         { border-color: #FFE500; color: #FFE500; background: rgba(255,229,0,0.08); }
+.genre-Trance           { border-color: #00FFB2; color: #00FFB2; background: rgba(0,255,178,0.08); }
+.genre-PsyTrance        { border-color: #AAFF00; color: #AAFF00; background: rgba(170,255,0,0.08); }
+.genre-TrapHybrid       { border-color: #FF6B00; color: #FF6B00; background: rgba(255,107,0,0.08); }
+.genre-FutureBass       { border-color: #FF8FD8; color: #FF8FD8; background: rgba(255,143,216,0.08); }
+.genre-BigRoom          { border-color: #FFD700; color: #FFD700; background: rgba(255,215,0,0.08); }
+.genre-UKGarage         { border-color: #00FFC8; color: #00FFC8; background: rgba(0,255,200,0.08); }
+.genre-IndieElectronic  { border-color: #9CB4FF; color: #9CB4FF; background: rgba(156,180,255,0.08); }
+.genre-Industrial       { border-color: #FF4444; color: #FF4444; background: rgba(255,68,68,0.08); }
+.genre-MultiGenre       { border-color: #B026FF; color: #B026FF; background: rgba(176,38,255,0.08); }
+
+/* ── RESPONSIVE ── */
+@media (min-width: 600px) {
+  .cards-container { padding: 0 20px; max-width: 680px; margin: 0 auto; }
+  .stats-bar, .search-wrap, .filter-section, .month-divider { max-width: 680px; margin-left: auto; margin-right: auto; }
+  .month-divider { padding-left: 20px; padding-right: 20px; }
+  .filter-section { padding-left: 20px; padding-right: 20px; }
+  .search-wrap { padding-left: 20px; padding-right: 20px; }
+  .stats-bar { padding-left: 20px; justify-content: center; }
+}
+
+/* ── DEMAND INDICATOR ── */
+.demand-wrap {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+  flex: 0 0 auto; padding-top: 2px;
+}
+.demand-dots { font-size: 11px; letter-spacing: 1.5px; line-height: 1; }
+.demand-lbl {
+  font-family: 'Space Mono', monospace;
+  font-size: 7px; letter-spacing: 0.1em;
+  text-transform: uppercase; opacity: 0.8;
+}
+
+/* ── CITY TAG ── */
+.tag-city {
+  border-color: rgba(0,245,255,0.5); color: var(--cyan);
+  background: rgba(0,245,255,0.07);
+  font-weight: 700; letter-spacing: 0.05em;
+}
+
+/* ── PAST EVENTS TOGGLE ── */
+.past-toggle {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px;
+  margin: 12px 12px 4px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.03);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.past-toggle:hover { background: rgba(255,255,255,0.06); }
+.past-toggle-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+}
+.past-toggle-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; color: var(--dim);
+}
+.upcoming-divider {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 16px 4px;
+}
+.upcoming-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px; font-weight: 700;
+  color: var(--cyan); letter-spacing: 0.2em;
+  text-shadow: var(--glow-cyan);
+  white-space: nowrap;
+}
+
+/* ── GLITCH LOGO ── */
+.glitch-logo {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: clamp(36px, 10vw, 64px);
+  letter-spacing: 0.1em;
+  color: var(--pink);
+  text-shadow: var(--glow-pink);
+  position: relative;
+  display: inline-block;
+  animation: glitch 4s infinite;
+  line-height: 1;
+}
+.glitch-logo::before {
+  content: attr(data-text);
+  position: absolute; left: 3px; top: 0;
+  clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+  animation: glitchTop 4s infinite;
+  color: var(--cyan); opacity: 0.8;
+}
+.glitch-logo::after {
+  content: attr(data-text);
+  position: absolute; left: -3px; top: 0;
+  clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+  animation: glitchBot 4s infinite;
+  color: var(--yellow); opacity: 0.7;
+}
+@keyframes glitch {
+  0%,90%,100% { transform: translate(0); }
+  91% { transform: translate(-2px, 1px); }
+  93% { transform: translate(2px, -1px); }
+  95% { transform: translate(-1px, 2px); }
+  97% { transform: translate(1px, 0); }
+}
+@keyframes glitchTop {
+  0%,88%,100% { transform: translate(0); opacity: 0; }
+  90% { transform: translate(-3px, 0); opacity: 0.8; }
+  92% { transform: translate(3px, 0); opacity: 0.8; }
+  94% { transform: translate(0); opacity: 0; }
+}
+@keyframes glitchBot {
+  0%,88%,100% { transform: translate(0); opacity: 0; }
+  91% { transform: translate(3px, 0); opacity: 0.7; }
+  93% { transform: translate(-2px, 0); opacity: 0.7; }
+  95% { transform: translate(0); opacity: 0; }
+}
+
+/* ── ANIMATIONS ── */
+.card-enter {
+  animation: cardIn 0.25s ease both;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.header { animation: headerIn 0.6s ease both; }
+@keyframes headerIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo-wrap">
+    <div class="logo-top">&#9660; Season Guide &#9660;</div>
+    <div class="glitch-logo" data-text="LASRHUNTR">LASRHUNTR</div>
+    <div class="logo-main" style="font-size:clamp(13px,3.5vw,18px);margin-top:6px">NATIONAL EDM GUIDE 2026</div>
+    <div class="logo-sub" id="header-sub">6 CITIES &nbsp;·&nbsp; MAR–OCT</div>
+  </div>
+  <div class="laser-line"></div>
+</header>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat"><div class="stat-val" id="stat-total">—</div><div class="stat-lbl">Events</div></div>
+  <div class="stat"><div class="stat-val" style="color:var(--cyan);text-shadow:var(--glow-cyan)">6</div><div class="stat-lbl">Cities</div></div>
+  <div class="stat"><div class="stat-val" id="stat-showing">—</div><div class="stat-lbl">Showing</div></div>
+  <div class="stat"><div class="stat-val" id="stat-musts" style="color:var(--pink);text-shadow:var(--glow-pink)">—</div><div class="stat-lbl">Must-Sees</div></div>
+  <div class="stat"><div class="stat-val" id="stat-free" style="color:var(--green);text-shadow:var(--glow-green)">—</div><div class="stat-lbl">Free</div></div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <span class="search-icon">⌕</span>
+  <input class="search-box" type="text" id="searchInput" placeholder="Search artist, venue, genre…" autocomplete="off" autocorrect="off" spellcheck="false">
+</div>
+
+<!-- FILTERS ROW 1: TYPE -->
+<div class="filter-section">
+  <div class="filter-label">Filter by type</div>
+  <div class="filter-row" id="typeFilters">
+    <button class="filter-btn active cyan" data-filter="all" data-group="type">All Events</button>
+    <button class="filter-btn" data-filter="festival" data-group="type">🎪 Festivals</button>
+    <button class="filter-btn" data-filter="show" data-group="type">🎧 Shows</button>
+    <button class="filter-btn" data-filter="must" data-group="type">⚡ Must-Sees</button>
+  </div>
+</div>
+
+<!-- FILTERS ROW 2: GENRE -->
+<div class="filter-section" style="padding-top:10px">
+  <div class="filter-label">Filter by genre</div>
+  <div class="filter-row" id="genreFilters">
+    <button class="filter-btn active pink" data-filter="all" data-group="genre">All Genres</button>
+    <button class="filter-btn" data-filter="House" data-group="genre">House</button>
+    <button class="filter-btn" data-filter="Tech House" data-group="genre">Tech House</button>
+    <button class="filter-btn" data-filter="Techno" data-group="genre">Techno</button>
+    <button class="filter-btn" data-filter="Melodic Techno" data-group="genre">Melodic</button>
+    <button class="filter-btn" data-filter="Hard Techno" data-group="genre">Hard Techno</button>
+    <button class="filter-btn" data-filter="Bass / Dubstep" data-group="genre">Bass</button>
+    <button class="filter-btn" data-filter="Drum & Bass" data-group="genre">D&B</button>
+    <button class="filter-btn" data-filter="Indie Electronic" data-group="genre">Indie</button>
+    <button class="filter-btn" data-filter="Big Room / EDM" data-group="genre">Big Room</button>
+    <button class="filter-btn" data-filter="Trance" data-group="genre">Trance</button>
+  </div>
+</div>
+
+<!-- FILTERS ROW 3: CITY -->
+<div class="filter-section" style="padding-top:10px">
+  <div class="filter-label">Filter by city</div>
+  <div class="filter-row" id="cityFilters">
+    <button class="filter-btn active" data-filter="all" data-group="city">🌎 All Cities</button>
+    <button class="filter-btn" data-filter="Chicago" data-group="city">CHI · Chicago</button>
+    <button class="filter-btn" data-filter="Miami" data-group="city">MIA · Miami</button>
+    <button class="filter-btn" data-filter="Las Vegas" data-group="city">LAS · Las Vegas</button>
+    <button class="filter-btn" data-filter="New York" data-group="city">NYC · New York</button>
+    <button class="filter-btn" data-filter="Los Angeles" data-group="city">LA · Los Angeles</button>
+    <button class="filter-btn" data-filter="San Francisco" data-group="city">SF · Bay Area</button>
+  </div>
+</div>
+
+<!-- EVENTS LIST -->
+<div id="eventList" style="padding-top:12px"></div>
+<div class="empty-state" id="emptyState">
+  <div class="empty-glyph">◈</div>
+  <div class="empty-text">NO EVENTS FOUND</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-logo">LASRHUNTR · EDM 2026</div>
+  <div class="footer-sub">Data sourced from Songkick · EDMtrain · Resident Advisor · Festicket<br>Updated May 2026 &nbsp;·&nbsp; Prices approximate &nbsp;·&nbsp; Always verify before purchasing</div>
+</div>
+
+<!-- FAB -->
+<button class="fab" id="fab" onclick="scrollToNext()" title="Next upcoming event">⚡</button>
+<div class="fab-tooltip" id="fabTooltip">Next event ↑</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+const SPOTIFY = {
+  "House":               "https://open.spotify.com/playlist/37i9dQZF1EIdDyy28MYSyS",
+  "Tech House":          "https://open.spotify.com/playlist/4dTLUXbkpybTkvw0NYcrcH",
+  "Techno":              "https://open.spotify.com/playlist/37i9dQZF1DX6J5NfMJS675",
+  "Melodic Techno":      "https://open.spotify.com/playlist/7BHVQ8coQCAiv13mTbbMFK",
+  "Hard Techno":         "https://open.spotify.com/playlist/4IYG32zppZZSNraJgIUd26",
+  "Psy-Trance":          "https://open.spotify.com/playlist/7ez2Hl78tShkZtLOBnjcWJ",
+  "Trance":              "https://open.spotify.com/playlist/7ez2Hl78tShkZtLOBnjcWJ",
+  "Bass / Dubstep":      "https://open.spotify.com/playlist/5AUNpkeyWVTM6t9fz7nV6E",
+  "Future Bass":         "https://open.spotify.com/playlist/5AUNpkeyWVTM6t9fz7nV6E",
+  "Drum & Bass":         "https://open.spotify.com/playlist/5AUNpkeyWVTM6t9fz7nV6E",
+  "UK Garage / Bassline":"https://open.spotify.com/playlist/5AUNpkeyWVTM6t9fz7nV6E",
+  "Big Room / EDM":      "https://open.spotify.com/playlist/6JAIUwVxJX4LI8rLb7FrDp",
+  "Indie Electronic":    "https://open.spotify.com/playlist/4HJ9Bn4CVDSogfJlB7hL7c",
+  "Industrial / EBM":    "https://open.spotify.com/playlist/4IYG32zppZZSNraJgIUd26",
+  "Trap / Hybrid Bass":  "https://open.spotify.com/playlist/5AUNpkeyWVTM6t9fz7nV6E",
+  "Disco / Nu-Disco":    "https://open.spotify.com/playlist/37i9dQZF1EIdDyy28MYSyS",
+};
+
+const EVENTS = [
+  // ══ JANUARY ══
+  // Las Vegas
+  {d:"2026-01-01",city:"Las Vegas",day:"01",mon:"JAN",dow:"THU",type:"show",title:"NYE Countdown — Fisher",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$150+",demand:5,must:true,note:"New Year's Eve into Jan 1 — the hottest ticket in Vegas."},
+  {d:"2026-01-03",city:"Las Vegas",day:"03",mon:"JAN",dow:"SAT",type:"show",title:"Tiësto",sub:"Big Room / Tech House",venue:"Hakkasan Nightclub",genre:"Big Room / EDM",price:"$60+",demand:4},
+  {d:"2026-01-10",city:"Las Vegas",day:"10",mon:"JAN",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$80+",demand:5,must:true},
+  {d:"2026-01-17",city:"Las Vegas",day:"17",mon:"JAN",dow:"SAT",type:"show",title:"Martin Garrix",sub:"Big Room / Progressive House",venue:"Omnia Nightclub",genre:"Big Room / EDM",price:"$65+",demand:4},
+  {d:"2026-01-24",city:"Las Vegas",day:"24",mon:"JAN",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House / Bass House",venue:"Wynn Nightclub",genre:"Tech House",price:"$75+",demand:4},
+  // New York
+  {d:"2026-01-10",city:"New York",day:"10",mon:"JAN",dow:"SAT",type:"show",title:"Peggy Gou",sub:"Disco House / Nu-Disco",venue:"Avant Gardner",genre:"House",price:"$40",demand:4},
+  {d:"2026-01-17",city:"New York",day:"17",mon:"JAN",dow:"SAT",type:"show",title:"Dixon",sub:"Deep House / Minimal",venue:"Cielo",genre:"House",price:"$30",demand:3},
+  {d:"2026-01-24",city:"New York",day:"24",mon:"JAN",dow:"SAT",type:"show",title:"Tale Of Us",sub:"Melodic Techno",venue:"Avant Gardner",genre:"Melodic Techno",price:"$35",demand:4},
+  // Los Angeles
+  {d:"2026-01-10",city:"Los Angeles",day:"10",mon:"JAN",dow:"SAT",type:"show",title:"Rezz",sub:"Dark Electronic / Alien Techno",venue:"Exchange LA",genre:"Techno",price:"$50",demand:4},
+  {d:"2026-01-17",city:"Los Angeles",day:"17",mon:"JAN",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Exchange LA",genre:"Tech House",price:"$80",demand:5,must:true},
+  {d:"2026-01-24",city:"Los Angeles",day:"24",mon:"JAN",dow:"SAT",type:"show",title:"Amelie Lens",sub:"Peak-Time Techno",venue:"Sound Nightclub",genre:"Techno",price:"$40",demand:4},
+  // San Francisco
+  {d:"2026-01-10",city:"San Francisco",day:"10",mon:"JAN",dow:"SAT",type:"show",title:"Nina Kraviz",sub:"Techno / Acid House",venue:"1015 Folsom",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-01-24",city:"San Francisco",day:"24",mon:"JAN",dow:"SAT",type:"show",title:"Hot Since 82",sub:"Tech House / Deep House",venue:"The Midway",genre:"Tech House",price:"$35",demand:3},
+  // Miami
+  {d:"2026-01-03",city:"Miami",day:"03",mon:"JAN",dow:"SAT",type:"show",title:"Themba",sub:"Afro House / Deep House",venue:"Club Space",genre:"House",price:"$30",demand:3},
+  {d:"2026-01-17",city:"Miami",day:"17",mon:"JAN",dow:"SAT",type:"show",title:"Marco Carola",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:4},
+  {d:"2026-01-24",city:"Miami",day:"24",mon:"JAN",dow:"SAT",type:"show",title:"Black Coffee",sub:"Afro House / Deep House",venue:"LIV Fontainebleau",genre:"House",price:"$60+",demand:4},
+  // Chicago
+  {d:"2026-01-17",city:"Chicago",day:"17",mon:"JAN",dow:"SAT",type:"show",title:"Gene Farris",sub:"Chicago House / Acid",venue:"Smart Bar",genre:"House",price:"$15",demand:2},
+  {d:"2026-01-24",city:"Chicago",day:"24",mon:"JAN",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Prysm",genre:"House",price:"$35",demand:4},
+  // ══ FEBRUARY ══
+  // Las Vegas
+  {d:"2026-02-07",city:"Las Vegas",day:"07",mon:"FEB",dow:"SAT",type:"show",title:"Deadmau5",sub:"Progressive House / Electro",venue:"Zouk Nightclub",genre:"House",price:"$70+",demand:4},
+  {d:"2026-02-14",city:"Las Vegas",day:"14",mon:"FEB",dow:"SAT",type:"show",title:"Kygo",sub:"Tropical House / Electronic Pop",venue:"XS Nightclub",genre:"Indie Electronic",price:"$75+",demand:3,note:"Valentine's Day special event."},
+  {d:"2026-02-21",city:"Las Vegas",day:"21",mon:"FEB",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$80+",demand:5},
+  {d:"2026-02-28",city:"Las Vegas",day:"28",mon:"FEB",dow:"SAT",type:"show",title:"Alesso",sub:"Progressive House / Big Room",venue:"Omnia Nightclub",genre:"Big Room / EDM",price:"$65+",demand:3},
+  // New York
+  {d:"2026-02-07",city:"New York",day:"07",mon:"FEB",dow:"SAT",type:"show",title:"Kerri Chandler",sub:"Classic House / Deep House",venue:"Nowadays",genre:"House",price:"$25",demand:3},
+  {d:"2026-02-14",city:"New York",day:"14",mon:"FEB",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Avant Gardner",genre:"House",price:"$40",demand:4},
+  {d:"2026-02-21",city:"New York",day:"21",mon:"FEB",dow:"SAT",type:"show",title:"Drumcode Showcase",sub:"Techno / Tech House",venue:"Brooklyn Mirage",genre:"Techno",price:"$45",demand:4},
+  // Los Angeles
+  {d:"2026-02-07",city:"Los Angeles",day:"07",mon:"FEB",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Exchange LA",genre:"Tech House",price:"$65",demand:5,must:true},
+  {d:"2026-02-14",city:"Los Angeles",day:"14",mon:"FEB",dow:"SAT",type:"show",title:"Disclosure",sub:"UK House / Garage House",venue:"The Wiltern",genre:"House",price:"$90",demand:5,must:true},
+  {d:"2026-02-21",city:"Los Angeles",day:"21",mon:"FEB",dow:"SAT",type:"show",title:"Charlotte de Witte",sub:"Peak-Time Techno",venue:"Sound Nightclub",genre:"Techno",price:"$40",demand:4},
+  // San Francisco
+  {d:"2026-02-07",city:"San Francisco",day:"07",mon:"FEB",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"The Midway",genre:"Techno",price:"$65",demand:5,must:true},
+  {d:"2026-02-21",city:"San Francisco",day:"21",mon:"FEB",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"1015 Folsom",genre:"House",price:"$40",demand:4},
+  // Miami
+  {d:"2026-02-07",city:"Miami",day:"07",mon:"FEB",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-02-14",city:"Miami",day:"14",mon:"FEB",dow:"SAT",type:"show",title:"Hot Since 82",sub:"Tech House / Deep House",venue:"Do Not Sit on the Furniture",genre:"Tech House",price:"$35",demand:3},
+  {d:"2026-02-21",city:"Miami",day:"21",mon:"FEB",dow:"SAT",type:"show",title:"Dixon",sub:"Deep House / Minimal",venue:"Treehouse Miami",genre:"House",price:"$30",demand:3},
+  // Chicago
+  {d:"2026-02-07",city:"Chicago",day:"07",mon:"FEB",dow:"SAT",type:"show",title:"Derrick May",sub:"Detroit Techno",venue:"Smart Bar",genre:"Techno",price:"$20",demand:3},
+  {d:"2026-02-21",city:"Chicago",day:"21",mon:"FEB",dow:"SAT",type:"show",title:"CamelPhat",sub:"Tech House / Deep House",venue:"Prysm",genre:"Tech House",price:"$45",demand:4},
+  // ══ MARCH ══
+  // Chicago
+  {d:"2026-03-12",city:"Chicago",day:"12",mon:"MAR",dow:"THU",type:"show",title:"Christian Löffler",sub:"Melodic House & Techno / Cinematic",venue:"Chop Shop",genre:"Melodic Techno",price:"$35",demand:4,must:true,note:"Limited capacity — crystalline emotional techno, sells out fast."},
+  {d:"2026-03-13",city:"Chicago",day:"13",mon:"MAR",dow:"FRI",type:"show",title:"What So Not",sub:"Future Bass / Melodic Bass",venue:"Sound Bar",genre:"Bass / Dubstep",price:"$30",demand:3},
+  {d:"2026-03-20",city:"Chicago",day:"20",mon:"MAR",dow:"FRI",type:"show",title:"Fisher",sub:"Tech House",venue:"Navy Pier",genre:"Tech House",price:"$95",demand:5,must:true,note:"Sellout expected. Fisher's Chicago return after 2-year gap."},
+  {d:"2026-03-21",city:"Chicago",day:"21",mon:"MAR",dow:"SAT",type:"show",title:"Gene Farris",sub:"Chicago House / Acid",venue:"Serum @ Prysm",genre:"House",price:"$20",demand:2},
+  {d:"2026-03-26",city:"Chicago",day:"26",mon:"MAR",dow:"THU",type:"show",title:"FKA twigs",sub:"Art Pop / Avant-Electronic (Live)",venue:"Wintrust Arena",genre:"Indie Electronic",price:"$85",demand:4},
+  {d:"2026-03-27",city:"Chicago",day:"27",mon:"MAR",dow:"FRI",type:"show",title:"Shy FX",sub:"Jungle / Drum & Bass",venue:"Sound Bar",genre:"Drum & Bass",price:"$25",demand:3},
+  {d:"2026-03-27",city:"Chicago",day:"27",mon:"MAR",dow:"FRI",type:"show",title:"Bad Boombox b2b Anetha",sub:"Hard Techno / Industrial",venue:"Radius",genre:"Hard Techno",price:"$22",demand:3},
+  // Miami — Miami Music Week
+  {d:"2026-03-23",city:"Miami",day:"23",mon:"MAR",dow:"MON",type:"show",title:"Adam Beyer",sub:"Techno",venue:"Club Space",genre:"Techno",price:"$45",demand:4,note:"Miami Music Week warm-up."},
+  {d:"2026-03-24",city:"Miami",day:"24",mon:"MAR",dow:"TUE",type:"show",title:"Solomun",sub:"Melodic Techno / Deep House",venue:"Treehouse Miami",genre:"Melodic Techno",price:"$50",demand:4},
+  {d:"2026-03-25",city:"Miami",day:"25",mon:"MAR",dow:"WED",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:5,must:true,note:"Miami Music Week. Carl Cox at Club Space is a bucket-list set."},
+  {d:"2026-03-26",city:"Miami",day:"26",mon:"MAR",dow:"THU",type:"show",title:"Four Tet",sub:"Electronic / Leftfield",venue:"Do Not Sit on the Furniture",genre:"Indie Electronic",price:"$40",demand:4},
+  {d:"2026-03-26",city:"Miami",day:"26",mon:"MAR",dow:"THU",type:"show",title:"Fisher & Skream",sub:"Tech House / UK Garage",venue:"Trade Miami",genre:"Tech House",price:"$55",demand:5,must:true},
+  {d:"2026-03-27",city:"Miami",day:"27",mon:"MAR",dow:"FRI",type:"show",title:"John Summit",sub:"Tech House",venue:"E11EVEN Miami",genre:"Tech House",price:"$80+",demand:5,must:true,note:"MMW Friday — expect a queue around the block."},
+  {d:"2026-03-27",city:"Miami",day:"27",mon:"MAR",dow:"FRI",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"LIV Fontainebleau",genre:"House",price:"$70+",demand:4},
+  {d:"2026-03-27",city:"Miami",day:"27",mon:"MAR",dow:"FRI",type:"festival",title:"Ultra Music Festival — Day 1",sub:"Multi-genre · Bayfront Park · 18+",venue:"Bayfront Park",genre:"Big Room / EDM",price:"GA $399 / VIP $999+",demand:5,must:true,fest:"Ultra Music Festival",
+    lineup:[{name:"Major Lazer",genre:"Big Room",stars:5},{name:"Hardwell",genre:"Big Room",stars:5},{name:"ILLENIUM",genre:"Melodic Dubstep",stars:5},{name:"Amelie Lens",genre:"Techno",stars:4},{name:"Sara Landry",genre:"Techno",stars:5}]},
+  {d:"2026-03-28",city:"Miami",day:"28",mon:"MAR",dow:"SAT",type:"festival",title:"Ultra Music Festival — Day 2",sub:"Multi-genre · Bayfront Park · 18+",venue:"Bayfront Park",genre:"Big Room / EDM",price:"GA $399 / VIP $999+",demand:5,fest:"Ultra Music Festival",
+    lineup:[{name:"Sebastian Ingrosso",genre:"Big Room",stars:5},{name:"Steve Angello",genre:"Big Room",stars:5},{name:"Armin van Buuren",genre:"Trance",stars:5},{name:"Carl Cox",genre:"Techno",stars:5},{name:"Eric Prydz",genre:"Progressive House",stars:5}]},
+  {d:"2026-03-29",city:"Miami",day:"29",mon:"MAR",dow:"SUN",type:"festival",title:"Ultra Music Festival — Day 3",sub:"Multi-genre · Bayfront Park · 18+",venue:"Bayfront Park",genre:"Big Room / EDM",price:"GA $399 / VIP $999+",demand:5,fest:"Ultra Music Festival",
+    lineup:[{name:"John Summit",genre:"Tech House",stars:5},{name:"ISOxo",genre:"Bass",stars:4},{name:"Excision",genre:"Dubstep",stars:4},{name:"Bzrp",genre:"Electronic",stars:4},{name:"The Martinez Brothers",genre:"Tech House",stars:4}]},
+  // New York
+  {d:"2026-03-07",city:"New York",day:"07",mon:"MAR",dow:"SAT",type:"show",title:"Peggy Gou",sub:"Disco House / Nu-Disco",venue:"Avant Gardner",genre:"House",price:"$40",demand:4},
+  {d:"2026-03-14",city:"New York",day:"14",mon:"MAR",dow:"SAT",type:"show",title:"Recondite",sub:"Melodic Techno / Ambient",venue:"Nowadays",genre:"Melodic Techno",price:"$20",demand:2},
+  {d:"2026-03-21",city:"New York",day:"21",mon:"MAR",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Avant Gardner",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-03-28",city:"New York",day:"28",mon:"MAR",dow:"SAT",type:"show",title:"George FitzGerald",sub:"UK House / Melodic Techno",venue:"Elsewhere",genre:"Melodic Techno",price:"$25",demand:3},
+  // Los Angeles
+  {d:"2026-03-07",city:"Los Angeles",day:"07",mon:"MAR",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Exchange LA",genre:"Tech House",price:"$65",demand:5,must:true},
+  {d:"2026-03-14",city:"Los Angeles",day:"14",mon:"MAR",dow:"SAT",type:"show",title:"Disclosure",sub:"UK House / Garage House",venue:"Hollywood Palladium",genre:"House",price:"$80",demand:5,must:true},
+  {d:"2026-03-21",city:"Los Angeles",day:"21",mon:"MAR",dow:"SAT",type:"show",title:"Rezz",sub:"Dark Electronic / Alien Techno",venue:"Academy LA",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-03-28",city:"Los Angeles",day:"28",mon:"MAR",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House / Bass House",venue:"Exchange LA",genre:"Tech House",price:"$70",demand:5,must:true},
+  // San Francisco
+  {d:"2026-03-07",city:"San Francisco",day:"07",mon:"MAR",dow:"SAT",type:"show",title:"Charlotte de Witte",sub:"Peak-Time Techno",venue:"1015 Folsom",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-03-21",city:"San Francisco",day:"21",mon:"MAR",dow:"SAT",type:"show",title:"Peggy Gou",sub:"Disco House / Nu-Disco",venue:"The Midway",genre:"House",price:"$45",demand:4},
+  // Las Vegas
+  {d:"2026-03-07",city:"Las Vegas",day:"07",mon:"MAR",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$85+",demand:5,must:true},
+  {d:"2026-03-14",city:"Las Vegas",day:"14",mon:"MAR",dow:"SAT",type:"show",title:"Tiësto",sub:"Big Room / Tech House",venue:"Hakkasan Nightclub",genre:"Big Room / EDM",price:"$60+",demand:4},
+  {d:"2026-03-21",city:"Las Vegas",day:"21",mon:"MAR",dow:"SAT",type:"show",title:"Martin Garrix",sub:"Big Room / Progressive House",venue:"Omnia Nightclub",genre:"Big Room / EDM",price:"$65+",demand:4},
+  // ══ APRIL ══
+  // Chicago
+  {d:"2026-04-03",city:"Chicago",day:"03",mon:"APR",dow:"FRI",type:"show",title:"Machine Girl",sub:"Industrial Electronic / Breakcore",venue:"The Salt Shed",genre:"Industrial / EBM",price:"$30",demand:3,note:"w/ Sextile & Casper McFadden"},
+  {d:"2026-04-04",city:"Chicago",day:"04",mon:"APR",dow:"SAT",type:"show",title:"Seven Lions",sub:"Melodic Dubstep / Psytrance-Bass",venue:"Radius",genre:"Bass / Dubstep",price:"$45",demand:4,note:"w/ Jason Ross, Kill The Noise, Nurko"},
+  {d:"2026-04-04",city:"Chicago",day:"04",mon:"APR",dow:"SAT",type:"show",title:"Bart Skils",sub:"Peak-Time Techno",venue:"Serum @ Prysm",genre:"Techno",price:"$25",demand:3},
+  {d:"2026-04-11",city:"Chicago",day:"11",mon:"APR",dow:"SAT",type:"festival",title:"HEALTH × Carpenter Brut",sub:"Industrial Rock / Dark Electronic",venue:"The Salt Shed",genre:"Industrial / EBM",price:"$45",demand:3,fest:"Riot Fest Presents",
+    lineup:[{name:"HEALTH",genre:"Industrial",stars:4},{name:"Carpenter Brut",genre:"Synthwave-Metal",stars:4},{name:"Desire",genre:"Darkwave",stars:3}]},
+  {d:"2026-04-11",city:"Chicago",day:"11",mon:"APR",dow:"SAT",type:"show",title:"Infected Mushroom",sub:"Psytrance / Progressive Psy",venue:"Concord Music Hall",genre:"Techno",price:"$35",demand:3},
+  {d:"2026-04-17",city:"Chicago",day:"17",mon:"APR",dow:"FRI",type:"show",title:"CamelPhat",sub:"Tech House / Deep House",venue:"The Salt Shed",genre:"Tech House",price:"$45",demand:4,must:true,note:"Grammy-nominated duo — deep tech house at its best."},
+  {d:"2026-04-19",city:"Chicago",day:"19",mon:"APR",dow:"SUN",type:"show",title:"Étienne de Crécy",sub:"French House / Filter House",venue:"Chop Shop",genre:"House",price:"$30",demand:3},
+  {d:"2026-04-25",city:"Chicago",day:"25",mon:"APR",dow:"SAT",type:"show",title:"Derrick Carter",sub:"Chicago House / Deep House",venue:"Smart Bar",genre:"House",price:"$20",demand:3},
+  {d:"2026-04-29",city:"Chicago",day:"29",mon:"APR",dow:"WED",type:"show",title:"Clan of Xymox & Cold Cave",sub:"Darkwave / Goth-Electronic",venue:"Metro Chicago",genre:"Indie Electronic",price:"$63",demand:2},
+  // Miami
+  {d:"2026-04-04",city:"Miami",day:"04",mon:"APR",dow:"SAT",type:"show",title:"Jamie Jones",sub:"Deep Tech House",venue:"Do Not Sit on the Furniture",genre:"Tech House",price:"$35",demand:3},
+  {d:"2026-04-11",city:"Miami",day:"11",mon:"APR",dow:"SAT",type:"show",title:"Solomun",sub:"Melodic Techno / Deep House",venue:"Club Space",genre:"Melodic Techno",price:"$50",demand:4},
+  {d:"2026-04-18",city:"Miami",day:"18",mon:"APR",dow:"SAT",type:"show",title:"Joseph Capriati",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-04-25",city:"Miami",day:"25",mon:"APR",dow:"SAT",type:"show",title:"Black Coffee",sub:"Afro House / Deep House",venue:"LIV Fontainebleau",genre:"House",price:"$65+",demand:4},
+  // New York
+  {d:"2026-04-04",city:"New York",day:"04",mon:"APR",dow:"SAT",type:"show",title:"Dixon",sub:"Deep House / Minimal",venue:"Cielo",genre:"House",price:"$30",demand:3},
+  {d:"2026-04-11",city:"New York",day:"11",mon:"APR",dow:"SAT",type:"show",title:"Jamie Jones",sub:"Deep Tech House",venue:"Cielo",genre:"Tech House",price:"$30",demand:3},
+  {d:"2026-04-18",city:"New York",day:"18",mon:"APR",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Avant Gardner",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-04-25",city:"New York",day:"25",mon:"APR",dow:"SAT",type:"show",title:"Peggy Gou",sub:"Disco House / Nu-Disco",venue:"Elsewhere",genre:"House",price:"$35",demand:4},
+  // Los Angeles
+  {d:"2026-04-04",city:"Los Angeles",day:"04",mon:"APR",dow:"SAT",type:"show",title:"Solomun",sub:"Melodic Techno / Deep House",venue:"Sound Nightclub",genre:"Melodic Techno",price:"$45",demand:4},
+  {d:"2026-04-11",city:"Los Angeles",day:"11",mon:"APR",dow:"SAT",type:"show",title:"Nina Kraviz",sub:"Techno / Acid House",venue:"Academy LA",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-04-18",city:"Los Angeles",day:"18",mon:"APR",dow:"SAT",type:"show",title:"Amelie Lens",sub:"Peak-Time Techno",venue:"Sound Nightclub",genre:"Techno",price:"$40",demand:4},
+  {d:"2026-04-25",city:"Los Angeles",day:"25",mon:"APR",dow:"SAT",type:"show",title:"Skrillex",sub:"Bass / Experimental Electronic",venue:"Crypto.com Arena",genre:"Bass / Dubstep",price:"$95",demand:5,must:true},
+  // San Francisco
+  {d:"2026-04-04",city:"San Francisco",day:"04",mon:"APR",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"The Midway",genre:"Techno",price:"$65",demand:5,must:true},
+  {d:"2026-04-11",city:"San Francisco",day:"11",mon:"APR",dow:"SAT",type:"show",title:"Nina Kraviz",sub:"Techno / Acid House",venue:"1015 Folsom",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-04-18",city:"San Francisco",day:"18",mon:"APR",dow:"SAT",type:"show",title:"Peggy Gou",sub:"Disco House / Nu-Disco",venue:"The Midway",genre:"House",price:"$45",demand:4},
+  // Las Vegas
+  {d:"2026-04-04",city:"Las Vegas",day:"04",mon:"APR",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$80+",demand:5},
+  {d:"2026-04-11",city:"Las Vegas",day:"11",mon:"APR",dow:"SAT",type:"show",title:"Deadmau5",sub:"Progressive House / Electro",venue:"Zouk Nightclub",genre:"House",price:"$70+",demand:4},
+  {d:"2026-04-25",city:"Las Vegas",day:"25",mon:"APR",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House",venue:"Omnia Nightclub",genre:"Tech House",price:"$75+",demand:4},
+  // ══ MAY ══
+  // Chicago
+  {d:"2026-05-02",city:"Chicago",day:"02",mon:"MAY",dow:"SAT",type:"show",title:"The Midnight",sub:"Synthwave / Indietronica (Live Band)",venue:"The Salt Shed",genre:"Indie Electronic",price:"$66",demand:4,must:true,note:"Full live band synthwave — intimate Salt Shed run."},
+  {d:"2026-05-08",city:"Chicago",day:"08",mon:"MAY",dow:"FRI",type:"show",title:"Disclosure (Night 1)",sub:"UK House / Garage House",venue:"The Salt Shed",genre:"House",price:"$113",demand:5,must:true,note:"3-night Chicago residency — historic run. Book now."},
+  {d:"2026-05-09",city:"Chicago",day:"09",mon:"MAY",dow:"SAT",type:"show",title:"Disclosure (Night 2)",sub:"UK House / Garage House",venue:"The Salt Shed",genre:"House",price:"$156",demand:5},
+  {d:"2026-05-10",city:"Chicago",day:"10",mon:"MAY",dow:"SUN",type:"show",title:"Disclosure (Night 3)",sub:"UK House / Garage House",venue:"The Salt Shed",genre:"House",price:"$84",demand:5},
+  {d:"2026-05-15",city:"Chicago",day:"15",mon:"MAY",dow:"FRI",type:"show",title:"KSHMR",sub:"Big Room / Bollywood-EDM",venue:"Tao Chicago",genre:"Big Room / EDM",price:"$75",demand:3},
+  {d:"2026-05-16",city:"Chicago",day:"16",mon:"MAY",dow:"SAT",type:"show",title:"Dillon Francis",sub:"Moombahton / Trap",venue:"Radius",genre:"Trap / Hybrid Bass",price:"$34",demand:3},
+  {d:"2026-05-23",city:"Chicago",day:"23",mon:"MAY",dow:"SAT",type:"festival",title:"Forever Mine Music Festival",sub:"R&B + House · Inaugural · Union Park",venue:"Union Park",genre:"House",price:"TBD",demand:3,fest:"Forever Mine Music Festival",
+    lineup:[{name:"Kaytranada",genre:"Funk House",stars:5},{name:"Kelly Rowland",genre:"R&B",stars:4},{name:"Keyshia Cole",genre:"R&B",stars:4}]},
+  {d:"2026-05-29",city:"Chicago",day:"29",mon:"MAY",dow:"FRI",type:"show",title:"Jeremy Olander",sub:"Progressive House",venue:"SpyBar",genre:"House",price:"$25",demand:2},
+  {d:"2026-05-30",city:"Chicago",day:"30",mon:"MAY",dow:"SAT",type:"show",title:"Of The Trees",sub:"Tribal-Bass / Sound Design",venue:"The Salt Shed",genre:"Bass / Dubstep",price:"$35",demand:2},
+  // Las Vegas
+  {d:"2026-05-15",city:"Las Vegas",day:"15",mon:"MAY",dow:"FRI",type:"festival",title:"EDC Las Vegas — Night 1",sub:"Multi-genre · LVMS · 3 nights · 18+",venue:"Las Vegas Motor Speedway",genre:"Big Room / EDM",price:"GA $425 / GA+ $535 / VIP $1,000+",demand:5,must:true,fest:"EDC Las Vegas",note:"Largest EDM festival in North America. 200+ DJs, carnival rides, art installations.",
+    lineup:[{name:"The Chainsmokers",genre:"Big Room",stars:5},{name:"Tiësto",genre:"Big Room",stars:5},{name:"Martin Garrix",genre:"Big Room",stars:5},{name:"Zedd",genre:"Big Room",stars:5},{name:"Gareth Emery",genre:"Trance",stars:4}]},
+  {d:"2026-05-16",city:"Las Vegas",day:"16",mon:"MAY",dow:"SAT",type:"festival",title:"EDC Las Vegas — Night 2",sub:"Multi-genre · LVMS · 3 nights · 18+",venue:"Las Vegas Motor Speedway",genre:"Big Room / EDM",price:"GA $425 / GA+ $535 / VIP $1,000+",demand:5,fest:"EDC Las Vegas",
+    lineup:[{name:"Armin van Buuren",genre:"Trance",stars:5},{name:"Charlotte de Witte",genre:"Techno",stars:5},{name:"Hardwell",genre:"Big Room",stars:5},{name:"DJ Snake",genre:"Big Room",stars:4},{name:"Diplo",genre:"Multi-genre",stars:4}]},
+  {d:"2026-05-17",city:"Las Vegas",day:"17",mon:"MAY",dow:"SUN",type:"festival",title:"EDC Las Vegas — Night 3",sub:"Multi-genre · LVMS · 3 nights · 18+",venue:"Las Vegas Motor Speedway",genre:"Big Room / EDM",price:"GA $425 / GA+ $535 / VIP $1,000+",demand:5,fest:"EDC Las Vegas",
+    lineup:[{name:"NGHTMRE",genre:"Bass",stars:4},{name:"David Guetta",genre:"Big Room",stars:5},{name:"Kaskade",genre:"Progressive House",stars:4},{name:"Marshmello",genre:"Big Room",stars:4}]},
+  {d:"2026-05-23",city:"Las Vegas",day:"23",mon:"MAY",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Omnia Nightclub",genre:"Tech House",price:"$80+",demand:5,must:true,note:"Table reservations sell out weeks ahead."},
+  {d:"2026-05-30",city:"Las Vegas",day:"30",mon:"MAY",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$85+",demand:5},
+  // New York
+  {d:"2026-05-02",city:"New York",day:"02",mon:"MAY",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Avant Gardner",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-05-09",city:"New York",day:"09",mon:"MAY",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Elsewhere",genre:"House",price:"$35",demand:4},
+  {d:"2026-05-17",city:"New York",day:"17",mon:"MAY",dow:"SUN",type:"show",title:"Tale Of Us",sub:"Melodic Techno / Dark Rave",venue:"Avant Gardner",genre:"Melodic Techno",price:"$35",demand:4},
+  {d:"2026-05-23",city:"New York",day:"23",mon:"MAY",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Brooklyn Mirage",genre:"Tech House",price:"$65",demand:5,must:true,note:"Opening weekend Brooklyn Mirage outdoor season."},
+  {d:"2026-05-30",city:"New York",day:"30",mon:"MAY",dow:"SAT",type:"show",title:"Amelie Lens",sub:"Peak-Time Techno",venue:"Avant Gardner",genre:"Techno",price:"$30",demand:4},
+  // Los Angeles
+  {d:"2026-05-02",city:"Los Angeles",day:"02",mon:"MAY",dow:"SAT",type:"show",title:"Disclosure",sub:"UK House / Garage House",venue:"Crypto.com Arena",genre:"House",price:"$110",demand:5,must:true},
+  {d:"2026-05-09",city:"Los Angeles",day:"09",mon:"MAY",dow:"SAT",type:"show",title:"Rezz",sub:"Dark Electronic / Alien Techno",venue:"Academy LA",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-05-16",city:"Los Angeles",day:"16",mon:"MAY",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Hollywood Palladium",genre:"Tech House",price:"$85",demand:5,must:true},
+  {d:"2026-05-23",city:"Los Angeles",day:"23",mon:"MAY",dow:"SAT",type:"show",title:"Solomun",sub:"Melodic Techno / Deep House",venue:"Sound Nightclub",genre:"Melodic Techno",price:"$50",demand:4},
+  {d:"2026-05-30",city:"Los Angeles",day:"30",mon:"MAY",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Exchange LA",genre:"Tech House",price:"$65",demand:5,must:true,note:"Exchange LA sellout guaranteed — book immediately."},
+  // San Francisco
+  {d:"2026-05-02",city:"San Francisco",day:"02",mon:"MAY",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"The Midway",genre:"Techno",price:"$65",demand:5,must:true},
+  {d:"2026-05-16",city:"San Francisco",day:"16",mon:"MAY",dow:"SAT",type:"show",title:"Peggy Gou",sub:"Disco House / Nu-Disco",venue:"1015 Folsom",genre:"House",price:"$40",demand:4},
+  {d:"2026-05-20",city:"San Francisco",day:"20",mon:"MAY",dow:"WED",type:"festival",title:"Lightning in a Bottle",sub:"Multi-genre · Buena Vista Lake · May 20–24 · All ages",venue:"Buena Vista Lake, CA",genre:"House",price:"GA $349 / VIP $599",demand:4,must:true,fest:"Lightning in a Bottle",note:"5-day camping festival near Bradley, CA — confirmed lineup.",
+    lineup:[{name:"Empire of the Sun",genre:"Indie Electronic",stars:5},{name:"Zeds Dead",genre:"Bass / Dubstep",stars:5},{name:"Mau P",genre:"Tech House",stars:5},{name:"Sara Landry",genre:"Techno",stars:5},{name:"DJ Harvey",genre:"Disco House",stars:4}]},
+  {d:"2026-05-30",city:"San Francisco",day:"30",mon:"MAY",dow:"SAT",type:"show",title:"Charlotte de Witte",sub:"Peak-Time Techno",venue:"1015 Folsom",genre:"Techno",price:"$45",demand:4},
+  // Miami
+  {d:"2026-05-02",city:"Miami",day:"02",mon:"MAY",dow:"SAT",type:"show",title:"Marco Carola",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:5,must:true,note:"Marathon Club Space sets — legendary."},
+  {d:"2026-05-09",city:"Miami",day:"09",mon:"MAY",dow:"SAT",type:"show",title:"Adriatique",sub:"Melodic House & Techno",venue:"Trade Miami",genre:"Melodic Techno",price:"$35",demand:3},
+  {d:"2026-05-16",city:"Miami",day:"16",mon:"MAY",dow:"SAT",type:"show",title:"Black Coffee",sub:"Afro House / Deep House",venue:"LIV Fontainebleau",genre:"House",price:"$70+",demand:4},
+  {d:"2026-05-23",city:"Miami",day:"23",mon:"MAY",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-05-30",city:"Miami",day:"30",mon:"MAY",dow:"SAT",type:"show",title:"Jamie Jones",sub:"Deep Tech House",venue:"Treehouse Miami",genre:"Tech House",price:"$35",demand:3},
+  // Miami confirmed
+  {d:"2026-05-09",city:"Miami",day:"09",mon:"MAY",dow:"SAT",type:"show",title:"ZHU",sub:"Deep House / Dark Electronic",venue:"Club Space",genre:"House",price:"$40",demand:4,must:true},
+  {d:"2026-05-15",city:"Miami",day:"15",mon:"MAY",dow:"FRI",type:"show",title:"Jan Blomqvist",sub:"Melodic Techno / Organic House",venue:"Mad Wynwood",genre:"Melodic Techno",price:"$30",demand:3},
+  {d:"2026-05-24",city:"Miami",day:"24",mon:"MAY",dow:"SUN",type:"show",title:"Charlotte de Witte b2b Enrico Sangiuliano",sub:"Peak-Time Techno",venue:"Club Space",genre:"Techno",price:"$55",demand:5,must:true,note:"Rare b2b — sunrise set at Club Space."},
+  // Las Vegas confirmed (EDC Week)
+  {d:"2026-05-09",city:"Las Vegas",day:"09",mon:"MAY",dow:"SAT",type:"show",title:"David Guetta",sub:"Big Room EDM",venue:"LIV Beach, Fontainebleau",genre:"Big Room / EDM",price:"$80+",demand:4},
+  {d:"2026-05-09",city:"Las Vegas",day:"09",mon:"MAY",dow:"SAT",type:"show",title:"Marshmello",sub:"Future Bass / Big Room",venue:"Encore Beach Club",genre:"Big Room / EDM",price:"$75+",demand:4},
+  {d:"2026-05-09",city:"Las Vegas",day:"09",mon:"MAY",dow:"SAT",type:"show",title:"Diplo",sub:"Multi-genre / Electronic",venue:"XS Nightclub",genre:"Big Room / EDM",price:"$85+",demand:4},
+  {d:"2026-05-14",city:"Las Vegas",day:"14",mon:"MAY",dow:"THU",type:"show",title:"Porter Robinson",sub:"Future Bass / Indie Electronic",venue:"TAO Beach, Venetian",genre:"Indie Electronic",price:"$65+",demand:5,must:true,note:"EDC Week warm-up."},
+  {d:"2026-05-14",city:"Las Vegas",day:"14",mon:"MAY",dow:"THU",type:"show",title:"James Hype",sub:"Tech House / UK Dance",venue:"Zouk Nightclub",genre:"Tech House",price:"$60+",demand:4},
+  {d:"2026-05-15",city:"Las Vegas",day:"15",mon:"MAY",dow:"FRI",type:"show",title:"DJ Snake",sub:"Trap / Big Room",venue:"TAO Beach, Venetian",genre:"Big Room / EDM",price:"$75+",demand:4},
+  {d:"2026-05-15",city:"Las Vegas",day:"15",mon:"MAY",dow:"FRI",type:"show",title:"Steve Aoki",sub:"Big Room / Electro House",venue:"Omnia Nightclub",genre:"Big Room / EDM",price:"$70+",demand:3},
+  // New York confirmed
+  {d:"2026-05-09",city:"New York",day:"09",mon:"MAY",dow:"SAT",type:"show",title:"Peggy Gou b2b Mall Grab",sub:"Disco House / Indie Dance",venue:"Under the K Bridge Park",genre:"House",price:"$35",demand:4,must:true},
+  {d:"2026-05-16",city:"New York",day:"16",mon:"MAY",dow:"SAT",type:"show",title:"Armin van Buuren",sub:"Trance / Progressive House",venue:"Industry City",genre:"Trance",price:"$65",demand:4},
+  {d:"2026-05-17",city:"New York",day:"17",mon:"MAY",dow:"SUN",type:"show",title:"Boris Brejcha",sub:"High-Tech Minimal / Techno",venue:"Industry City",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-05-23",city:"New York",day:"23",mon:"MAY",dow:"SAT",type:"show",title:"Solomun",sub:"Melodic House / Deep Techno",venue:"Fulton Fish Market",genre:"Melodic Techno",price:"$60",demand:5,must:true},
+  {d:"2026-05-23",city:"New York",day:"23",mon:"MAY",dow:"SAT",type:"show",title:"Gorgon City",sub:"UK House / Garage House",venue:"Industry City",genre:"House",price:"$45",demand:4},
+  {d:"2026-05-24",city:"New York",day:"24",mon:"MAY",dow:"SUN",type:"show",title:"Solomun",sub:"Melodic House / Deep Techno",venue:"Fulton Fish Market",genre:"Melodic Techno",price:"$60",demand:5,must:true,note:"Second night — both dates sell out fast."},
+  {d:"2026-05-29",city:"New York",day:"29",mon:"MAY",dow:"FRI",type:"show",title:"Dillon Francis",sub:"Moombahton / Electro House",venue:"Terminal 5",genre:"Bass / Dubstep",price:"$45",demand:3},
+  // Los Angeles confirmed
+  {d:"2026-05-12",city:"Los Angeles",day:"12",mon:"MAY",dow:"TUE",type:"show",title:"Cabaret Voltaire",sub:"Industrial / Post-Punk Electronic",venue:"The Bellwether",genre:"Industrial / EBM",price:"$40",demand:3},
+  {d:"2026-05-13",city:"Los Angeles",day:"13",mon:"MAY",dow:"WED",type:"show",title:"The Prodigy",sub:"Big Beat / Hardcore Electronic (Live)",venue:"The Novo",genre:"Bass / Dubstep",price:"$75",demand:5,must:true,note:"Night 1 — UK legends live."},
+  {d:"2026-05-14",city:"Los Angeles",day:"14",mon:"MAY",dow:"THU",type:"show",title:"The Prodigy",sub:"Big Beat / Hardcore Electronic (Live)",venue:"The Novo",genre:"Bass / Dubstep",price:"$75",demand:5,must:true,note:"Night 2."},
+  {d:"2026-05-23",city:"Los Angeles",day:"23",mon:"MAY",dow:"SAT",type:"show",title:"KSHMR",sub:"Indian-influenced Big Room EDM",venue:"Hollywood Palladium",genre:"Big Room / EDM",price:"$55",demand:3},
+  // San Francisco confirmed
+  {d:"2026-05-15",city:"San Francisco",day:"15",mon:"MAY",dow:"FRI",type:"show",title:"The Hellp",sub:"Tech House / Bass House",venue:"1015 Folsom",genre:"Tech House",price:"$25",demand:3},
+  {d:"2026-05-22",city:"San Francisco",day:"22",mon:"MAY",dow:"FRI",type:"show",title:"Daniel Allan",sub:"Electronic / Web3 Music Pioneer",venue:"1015 Folsom",genre:"Indie Electronic",price:"$20",demand:2},
+  {d:"2026-05-24",city:"San Francisco",day:"24",mon:"MAY",dow:"SUN",type:"show",title:"Netsky",sub:"Drum & Bass / Pop-DnB",venue:"1015 Folsom",genre:"Drum & Bass",price:"$30",demand:3},
+  {d:"2026-05-29",city:"San Francisco",day:"29",mon:"MAY",dow:"FRI",type:"show",title:"LP Giobbi",sub:"Deep House / Melodic House",venue:"1015 Folsom",genre:"House",price:"$25",demand:3},
+  // Chicago confirmed
+  {d:"2026-05-22",city:"Chicago",day:"22",mon:"MAY",dow:"FRI",type:"show",title:"Solomun",sub:"Melodic House / Deep Techno",venue:"Union Park (Outdoor)",genre:"Melodic Techno",price:"$65",demand:5,must:true},
+  {d:"2026-05-31",city:"Chicago",day:"31",mon:"MAY",dow:"SUN",type:"show",title:"Deep Dish",sub:"Progressive House / US House Legends",venue:"Castaways",genre:"House",price:"$40",demand:3},
+  // ══ JUNE ══
+  // Chicago
+  {d:"2026-06-05",city:"Chicago",day:"05",mon:"JUN",dow:"FRI",type:"show",title:"VTSS",sub:"Hard Techno / Hybrid Club",venue:"Radius",genre:"Hard Techno",price:"$25",demand:3},
+  {d:"2026-06-06",city:"Chicago",day:"06",mon:"JUN",dow:"SAT",type:"festival",title:"Beyond Wonderland Chicago",sub:"18+ · Northerly Island · Multi-genre EDM",venue:"Northerly Island",genre:"Big Room / EDM",price:"GA $199 / GA+ $259 / VIP $349",demand:5,must:true,fest:"Beyond Wonderland Chicago",
+    lineup:[{name:"Tiësto",genre:"Big Room",stars:5},{name:"DJ Snake",genre:"Trap",stars:5},{name:"Excision",genre:"Dubstep",stars:5},{name:"Zedd",genre:"Big Room",stars:5},{name:"Sonny Fodera",genre:"House",stars:4},{name:"Green Velvet",genre:"Tech House",stars:4},{name:"Acraze b2b Wax Motif",genre:"Tech House",stars:4}]},
+  {d:"2026-06-08",city:"Chicago",day:"08",mon:"JUN",dow:"MON",type:"show",title:"James Blake",sub:"Post-Dubstep / Soul-Electronic (Live)",venue:"The Salt Shed",genre:"Indie Electronic",price:"$81",demand:4,must:true,note:"Emotional bass-soul live show."},
+  {d:"2026-06-12",city:"Chicago",day:"12",mon:"JUN",dow:"FRI",type:"show",title:"RÜFÜS DU SOL",sub:"Melodic House & Techno (Live Band)",venue:"Wrigley Field",genre:"Melodic Techno",price:"$163",demand:5,must:true,note:"Stadium-level live electronic. Do not miss."},
+  {d:"2026-06-13",city:"Chicago",day:"13",mon:"JUN",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Smart Bar",genre:"House",price:"$20",demand:3,note:"Home turf — intimate Smart Bar set."},
+  {d:"2026-06-19",city:"Chicago",day:"19",mon:"JUN",dow:"FRI",type:"show",title:"underscores",sub:"Hyperpop / Emo-Electronic",venue:"Metro Chicago",genre:"Indie Electronic",price:"$25",demand:2},
+  {d:"2026-06-20",city:"Chicago",day:"20",mon:"JUN",dow:"SAT",type:"show",title:"Sara Landry",sub:"Hard Techno",venue:"Radius",genre:"Hard Techno",price:"$30",demand:3},
+  {d:"2026-06-25",city:"Chicago",day:"25",mon:"JUN",dow:"THU",type:"show",title:"Martin Garrix (Night 1)",sub:"Big Room / Progressive House",venue:"Northerly Island",genre:"Big Room / EDM",price:"$55",demand:4},
+  {d:"2026-06-26",city:"Chicago",day:"26",mon:"JUN",dow:"FRI",type:"show",title:"Martin Garrix (Night 2)",sub:"Big Room / Progressive House",venue:"Northerly Island",genre:"Big Room / EDM",price:"$80",demand:4},
+  {d:"2026-06-27",city:"Chicago",day:"27",mon:"JUN",dow:"SAT",type:"show",title:"Martin Garrix (Night 3)",sub:"Big Room / Progressive House",venue:"Northerly Island",genre:"Big Room / EDM",price:"$47",demand:4},
+  // Las Vegas
+  {d:"2026-06-06",city:"Las Vegas",day:"06",mon:"JUN",dow:"SAT",type:"show",title:"Tiësto",sub:"Big Room / Tech House",venue:"Hakkasan Nightclub",genre:"Big Room / EDM",price:"$75+",demand:4},
+  {d:"2026-06-13",city:"Las Vegas",day:"13",mon:"JUN",dow:"SAT",type:"show",title:"Martin Garrix",sub:"Big Room / Progressive House",venue:"Omnia Nightclub",genre:"Big Room / EDM",price:"$65+",demand:4},
+  {d:"2026-06-20",city:"Las Vegas",day:"20",mon:"JUN",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$90+",demand:5,must:true,note:"Zouk tables gone immediately — GA only option for most."},
+  {d:"2026-06-27",city:"Las Vegas",day:"27",mon:"JUN",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House",venue:"Wynn Nightclub",genre:"Tech House",price:"$85+",demand:5},
+  // New York
+  {d:"2026-06-06",city:"New York",day:"06",mon:"JUN",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Avant Gardner",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-06-13",city:"New York",day:"13",mon:"JUN",dow:"SAT",type:"show",title:"Jamie Jones",sub:"Deep Tech House",venue:"Brooklyn Mirage",genre:"Tech House",price:"$55",demand:4},
+  {d:"2026-06-20",city:"New York",day:"20",mon:"JUN",dow:"SAT",type:"show",title:"RÜFÜS DU SOL",sub:"Melodic House & Techno (Live Band)",venue:"Brooklyn Mirage",genre:"Melodic Techno",price:"$95",demand:5,must:true,note:"Brooklyn Mirage outdoor stage — one of the best venues in the world."},
+  {d:"2026-06-27",city:"New York",day:"27",mon:"JUN",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Brooklyn Mirage",genre:"Tech House",price:"$85",demand:5,must:true},
+  // Los Angeles
+  {d:"2026-06-06",city:"Los Angeles",day:"06",mon:"JUN",dow:"SAT",type:"show",title:"Disclosure",sub:"UK House / Garage House",venue:"Hollywood Bowl",genre:"House",price:"$95",demand:5,must:true},
+  {d:"2026-06-13",city:"Los Angeles",day:"13",mon:"JUN",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House / Bass House",venue:"Exchange LA",genre:"Tech House",price:"$65",demand:5,must:true,note:"Exchange LA consistently sells out for Chris Lake."},
+  {d:"2026-06-20",city:"Los Angeles",day:"20",mon:"JUN",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Crypto.com Arena",genre:"Techno",price:"$85",demand:5,must:true},
+  {d:"2026-06-27",city:"Los Angeles",day:"27",mon:"JUN",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Exchange LA",genre:"Tech House",price:"$70",demand:5},
+  // San Francisco
+  {d:"2026-06-06",city:"San Francisco",day:"06",mon:"JUN",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"The Midway",genre:"Tech House",price:"$55",demand:5,must:true,note:"The Midway sells out fast — book early."},
+  {d:"2026-06-13",city:"San Francisco",day:"13",mon:"JUN",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"1015 Folsom",genre:"House",price:"$40",demand:4},
+  {d:"2026-06-20",city:"San Francisco",day:"20",mon:"JUN",dow:"SAT",type:"show",title:"Nina Kraviz",sub:"Techno / Acid House",venue:"1015 Folsom",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-06-27",city:"San Francisco",day:"27",mon:"JUN",dow:"SAT",type:"show",title:"Four Tet",sub:"Electronic / Leftfield",venue:"The Midway",genre:"Indie Electronic",price:"$50",demand:4},
+  // Miami
+  {d:"2026-06-06",city:"Miami",day:"06",mon:"JUN",dow:"SAT",type:"show",title:"Marco Carola",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:4},
+  {d:"2026-06-07",city:"Miami",day:"07",mon:"JUN",dow:"SUN",type:"show",title:"Tiësto",sub:"Big Room / Tech House",venue:"LIV Fontainebleau",genre:"Big Room / EDM",price:"$80+",demand:4},
+  {d:"2026-06-13",city:"Miami",day:"13",mon:"JUN",dow:"SAT",type:"show",title:"Black Coffee",sub:"Afro House / Deep House",venue:"Trade Miami",genre:"House",price:"$50",demand:4},
+  {d:"2026-06-20",city:"Miami",day:"20",mon:"JUN",dow:"SAT",type:"show",title:"Hot Since 82",sub:"Tech House / Deep House",venue:"Do Not Sit on the Furniture",genre:"Tech House",price:"$35",demand:3},
+  {d:"2026-06-27",city:"Miami",day:"27",mon:"JUN",dow:"SAT",type:"show",title:"Themba",sub:"Afro House / Deep House",venue:"Treehouse Miami",genre:"House",price:"$30",demand:3},
+  // Chicago confirmed (June)
+  {d:"2026-06-19",city:"Chicago",day:"19",mon:"JUN",dow:"FRI",type:"show",title:"Firebeatz",sub:"Electro House / Dutch House",venue:"Sound Bar",genre:"House",price:"$30",demand:2},
+  {d:"2026-06-25",city:"Chicago",day:"25",mon:"JUN",dow:"THU",type:"show",title:"Martin Garrix",sub:"Big Room / Progressive House",venue:"Huntington Bank Pavilion",genre:"Big Room / EDM",price:"$95",demand:4},
+  {d:"2026-06-26",city:"Chicago",day:"26",mon:"JUN",dow:"FRI",type:"show",title:"Martin Garrix",sub:"Big Room / Progressive House",venue:"Huntington Bank Pavilion",genre:"Big Room / EDM",price:"$95",demand:4},
+  {d:"2026-06-26",city:"Chicago",day:"26",mon:"JUN",dow:"FRI",type:"show",title:"Marshmello",sub:"Future Bass / Pop-EDM",venue:"Guaranteed Rate Field",genre:"Big Room / EDM",price:"$85",demand:3},
+  {d:"2026-06-27",city:"Chicago",day:"27",mon:"JUN",dow:"SAT",type:"show",title:"Martin Garrix",sub:"Big Room / Progressive House",venue:"Huntington Bank Pavilion",genre:"Big Room / EDM",price:"$95",demand:4},
+  // Miami confirmed (June)
+  {d:"2026-06-05",city:"Miami",day:"05",mon:"JUN",dow:"FRI",type:"show",title:"Aly & Fila",sub:"Uplifting Trance",venue:"Mad Wynwood",genre:"Trance",price:"$35",demand:3},
+  {d:"2026-06-20",city:"Miami",day:"20",mon:"JUN",dow:"SAT",type:"show",title:"Above & Beyond",sub:"Trance / Progressive House",venue:"DAER Nightclub",genre:"Trance",price:"$60",demand:4,must:true},
+  {d:"2026-06-26",city:"Miami",day:"26",mon:"JUN",dow:"FRI",type:"show",title:"Gorgon City",sub:"UK House / Garage House",venue:"LIV Nightclub",genre:"House",price:"$55",demand:4},
+  // New York confirmed (June)
+  {d:"2026-06-05",city:"New York",day:"05",mon:"JUN",dow:"FRI",type:"festival",title:"Governors Ball — Day 1",sub:"Multi-genre · Flushing Meadows Corona Park",venue:"Flushing Meadows Corona Park",genre:"Indie Electronic",price:"$175 day / $425 3-day GA",demand:4,fest:"Governors Ball",
+    lineup:[{name:"A$AP Rocky",genre:"Hip-Hop",stars:5},{name:"Lorde",genre:"Indie Pop",stars:5},{name:"Major Lazer",genre:"Dancehall-EDM",stars:4}]},
+  {d:"2026-06-06",city:"New York",day:"06",mon:"JUN",dow:"SAT",type:"festival",title:"Governors Ball — Day 2",sub:"Multi-genre · Flushing Meadows Corona Park",venue:"Flushing Meadows Corona Park",genre:"Indie Electronic",price:"$175 day / $425 3-day GA",demand:4,fest:"Governors Ball"},
+  {d:"2026-06-06",city:"New York",day:"06",mon:"JUN",dow:"SAT",type:"show",title:"Diplo",sub:"Multi-genre / Electronic",venue:"Edge Hudson Yards",genre:"Big Room / EDM",price:"$55",demand:3},
+  {d:"2026-06-07",city:"New York",day:"07",mon:"JUN",dow:"SUN",type:"festival",title:"Governors Ball — Day 3",sub:"Multi-genre · Flushing Meadows Corona Park",venue:"Flushing Meadows Corona Park",genre:"Indie Electronic",price:"$175 day / $425 3-day GA",demand:4,fest:"Governors Ball"},
+  {d:"2026-06-11",city:"New York",day:"11",mon:"JUN",dow:"THU",type:"show",title:"Martin Garrix",sub:"Big Room / Progressive House",venue:"Barclays Center",genre:"Big Room / EDM",price:"$95",demand:4},
+  {d:"2026-06-12",city:"New York",day:"12",mon:"JUN",dow:"FRI",type:"show",title:"Martin Garrix",sub:"Big Room / Progressive House",venue:"Barclays Center",genre:"Big Room / EDM",price:"$95",demand:4},
+  {d:"2026-06-12",city:"New York",day:"12",mon:"JUN",dow:"FRI",type:"show",title:"Patrick Topping",sub:"Tech House / Groove House",venue:"Knockdown Center",genre:"Tech House",price:"$25",demand:3},
+  // Los Angeles confirmed (June)
+  {d:"2026-06-04",city:"Los Angeles",day:"04",mon:"JUN",dow:"THU",type:"show",title:"The Human League",sub:"Synth-Pop / Post-Punk Electronic",venue:"Hollywood Bowl",genre:"Indie Electronic",price:"$75",demand:3},
+  {d:"2026-06-05",city:"Los Angeles",day:"05",mon:"JUN",dow:"FRI",type:"festival",title:"OUTLOUD Music Festival — Day 1",sub:"LGBTQ+ Music Festival · West Hollywood Park",venue:"West Hollywood Park",genre:"House",price:"$95 day / $225 3-day",demand:3,fest:"OUTLOUD"},
+  {d:"2026-06-06",city:"Los Angeles",day:"06",mon:"JUN",dow:"SAT",type:"festival",title:"OUTLOUD Music Festival — Day 2",sub:"LGBTQ+ Music Festival · West Hollywood Park",venue:"West Hollywood Park",genre:"House",price:"$95 day / $225 3-day",demand:3,fest:"OUTLOUD",
+    lineup:[{name:"Hercules & Love Affair",genre:"Disco House",stars:4},{name:"Confidence Man",genre:"Indie Dance",stars:4},{name:"Ava Max",genre:"Pop-Electronic",stars:3}]},
+  {d:"2026-06-06",city:"Los Angeles",day:"06",mon:"JUN",dow:"SAT",type:"show",title:"Eli & Fur",sub:"Melodic House & Techno",venue:"Avalon Hollywood",genre:"Melodic Techno",price:"$35",demand:3},
+  {d:"2026-06-06",city:"Los Angeles",day:"06",mon:"JUN",dow:"SAT",type:"show",title:"Showtek",sub:"Electro House / Dutch House",venue:"Exchange LA",genre:"Big Room / EDM",price:"$45",demand:3},
+  // SF confirmed (June)
+  {d:"2026-06-04",city:"San Francisco",day:"04",mon:"JUN",dow:"THU",type:"show",title:"Tchami",sub:"Future House / Slap House",venue:"1015 Folsom",genre:"House",price:"$30",demand:3},
+  // ══ JULY ══
+  // Chicago confirmed
+  {d:"2026-07-03",city:"Chicago",day:"03",mon:"JUL",dow:"FRI",type:"show",title:"Lane 8",sub:"Melodic House & Techno",venue:"Lakefront Green at Theater on the Lake",genre:"Melodic Techno",price:"$45",demand:4,must:true},
+  {d:"2026-07-05",city:"Chicago",day:"05",mon:"JUL",dow:"SUN",type:"show",title:"Vintage Culture",sub:"Tech House / Afro Tech",venue:"Lakefront Green at Theater on the Lake",genre:"Tech House",price:"$55",demand:4,must:true},
+  // Chicago
+  {d:"2026-07-04",city:"Chicago",day:"04",mon:"JUL",dow:"SAT",type:"show",title:"Green Velvet",sub:"Chicago House / Acid House",venue:"Smart Bar",genre:"House",price:"$20",demand:3},
+  {d:"2026-07-10",city:"Chicago",day:"10",mon:"JUL",dow:"FRI",type:"show",title:"Chris Lake (Night 1)",sub:"Tech House / Bass House",venue:"Navy Pier",genre:"Tech House",price:"$110",demand:4},
+  {d:"2026-07-11",city:"Chicago",day:"11",mon:"JUL",dow:"SAT",type:"show",title:"Chris Lake (Night 2)",sub:"Tech House / Bass House",venue:"Navy Pier",genre:"Tech House",price:"$122",demand:4},
+  {d:"2026-07-17",city:"Chicago",day:"17",mon:"JUL",dow:"FRI",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Prysm",genre:"House",price:"$35",demand:3},
+  {d:"2026-07-25",city:"Chicago",day:"25",mon:"JUL",dow:"SAT",type:"show",title:"CamelPhat",sub:"Tech House / Deep House",venue:"The Salt Shed",genre:"Tech House",price:"$55",demand:4},
+  {d:"2026-07-30",city:"Chicago",day:"30",mon:"JUL",dow:"THU",type:"festival",title:"Lollapalooza — Perry's Stage",sub:"Multi-genre · Grant Park · All ages · 4 days",venue:"Grant Park",genre:"Big Room / EDM",price:"$399 4-day GA / $735 GA+",demand:5,must:true,fest:"Lollapalooza",
+    lineup:[{name:"John Summit",genre:"Tech House",stars:5},{name:"The Chainsmokers",genre:"Pop-EDM",stars:4},{name:"Major Lazer",genre:"Dancehall-EDM",stars:4},{name:"Empire of the Sun",genre:"Electro-Pop",stars:4},{name:"Fisher",genre:"Tech House",stars:5}]},
+  // Las Vegas
+  {d:"2026-07-04",city:"Las Vegas",day:"04",mon:"JUL",dow:"SAT",type:"show",title:"Kaskade",sub:"Progressive House",venue:"Resorts World Theatre",genre:"House",price:"$65+",demand:4},
+  {d:"2026-07-11",city:"Las Vegas",day:"11",mon:"JUL",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$85+",demand:5,must:true},
+  {d:"2026-07-18",city:"Las Vegas",day:"18",mon:"JUL",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$90+",demand:5},
+  {d:"2026-07-25",city:"Las Vegas",day:"25",mon:"JUL",dow:"SAT",type:"show",title:"Deadmau5",sub:"Progressive House / Electro",venue:"Zouk Nightclub",genre:"House",price:"$70+",demand:4},
+  // New York
+  {d:"2026-07-04",city:"New York",day:"04",mon:"JUL",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Nowadays",genre:"House",price:"$30",demand:3},
+  {d:"2026-07-11",city:"New York",day:"11",mon:"JUL",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Brooklyn Mirage",genre:"Tech House",price:"$75",demand:5,must:true,note:"Brooklyn Mirage summer peak — sells out in minutes."},
+  {d:"2026-07-18",city:"New York",day:"18",mon:"JUL",dow:"SAT",type:"show",title:"Tale Of Us",sub:"Melodic Techno",venue:"Brooklyn Mirage",genre:"Melodic Techno",price:"$65",demand:4},
+  {d:"2026-07-25",city:"New York",day:"25",mon:"JUL",dow:"SAT",type:"show",title:"CamelPhat",sub:"Tech House / Deep House",venue:"Brooklyn Mirage",genre:"Tech House",price:"$65",demand:4},
+  // Los Angeles
+  {d:"2026-07-04",city:"Los Angeles",day:"04",mon:"JUL",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Exchange LA",genre:"Tech House",price:"$80",demand:5,must:true},
+  {d:"2026-07-11",city:"Los Angeles",day:"11",mon:"JUL",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House",venue:"Exchange LA",genre:"Tech House",price:"$70",demand:5},
+  {d:"2026-07-18",city:"Los Angeles",day:"18",mon:"JUL",dow:"SAT",type:"show",title:"Skrillex",sub:"Bass / Experimental Electronic",venue:"Banc of California Stadium",genre:"Bass / Dubstep",price:"$95",demand:5,must:true},
+  {d:"2026-07-25",city:"Los Angeles",day:"25",mon:"JUL",dow:"SAT",type:"show",title:"Solomun",sub:"Melodic Techno / Deep House",venue:"Sound Nightclub",genre:"Melodic Techno",price:"$50",demand:4},
+  // San Francisco
+  {d:"2026-07-11",city:"San Francisco",day:"11",mon:"JUL",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"The Midway",genre:"Techno",price:"$65",demand:5,must:true},
+  {d:"2026-07-18",city:"San Francisco",day:"18",mon:"JUL",dow:"SAT",type:"show",title:"Nina Kraviz",sub:"Techno / Acid House",venue:"1015 Folsom",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-07-25",city:"San Francisco",day:"25",mon:"JUL",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"The Midway",genre:"House",price:"$45",demand:4},
+  // Miami
+  {d:"2026-07-04",city:"Miami",day:"04",mon:"JUL",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"E11EVEN Miami",genre:"Tech House",price:"$80+",demand:5},
+  {d:"2026-07-11",city:"Miami",day:"11",mon:"JUL",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-07-18",city:"Miami",day:"18",mon:"JUL",dow:"SAT",type:"show",title:"Marco Carola",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:4},
+  {d:"2026-07-25",city:"Miami",day:"25",mon:"JUL",dow:"SAT",type:"show",title:"Adriatique",sub:"Melodic House & Techno",venue:"Trade Miami",genre:"Melodic Techno",price:"$35",demand:3},
+  // Miami confirmed (July)
+  {d:"2026-07-31",city:"Miami",day:"31",mon:"JUL",dow:"FRI",type:"show",title:"Galantis",sub:"Swedish Electronic Pop",venue:"LIV Nightclub",genre:"Big Room / EDM",price:"$60+",demand:3},
+  // New York confirmed (July)
+  {d:"2026-07-02",city:"New York",day:"02",mon:"JUL",dow:"THU",type:"show",title:"Elohim",sub:"Synth-Pop / Electro-Pop (Live)",venue:"Elsewhere",genre:"Indie Electronic",price:"$30",demand:2},
+  {d:"2026-07-04",city:"New York",day:"04",mon:"JUL",dow:"SAT",type:"show",title:"Hayden James",sub:"Melodic House / Indie Dance",venue:"Elsewhere",genre:"House",price:"$40",demand:3},
+  {d:"2026-07-05",city:"New York",day:"05",mon:"JUL",dow:"SUN",type:"show",title:"Black Coffee",sub:"Afro House / Deep House",venue:"Pacha NYC",genre:"House",price:"$60",demand:5,must:true},
+  {d:"2026-07-10",city:"New York",day:"10",mon:"JUL",dow:"FRI",type:"show",title:"Nora en Pure b2b Andhim",sub:"Melodic House & Techno",venue:"SummerStage, Central Park",genre:"Melodic Techno",price:"$35",demand:4,must:true,note:"Outdoor SummerStage — beautiful setting."},
+  {d:"2026-07-10",city:"New York",day:"10",mon:"JUL",dow:"FRI",type:"show",title:"The Knocks",sub:"Indie Dance / Nu-Disco",venue:"Westlight at the William Vale",genre:"House",price:"$25",demand:2},
+  // Los Angeles confirmed (July)
+  {d:"2026-07-03",city:"Los Angeles",day:"03",mon:"JUL",dow:"FRI",type:"show",title:"Pan-Pot",sub:"Driving Techno / Dark Minimal",venue:"Exchange LA",genre:"Techno",price:"$35",demand:3},
+  {d:"2026-07-04",city:"Los Angeles",day:"04",mon:"JUL",dow:"SAT",type:"show",title:"Laidback Luke",sub:"Electro House / Dutch House",venue:"Academy LA",genre:"Big Room / EDM",price:"$40",demand:3},
+  // ══ AUGUST ══
+  // Chicago confirmed (August)
+  {d:"2026-08-07",city:"Chicago",day:"07",mon:"AUG",dow:"FRI",type:"show",title:"Yotto",sub:"Melodic Techno / Progressive House",venue:"Castaways",genre:"Melodic Techno",price:"$35",demand:3},
+  {d:"2026-08-15",city:"Chicago",day:"15",mon:"AUG",dow:"SAT",type:"show",title:"ZHU",sub:"Deep House / Dark Electronic",venue:"East End Plaza, Navy Pier",genre:"House",price:"$65",demand:4,must:true},
+  {d:"2026-08-16",city:"Chicago",day:"16",mon:"AUG",dow:"SUN",type:"show",title:"Sam Feldt",sub:"Future House / Tropical House",venue:"Recess",genre:"House",price:"$30",demand:2},
+  {d:"2026-08-22",city:"Chicago",day:"22",mon:"AUG",dow:"SAT",type:"show",title:"Galantis",sub:"Swedish Electronic Pop",venue:"Fairgrounds at The Salt Shed",genre:"Big Room / EDM",price:"$55",demand:3},
+  {d:"2026-08-23",city:"Chicago",day:"23",mon:"AUG",dow:"SUN",type:"show",title:"Sasha",sub:"Progressive House / Trance Pioneer",venue:"Castaways",genre:"House",price:"$50",demand:4,must:true,note:"Sasha is a legend — don't sleep on this one."},
+  {d:"2026-08-29",city:"Chicago",day:"29",mon:"AUG",dow:"SAT",type:"show",title:"Le Youth",sub:"Deep House / Nu-Disco",venue:"Recess",genre:"House",price:"$25",demand:2},
+  // Miami confirmed (August)
+  {d:"2026-08-01",city:"Miami",day:"01",mon:"AUG",dow:"SAT",type:"show",title:"Zeds Dead",sub:"Bass Music / Dubstep / DnB",venue:"Factory Town",genre:"Bass / Dubstep",price:"$45",demand:4},
+  {d:"2026-08-14",city:"Miami",day:"14",mon:"AUG",dow:"FRI",type:"show",title:"Le Youth",sub:"Deep House / Nu-Disco",venue:"ZeyZey",genre:"House",price:"$25",demand:2},
+  // Chicago
+  {d:"2026-08-08",city:"Chicago",day:"08",mon:"AUG",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Prysm",genre:"House",price:"$30",demand:3},
+  {d:"2026-08-15",city:"Chicago",day:"15",mon:"AUG",dow:"SAT",type:"show",title:"Anyma",sub:"Melodic Techno",venue:"Radius",genre:"Melodic Techno",price:"$55",demand:5,must:true},
+  {d:"2026-08-22",city:"Chicago",day:"22",mon:"AUG",dow:"SAT",type:"show",title:"GRiZ",sub:"Funk-Bass / Live Electronic",venue:"The Salt Shed",genre:"Bass / Dubstep",price:"$55",demand:3},
+  {d:"2026-08-27",city:"Chicago",day:"27",mon:"AUG",dow:"THU",type:"festival",title:"Chicago House Music Festival",sub:"FREE · Classic Chicago House · All ages · Millennium Park",venue:"Millennium Park",genre:"House",price:"FREE",demand:3,fest:"Chicago House Music Festival",
+    lineup:[{name:"Derrick Carter",genre:"Chicago House",stars:4},{name:"Honey Dijon",genre:"Disco House",stars:4},{name:"DJ Heather",genre:"Deep House",stars:3},{name:"DJ Colette",genre:"Vocal House",stars:3}]},
+  {d:"2026-08-29",city:"Chicago",day:"29",mon:"AUG",dow:"SAT",type:"show",title:"Le Youth",sub:"Melodic House / Progressive",venue:"Recess",genre:"House",price:"$30",demand:2},
+  // Las Vegas
+  {d:"2026-08-01",city:"Las Vegas",day:"01",mon:"AUG",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$90+",demand:5,must:true},
+  {d:"2026-08-08",city:"Las Vegas",day:"08",mon:"AUG",dow:"SAT",type:"show",title:"Hardwell",sub:"Big Room / Mainstage EDM",venue:"Marquee Nightclub",genre:"Big Room / EDM",price:"$65+",demand:4},
+  {d:"2026-08-15",city:"Las Vegas",day:"15",mon:"AUG",dow:"SAT",type:"show",title:"Martin Garrix",sub:"Big Room / Progressive House",venue:"Omnia Nightclub",genre:"Big Room / EDM",price:"$65+",demand:4},
+  {d:"2026-08-22",city:"Las Vegas",day:"22",mon:"AUG",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House",venue:"Omnia Nightclub",genre:"Tech House",price:"$85+",demand:5,must:true},
+  {d:"2026-08-29",city:"Las Vegas",day:"29",mon:"AUG",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$85+",demand:5},
+  // New York
+  {d:"2026-08-01",city:"New York",day:"01",mon:"AUG",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Brooklyn Mirage",genre:"Tech House",price:"$85",demand:5,must:true},
+  {d:"2026-08-08",city:"New York",day:"08",mon:"AUG",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Brooklyn Mirage",genre:"House",price:"$65",demand:4},
+  {d:"2026-08-15",city:"New York",day:"15",mon:"AUG",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House / Bass House",venue:"Brooklyn Mirage",genre:"Tech House",price:"$85",demand:5,must:true,note:"Late summer Mirage closer — legendary sets every year."},
+  {d:"2026-08-22",city:"New York",day:"22",mon:"AUG",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Avant Gardner",genre:"Techno",price:"$55",demand:5},
+  {d:"2026-08-29",city:"New York",day:"29",mon:"AUG",dow:"SAT",type:"show",title:"Tale Of Us",sub:"Melodic Techno",venue:"Brooklyn Mirage",genre:"Melodic Techno",price:"$65",demand:4},
+  // Los Angeles
+  {d:"2026-08-01",city:"Los Angeles",day:"01",mon:"AUG",dow:"SAT",type:"festival",title:"HARD Summer",sub:"Multi-genre · NOS Events Center · 2 days · 18+",venue:"NOS Events Center, Pomona",genre:"Tech House",price:"GA $179 / GA+ $229 / VIP $349",demand:5,must:true,fest:"HARD Summer",
+    lineup:[{name:"Fisher",genre:"Tech House",stars:5},{name:"John Summit",genre:"Tech House",stars:5},{name:"Chris Lake",genre:"Tech House",stars:5},{name:"Illenium",genre:"Melodic Dubstep",stars:5},{name:"Zeds Dead",genre:"Dubstep",stars:4},{name:"GRiZ",genre:"Funk-Bass",stars:4}]},
+  {d:"2026-08-08",city:"Los Angeles",day:"08",mon:"AUG",dow:"SAT",type:"show",title:"Disclosure",sub:"UK House / Garage House",venue:"Hollywood Bowl",genre:"House",price:"$95",demand:5,must:true},
+  {d:"2026-08-15",city:"Los Angeles",day:"15",mon:"AUG",dow:"SAT",type:"show",title:"Rezz",sub:"Dark Electronic / Alien Techno",venue:"Shrine Expo Hall",genre:"Techno",price:"$55",demand:4},
+  {d:"2026-08-22",city:"Los Angeles",day:"22",mon:"AUG",dow:"SAT",type:"show",title:"Odesza",sub:"Electronic / Indietronica (Live)",venue:"The Wiltern",genre:"Indie Electronic",price:"$95",demand:4,must:true,note:"Full live production with visuals."},
+  {d:"2026-08-29",city:"Los Angeles",day:"29",mon:"AUG",dow:"SAT",type:"show",title:"Subtronics",sub:"Riddim Dubstep",venue:"Shrine Expo Hall",genre:"Bass / Dubstep",price:"$55",demand:4},
+  // San Francisco
+  {d:"2026-08-07",city:"San Francisco",day:"07",mon:"AUG",dow:"FRI",type:"festival",title:"Outside Lands — Electronic Stages",sub:"Multi-genre · Golden Gate Park · 3 days · All ages",venue:"Golden Gate Park",genre:"Indie Electronic",price:"GA $385 / VIP $1,050+",demand:4,must:true,fest:"Outside Lands",
+    lineup:[{name:"Four Tet",genre:"Electronic",stars:5},{name:"Floating Points",genre:"Electronic",stars:5},{name:"Jamie xx",genre:"UK House",stars:5},{name:"DJ Shadow",genre:"Hip-Hop Electronic",stars:4}]},
+  {d:"2026-08-15",city:"San Francisco",day:"15",mon:"AUG",dow:"SAT",type:"show",title:"Charlotte de Witte",sub:"Peak-Time Techno",venue:"1015 Folsom",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-08-22",city:"San Francisco",day:"22",mon:"AUG",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"The Midway",genre:"Tech House",price:"$70",demand:5,must:true},
+  {d:"2026-08-29",city:"San Francisco",day:"29",mon:"AUG",dow:"SAT",type:"show",title:"Skream & Benga",sub:"OG Dubstep / Jungle",venue:"DNA Lounge",genre:"Bass / Dubstep",price:"$35",demand:3},
+  // Miami
+  {d:"2026-08-01",city:"Miami",day:"01",mon:"AUG",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-08-08",city:"Miami",day:"08",mon:"AUG",dow:"SAT",type:"show",title:"Marco Carola",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:4},
+  {d:"2026-08-15",city:"Miami",day:"15",mon:"AUG",dow:"SAT",type:"show",title:"Black Coffee",sub:"Afro House / Deep House",venue:"LIV Fontainebleau",genre:"House",price:"$65+",demand:4},
+  {d:"2026-08-22",city:"Miami",day:"22",mon:"AUG",dow:"SAT",type:"show",title:"Solomun",sub:"Melodic Techno / Deep House",venue:"Club Space",genre:"Melodic Techno",price:"$55",demand:4},
+  {d:"2026-08-29",city:"Miami",day:"29",mon:"AUG",dow:"SAT",type:"show",title:"Hot Since 82",sub:"Tech House / Deep House",venue:"Trade Miami",genre:"Tech House",price:"$35",demand:3},
+  // Miami confirmed (Sept)
+  {d:"2026-09-06",city:"Miami",day:"06",mon:"SEP",dow:"SUN",type:"show",title:"KASBO",sub:"Melodic House / Indie Electronic",venue:"ZeyZey",genre:"House",price:"$30",demand:3},
+  // SF confirmed (Sept)
+  {d:"2026-09-04",city:"San Francisco",day:"04",mon:"SEP",dow:"FRI",type:"show",title:"Jason Ross",sub:"Melodic Dubstep / Progressive Electronic",venue:"1015 Folsom",genre:"Melodic Techno",price:"$30",demand:3},
+  // ══ SEPTEMBER ══
+  // Chicago
+  {d:"2026-09-04",city:"Chicago",day:"04",mon:"SEP",dow:"FRI",type:"festival",title:"ARC Music Festival",sub:"House & Techno · 18+ · 4 days · Union Park",venue:"Union Park",genre:"Techno",price:"~$362 4-day GA / ~$171 single day",demand:5,must:true,fest:"ARC Music Festival",note:"Chicago's premier underground festival.",
+    lineup:[{name:"Anyma",genre:"Melodic Techno",stars:5},{name:"Underworld",genre:"Electronic Live",stars:5},{name:"Chase & Status",genre:"Drum & Bass",stars:5},{name:"Honey Dijon",genre:"Chicago House",stars:4},{name:"Michael Bibi",genre:"Tech House",stars:4},{name:"Sara Landry",genre:"Hard Techno",stars:4},{name:"Carl Craig",genre:"Detroit Techno",stars:4},{name:"Joy Orbison b2b Ben UFO",genre:"UK House",stars:4}]},
+  {d:"2026-09-04",city:"Chicago",day:"04",mon:"SEP",dow:"FRI",type:"festival",title:"North Coast Music Festival",sub:"Bass / Future Bass · 17+ · 3 days · Bridgeview",venue:"SeatGeek Stadium",genre:"Bass / Dubstep",price:"$354.95 3-day GA / $422 GA+",demand:5,fest:"North Coast Music Festival",
+    lineup:[{name:"Illenium",genre:"Melodic Dubstep",stars:5},{name:"Porter Robinson",genre:"Live Electronic",stars:5},{name:"Fisher",genre:"Tech House",stars:5},{name:"Griz",genre:"Funk-Bass",stars:5},{name:"Slander",genre:"Melodic Dubstep",stars:4},{name:"Gryffin",genre:"Future Bass",stars:4}]},
+  {d:"2026-09-12",city:"Chicago",day:"12",mon:"SEP",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Smart Bar",genre:"House",price:"$20",demand:3},
+  {d:"2026-09-15",city:"Chicago",day:"15",mon:"SEP",dow:"TUE",type:"show",title:"Cabaret Voltaire",sub:"Industrial / Electro Pioneers (Live)",venue:"Metro Chicago",genre:"Industrial / EBM",price:"$76",demand:3,note:"Rare US appearance — UK industrial legends."},
+  {d:"2026-09-19",city:"Chicago",day:"19",mon:"SEP",dow:"SAT",type:"show",title:"CamelPhat",sub:"Tech House / Deep House",venue:"The Salt Shed",genre:"Tech House",price:"$55",demand:4},
+  {d:"2026-09-26",city:"Chicago",day:"26",mon:"SEP",dow:"SAT",type:"show",title:"Carl Craig",sub:"Detroit Techno",venue:"Prysm",genre:"Techno",price:"$30",demand:3},
+  // Las Vegas
+  {d:"2026-09-05",city:"Las Vegas",day:"05",mon:"SEP",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$90+",demand:5,must:true},
+  {d:"2026-09-12",city:"Las Vegas",day:"12",mon:"SEP",dow:"SAT",type:"show",title:"Tiësto",sub:"Big Room / Tech House",venue:"Hakkasan Nightclub",genre:"Big Room / EDM",price:"$70+",demand:4},
+  {d:"2026-09-19",city:"Las Vegas",day:"19",mon:"SEP",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Omnia Nightclub",genre:"Tech House",price:"$85+",demand:5},
+  {d:"2026-09-26",city:"Las Vegas",day:"26",mon:"SEP",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$85+",demand:5},
+  // New York
+  {d:"2026-09-05",city:"New York",day:"05",mon:"SEP",dow:"SAT",type:"festival",title:"Electric Zoo",sub:"Multi-genre · Randall's Island · Status uncertain — check official channels",venue:"Randall's Island",genre:"Big Room / EDM",price:"TBD",demand:3,fest:"Electric Zoo",note:"⚠️ Status uncertain — previous operator (Avant Gardner) filed for bankruptcy Aug 2025. Monitor electriczoo.com for updates.",
+    lineup:[{name:"Hardwell",genre:"Big Room",stars:5},{name:"Afrojack",genre:"Big Room",stars:5},{name:"John Summit",genre:"Tech House",stars:5},{name:"Chris Lake",genre:"Tech House",stars:5},{name:"Illenium",genre:"Melodic Dubstep",stars:5},{name:"Green Velvet",genre:"Tech House",stars:4}]},
+  {d:"2026-09-12",city:"New York",day:"12",mon:"SEP",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Avant Gardner",genre:"Techno",price:"$55",demand:5},
+  {d:"2026-09-19",city:"New York",day:"19",mon:"SEP",dow:"SAT",type:"show",title:"Peggy Gou",sub:"Disco House / Nu-Disco",venue:"Brooklyn Mirage",genre:"House",price:"$65",demand:4},
+  {d:"2026-09-26",city:"New York",day:"26",mon:"SEP",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Elsewhere",genre:"House",price:"$35",demand:3},
+  // Los Angeles
+  {d:"2026-09-05",city:"Los Angeles",day:"05",mon:"SEP",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Exchange LA",genre:"Tech House",price:"$80",demand:5,must:true},
+  {d:"2026-09-12",city:"Los Angeles",day:"12",mon:"SEP",dow:"SAT",type:"show",title:"Röyksopp",sub:"Electronic / Synth-Pop (Live)",venue:"Hollywood Bowl",genre:"Indie Electronic",price:"$75",demand:4},
+  {d:"2026-09-19",city:"Los Angeles",day:"19",mon:"SEP",dow:"SAT",type:"show",title:"Charlotte de Witte",sub:"Peak-Time Techno",venue:"Sound Nightclub",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-09-26",city:"Los Angeles",day:"26",mon:"SEP",dow:"SAT",type:"show",title:"Solomun",sub:"Melodic Techno / Deep House",venue:"Hollywood Palladium",genre:"Melodic Techno",price:"$75",demand:4},
+  // San Francisco
+  {d:"2026-09-05",city:"San Francisco",day:"05",mon:"SEP",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"The Midway",genre:"Techno",price:"$65",demand:5,must:true},
+  {d:"2026-09-12",city:"San Francisco",day:"12",mon:"SEP",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"1015 Folsom",genre:"House",price:"$40",demand:4},
+  {d:"2026-09-19",city:"San Francisco",day:"19",mon:"SEP",dow:"SAT",type:"show",title:"Charlotte de Witte",sub:"Peak-Time Techno",venue:"1015 Folsom",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-09-26",city:"San Francisco",day:"26",mon:"SEP",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"The Midway",genre:"Tech House",price:"$70",demand:5,must:true},
+  // Miami
+  {d:"2026-09-05",city:"Miami",day:"05",mon:"SEP",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-09-12",city:"Miami",day:"12",mon:"SEP",dow:"SAT",type:"show",title:"Marco Carola",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:4},
+  {d:"2026-09-19",city:"Miami",day:"19",mon:"SEP",dow:"SAT",type:"show",title:"Black Coffee",sub:"Afro House / Deep House",venue:"LIV Fontainebleau",genre:"House",price:"$65+",demand:4},
+  {d:"2026-09-26",city:"Miami",day:"26",mon:"SEP",dow:"SAT",type:"show",title:"Solomun",sub:"Melodic Techno / Deep House",venue:"Treehouse Miami",genre:"Melodic Techno",price:"$50",demand:4},
+  // ══ OCTOBER ══
+  // Chicago
+  {d:"2026-10-03",city:"Chicago",day:"03",mon:"OCT",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Smart Bar",genre:"House",price:"$20",demand:3},
+  {d:"2026-10-10",city:"Chicago",day:"10",mon:"OCT",dow:"SAT",type:"show",title:"Anyma",sub:"Melodic Techno",venue:"Radius",genre:"Melodic Techno",price:"$55",demand:5,must:true},
+  {d:"2026-10-17",city:"Chicago",day:"17",mon:"OCT",dow:"SAT",type:"show",title:"Carl Craig",sub:"Detroit Techno",venue:"Smart Bar",genre:"Techno",price:"$25",demand:3},
+  {d:"2026-10-24",city:"Chicago",day:"24",mon:"OCT",dow:"SAT",type:"show",title:"Skrillex",sub:"Bass / Experimental Electronic",venue:"Wintrust Arena",genre:"Bass / Dubstep",price:"$95",demand:5,must:true},
+  {d:"2026-10-30",city:"Chicago",day:"30",mon:"OCT",dow:"FRI",type:"show",title:"Halloween Rave w/ Green Velvet",sub:"Chicago House / Acid / Halloween Edition",venue:"Prysm",genre:"House",price:"$40",demand:4,note:"Annual Halloween special — Green Velvet goes off."},
+  // Las Vegas
+  {d:"2026-10-03",city:"Las Vegas",day:"03",mon:"OCT",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$90+",demand:5},
+  {d:"2026-10-10",city:"Las Vegas",day:"10",mon:"OCT",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$85+",demand:5,must:true},
+  {d:"2026-10-17",city:"Las Vegas",day:"17",mon:"OCT",dow:"SAT",type:"show",title:"Tiësto",sub:"Big Room / Tech House",venue:"Hakkasan Nightclub",genre:"Big Room / EDM",price:"$70+",demand:4},
+  {d:"2026-10-24",city:"Las Vegas",day:"24",mon:"OCT",dow:"SAT",type:"show",title:"Martin Garrix",sub:"Big Room / Progressive House",venue:"Omnia Nightclub",genre:"Big Room / EDM",price:"$65+",demand:4},
+  {d:"2026-10-31",city:"Las Vegas",day:"31",mon:"OCT",dow:"SAT",type:"show",title:"Halloween Special — Fisher",sub:"Tech House / Halloween",venue:"Zouk Nightclub",genre:"Tech House",price:"$150+",demand:5,must:true,note:"Halloween night in Vegas — biggest party of the fall."},
+  // New York
+  {d:"2026-10-03",city:"New York",day:"03",mon:"OCT",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Avant Gardner",genre:"Techno",price:"$55",demand:5},
+  {d:"2026-10-10",city:"New York",day:"10",mon:"OCT",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Avant Gardner",genre:"Tech House",price:"$75",demand:5,must:true},
+  {d:"2026-10-17",city:"New York",day:"17",mon:"OCT",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Elsewhere",genre:"House",price:"$35",demand:3},
+  {d:"2026-10-24",city:"New York",day:"24",mon:"OCT",dow:"SAT",type:"show",title:"Tale Of Us",sub:"Melodic Techno",venue:"Avant Gardner",genre:"Melodic Techno",price:"$45",demand:4},
+  {d:"2026-10-31",city:"New York",day:"31",mon:"OCT",dow:"SAT",type:"show",title:"Halloween at Brooklyn Mirage",sub:"Multi-artist Halloween Rave",venue:"Avant Gardner",genre:"Tech House",price:"$85",demand:5,must:true,note:"Avant Gardner Halloween sells out weeks ahead."},
+  // Los Angeles
+  {d:"2026-10-03",city:"Los Angeles",day:"03",mon:"OCT",dow:"SAT",type:"show",title:"Charlotte de Witte",sub:"Peak-Time Techno",venue:"Exchange LA",genre:"Techno",price:"$55",demand:4},
+  {d:"2026-10-10",city:"Los Angeles",day:"10",mon:"OCT",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Exchange LA",genre:"Tech House",price:"$70",demand:5},
+  {d:"2026-10-17",city:"Los Angeles",day:"17",mon:"OCT",dow:"SAT",type:"show",title:"Disclosure",sub:"UK House / Garage House",venue:"Hollywood Bowl",genre:"House",price:"$95",demand:5,must:true},
+  {d:"2026-10-24",city:"Los Angeles",day:"24",mon:"OCT",dow:"SAT",type:"show",title:"HARD Day of the Dead",sub:"Multi-genre Halloween Festival",venue:"NOS Events Center, Pomona",genre:"Tech House",price:"GA $179 / VIP $299",demand:5,must:true,fest:"HARD DOTD",
+    lineup:[{name:"Fisher",genre:"Tech House",stars:5},{name:"Chris Lake",genre:"Tech House",stars:5},{name:"John Summit",genre:"Tech House",stars:5},{name:"Rezz",genre:"Dark Electronic",stars:4},{name:"Subtronics",genre:"Riddim",stars:4}]},
+  {d:"2026-10-31",city:"Los Angeles",day:"31",mon:"OCT",dow:"SAT",type:"show",title:"Halloween Rave — Exchange LA",sub:"Multi-artist Halloween Special",venue:"Exchange LA",genre:"Tech House",price:"$120+",demand:5,must:true,note:"Halloween at Exchange — costume required, always sold out."},
+  // San Francisco
+  {d:"2026-10-03",city:"San Francisco",day:"03",mon:"OCT",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"The Midway",genre:"Tech House",price:"$60",demand:5},
+  {d:"2026-10-10",city:"San Francisco",day:"10",mon:"OCT",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Bill Graham Civic Auditorium",genre:"Techno",price:"$70",demand:5,must:true},
+  {d:"2026-10-17",city:"San Francisco",day:"17",mon:"OCT",dow:"SAT",type:"show",title:"Nina Kraviz",sub:"Techno / Acid House",venue:"1015 Folsom",genre:"Techno",price:"$45",demand:4},
+  {d:"2026-10-24",city:"San Francisco",day:"24",mon:"OCT",dow:"SAT",type:"festival",title:"III Points Festival — West",sub:"Multi-genre Electronic · Bay Area",venue:"TBA, Bay Area",genre:"Indie Electronic",price:"GA $199",demand:4,fest:"III Points",
+    lineup:[{name:"Four Tet",genre:"Electronic",stars:5},{name:"Floating Points",genre:"Electronic",stars:5},{name:"Jamie xx",genre:"UK House",stars:5},{name:"Peggy Gou",genre:"House",stars:4}]},
+  {d:"2026-10-31",city:"San Francisco",day:"31",mon:"OCT",dow:"SAT",type:"show",title:"Halloween at 1015 Folsom",sub:"Halloween Special · Multi-artist",venue:"1015 Folsom",genre:"Techno",price:"$75",demand:4,note:"Annual 1015 Halloween — themed rooms, costumed crowd."},
+  // Miami
+  {d:"2026-10-03",city:"Miami",day:"03",mon:"OCT",dow:"SAT",type:"show",title:"Marco Carola",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:4},
+  {d:"2026-10-10",city:"Miami",day:"10",mon:"OCT",dow:"SAT",type:"festival",title:"III Points Festival",sub:"Multi-genre Electronic · Mana Wynwood · 2 days",venue:"Mana Wynwood, Miami",genre:"Indie Electronic",price:"GA $175 / VIP $399",demand:4,must:true,fest:"III Points Festival",
+    lineup:[{name:"Four Tet",genre:"Electronic",stars:5},{name:"Floating Points",genre:"Electronic",stars:5},{name:"Jamie xx",genre:"UK House",stars:5},{name:"Honey Dijon",genre:"House",stars:4},{name:"Peggy Gou",genre:"House",stars:4}]},
+  {d:"2026-10-17",city:"Miami",day:"17",mon:"OCT",dow:"SAT",type:"show",title:"Black Coffee",sub:"Afro House / Deep House",venue:"LIV Fontainebleau",genre:"House",price:"$65+",demand:4},
+  {d:"2026-10-31",city:"Miami",day:"31",mon:"OCT",dow:"SAT",type:"show",title:"Halloween at Club Space",sub:"Halloween Special · 24 Hours",venue:"Club Space",genre:"Techno",price:"$70",demand:4,note:"Club Space Halloween goes until sunrise — legendary."},
+  // ══ NOVEMBER ══
+  // Chicago
+  {d:"2026-11-07",city:"Chicago",day:"07",mon:"NOV",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Prysm",genre:"House",price:"$30",demand:3},
+  {d:"2026-11-14",city:"Chicago",day:"14",mon:"NOV",dow:"SAT",type:"show",title:"Anyma",sub:"Melodic Techno",venue:"The Salt Shed",genre:"Melodic Techno",price:"$55",demand:4,must:true},
+  {d:"2026-11-21",city:"Chicago",day:"21",mon:"NOV",dow:"SAT",type:"show",title:"Madeon",sub:"French Electronic / Future Pop (Live)",venue:"Radius",genre:"Indie Electronic",price:"$55",demand:4,must:true,note:"Two shows (7pm & 10pm) — both likely to sell out."},
+  {d:"2026-11-21",city:"Chicago",day:"21",mon:"NOV",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Radius",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-11-28",city:"Chicago",day:"28",mon:"NOV",dow:"SAT",type:"show",title:"Green Velvet",sub:"Chicago House / Acid House",venue:"Smart Bar",genre:"House",price:"$20",demand:3},
+  // Las Vegas
+  {d:"2026-11-07",city:"Las Vegas",day:"07",mon:"NOV",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$90+",demand:5},
+  {d:"2026-11-14",city:"Las Vegas",day:"14",mon:"NOV",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House",venue:"Omnia Nightclub",genre:"Tech House",price:"$85+",demand:4},
+  {d:"2026-11-21",city:"Las Vegas",day:"21",mon:"NOV",dow:"SAT",type:"show",title:"Tiësto",sub:"Big Room / Tech House",venue:"Hakkasan Nightclub",genre:"Big Room / EDM",price:"$70+",demand:4},
+  {d:"2026-11-28",city:"Las Vegas",day:"28",mon:"NOV",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$85+",demand:5},
+  // New York
+  {d:"2026-11-07",city:"New York",day:"07",mon:"NOV",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Avant Gardner",genre:"Techno",price:"$55",demand:5},
+  {d:"2026-11-14",city:"New York",day:"14",mon:"NOV",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Avant Gardner",genre:"Tech House",price:"$65",demand:5,must:true},
+  {d:"2026-11-21",city:"New York",day:"21",mon:"NOV",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Cielo",genre:"House",price:"$35",demand:3},
+  {d:"2026-11-28",city:"New York",day:"28",mon:"NOV",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Avant Gardner",genre:"Tech House",price:"$75",demand:5,must:true},
+  // Los Angeles
+  {d:"2026-11-07",city:"Los Angeles",day:"07",mon:"NOV",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House",venue:"Exchange LA",genre:"Tech House",price:"$70",demand:5},
+  {d:"2026-11-14",city:"Los Angeles",day:"14",mon:"NOV",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Shrine Expo Hall",genre:"Techno",price:"$65",demand:5,must:true},
+  {d:"2026-11-21",city:"Los Angeles",day:"21",mon:"NOV",dow:"SAT",type:"show",title:"Solomun",sub:"Melodic Techno / Deep House",venue:"Sound Nightclub",genre:"Melodic Techno",price:"$50",demand:4},
+  {d:"2026-11-28",city:"Los Angeles",day:"28",mon:"NOV",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Hollywood Palladium",genre:"Tech House",price:"$85",demand:5},
+  // San Francisco
+  {d:"2026-11-07",city:"San Francisco",day:"07",mon:"NOV",dow:"SAT",type:"show",title:"Charlotte de Witte",sub:"Peak-Time Techno",venue:"The Midway",genre:"Techno",price:"$50",demand:4},
+  {d:"2026-11-14",city:"San Francisco",day:"14",mon:"NOV",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"The Midway",genre:"Tech House",price:"$60",demand:5,must:true},
+  {d:"2026-11-21",city:"San Francisco",day:"21",mon:"NOV",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Bill Graham Civic Auditorium",genre:"Techno",price:"$70",demand:5,must:true},
+  {d:"2026-11-28",city:"San Francisco",day:"28",mon:"NOV",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"1015 Folsom",genre:"Tech House",price:"$65",demand:5},
+  // Miami
+  {d:"2026-11-07",city:"Miami",day:"07",mon:"NOV",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-11-14",city:"Miami",day:"14",mon:"NOV",dow:"SAT",type:"show",title:"Marco Carola",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:4},
+  {d:"2026-11-21",city:"Miami",day:"21",mon:"NOV",dow:"SAT",type:"show",title:"Solomun",sub:"Melodic Techno / Deep House",venue:"Treehouse Miami",genre:"Melodic Techno",price:"$50",demand:4},
+  {d:"2026-11-28",city:"Miami",day:"28",mon:"NOV",dow:"SAT",type:"show",title:"Black Coffee",sub:"Afro House / Deep House",venue:"LIV Fontainebleau",genre:"House",price:"$65+",demand:4},
+  // ══ DECEMBER ══
+  // Chicago
+  {d:"2026-12-05",city:"Chicago",day:"05",mon:"DEC",dow:"SAT",type:"show",title:"Green Velvet",sub:"Chicago House / Acid House",venue:"Smart Bar",genre:"House",price:"$20",demand:3},
+  {d:"2026-12-12",city:"Chicago",day:"12",mon:"DEC",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Radius",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-12-19",city:"Chicago",day:"19",mon:"DEC",dow:"SAT",type:"show",title:"Honey Dijon",sub:"Disco House / Chicago House",venue:"Prysm",genre:"House",price:"$35",demand:3},
+  {d:"2026-12-31",city:"Chicago",day:"31",mon:"DEC",dow:"THU",type:"show",title:"NYE — Anyma",sub:"Melodic Techno / NYE Special",venue:"The Salt Shed",genre:"Melodic Techno",price:"$150+",demand:5,must:true,note:"NYE at Salt Shed — hottest Chicago ticket of the year."},
+  // Las Vegas
+  {d:"2026-12-05",city:"Las Vegas",day:"05",mon:"DEC",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$85+",demand:5},
+  {d:"2026-12-12",city:"Las Vegas",day:"12",mon:"DEC",dow:"SAT",type:"show",title:"Martin Garrix",sub:"Big Room / Progressive House",venue:"Omnia Nightclub",genre:"Big Room / EDM",price:"$70+",demand:4},
+  {d:"2026-12-19",city:"Las Vegas",day:"19",mon:"DEC",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Zouk Nightclub",genre:"Tech House",price:"$95+",demand:5},
+  {d:"2026-12-31",city:"Las Vegas",day:"31",mon:"DEC",dow:"THU",type:"festival",title:"NYE at OMNIA — Tiësto",sub:"New Year's Eve Special · Multi-room",venue:"Omnia + Hakkasan + Zouk",genre:"Big Room / EDM",price:"$200+",demand:5,must:true,fest:"Vegas NYE 2027",note:"Vegas NYE — book months ahead. Tables $5,000+.",
+    lineup:[{name:"Tiësto",genre:"Big Room",stars:5},{name:"Fisher",genre:"Tech House",stars:5},{name:"Martin Garrix",genre:"Big Room",stars:5},{name:"John Summit",genre:"Tech House",stars:5}]},
+  // New York
+  {d:"2026-12-05",city:"New York",day:"05",mon:"DEC",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Avant Gardner",genre:"Techno",price:"$55",demand:5},
+  {d:"2026-12-12",city:"New York",day:"12",mon:"DEC",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Avant Gardner",genre:"Tech House",price:"$65",demand:5,must:true},
+  {d:"2026-12-19",city:"New York",day:"19",mon:"DEC",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Avant Gardner",genre:"Tech House",price:"$75",demand:5},
+  {d:"2026-12-31",city:"New York",day:"31",mon:"DEC",dow:"THU",type:"show",title:"NYE at Avant Gardner",sub:"New Year's Eve Rave",venue:"Avant Gardner",genre:"Tech House",price:"$150+",demand:5,must:true,note:"NYC NYE sells out instantly — tickets typically gone same day they go on sale."},
+  // Los Angeles
+  {d:"2026-12-05",city:"Los Angeles",day:"05",mon:"DEC",dow:"SAT",type:"show",title:"Disclosure",sub:"UK House / Garage House",venue:"Shrine Expo Hall",genre:"House",price:"$95",demand:5,must:true},
+  {d:"2026-12-12",city:"Los Angeles",day:"12",mon:"DEC",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"Exchange LA",genre:"Tech House",price:"$85",demand:5},
+  {d:"2026-12-19",city:"Los Angeles",day:"19",mon:"DEC",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Crypto.com Arena",genre:"Techno",price:"$90",demand:5,must:true},
+  {d:"2026-12-31",city:"Los Angeles",day:"31",mon:"DEC",dow:"THU",type:"show",title:"NYE — HARD NYE",sub:"Multi-genre · NYE Special",venue:"NOS Events Center, Pomona",genre:"Tech House",price:"GA $149 / VIP $349",demand:5,must:true,fest:"HARD NYE",note:"LA's biggest NYE dance event — sells out every year."},
+  // San Francisco
+  {d:"2026-12-05",city:"San Francisco",day:"05",mon:"DEC",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"Bill Graham Civic Auditorium",genre:"Tech House",price:"$65",demand:5,must:true},
+  {d:"2026-12-12",city:"San Francisco",day:"12",mon:"DEC",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"The Midway",genre:"Techno",price:"$65",demand:5},
+  {d:"2026-12-19",city:"San Francisco",day:"19",mon:"DEC",dow:"SAT",type:"show",title:"Charlotte de Witte",sub:"Peak-Time Techno",venue:"1015 Folsom",genre:"Techno",price:"$50",demand:4},
+  {d:"2026-12-31",city:"San Francisco",day:"31",mon:"DEC",dow:"THU",type:"show",title:"NYE at 1015 Folsom",sub:"New Year's Eve Multi-room Rave",venue:"1015 Folsom",genre:"Techno",price:"$100+",demand:4,note:"1015 NYE — multiple rooms, sunrise set."},
+  // Miami
+  {d:"2026-12-05",city:"Miami",day:"05",mon:"DEC",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:5,must:true},
+  {d:"2026-12-12",city:"Miami",day:"12",mon:"DEC",dow:"SAT",type:"show",title:"Marco Carola",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:4},
+  {d:"2026-12-19",city:"Miami",day:"19",mon:"DEC",dow:"SAT",type:"show",title:"Black Coffee",sub:"Afro House / Deep House",venue:"E11EVEN Miami",genre:"House",price:"$75+",demand:4},
+  {d:"2026-12-31",city:"Miami",day:"31",mon:"DEC",dow:"THU",type:"show",title:"NYE at Club Space",sub:"48-Hour New Year's Eve Marathon",venue:"Club Space",genre:"Techno",price:"$80+",demand:5,must:true,note:"Club Space NYE goes 48 hours straight. A legendary Miami tradition."},
+];
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+let typeFilter  = 'all';
+let genreFilter = 'all';
+let cityFilter  = 'all';
+let searchQuery = '';
+let pastExpanded = false;
+
+const TODAY = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+
+// ── RENDER ─────────────────────────────────────────────────────────────────
+function genreClass(g) {
+  return 'genre-' + g.replace(/[\s\/&\-]/g,'').replace(/\+/g,'');
+}
+
+// demand: 1-5 dots, color shifts low→high
+function demandHTML(n) {
+  const colors = ['#444','#39FF14','#FFE500','#FF6B00','#FF00C8'];
+  const glows  = ['none','0 0 6px #39FF14','0 0 6px #FFE500','0 0 6px #FF6B00','0 0 6px #FF00C8'];
+  const labels = ['','Low','Moderate','High','Very High','Extreme'];
+  let dots = '';
+  for (let i = 1; i <= 5; i++) {
+    const color = i <= n ? colors[n-1] : '#222';
+    const glow  = i <= n ? glows[n-1]  : 'none';
+    dots += `<span style="color:${color};text-shadow:${glow};font-size:13px">◆</span>`;
+  }
+  return `<div class="demand-wrap"><div class="demand-dots">${dots}</div><div class="demand-lbl" style="color:${colors[n-1]}">${labels[n]} demand</div></div>`;
+}
+
+// lineup uses demand dots too
+function lineupDemandHTML(n) {
+  const colors = ['#444','#39FF14','#FFE500','#FF6B00','#FF00C8'];
+  let dots = '';
+  for (let i = 1; i <= 5; i++) {
+    dots += `<span style="color:${i<=n?colors[n-1]:'#222'};font-size:10px">◆</span>`;
+  }
+  return dots;
+}
+
+function renderCards() {
+  const list = document.getElementById('eventList');
+  const empty = document.getElementById('emptyState');
+  list.innerHTML = '';
+
+  const q = searchQuery.toLowerCase();
+
+  const filtered = EVENTS.filter(ev => {
+    const typeOk = typeFilter === 'all'
+      ? true
+      : typeFilter === 'festival'  ? ev.type === 'festival'
+      : typeFilter === 'show'      ? ev.type === 'show' || ev.type === 'event'
+      : typeFilter === 'must'      ? ev.must === true
+      : true;
+
+    const genreOk = genreFilter === 'all' || ev.genre === genreFilter;
+    const cityOk  = cityFilter  === 'all' || ev.city === cityFilter;
+    const searchOk = !q || [ev.title, ev.venue, ev.genre, ev.sub, ev.fest||'', ev.city||''].join(' ').toLowerCase().includes(q);
+
+    return typeOk && genreOk && cityOk && searchOk;
+  });
+
+  document.getElementById('stat-showing').textContent = filtered.length;
+  document.getElementById('stat-musts').textContent = filtered.filter(e=>e.must).length;
+  document.getElementById('stat-free').textContent  = filtered.filter(e=>e.price==='FREE').length;
+
+  if (filtered.length === 0) {
+    empty.classList.add('visible');
+    return;
+  }
+  empty.classList.remove('visible');
+
+  const past    = filtered.filter(ev => ev.d < TODAY);
+  const upcoming = filtered.filter(ev => ev.d >= TODAY);
+
+  // ── Past events collapsible ──
+  if (past.length > 0) {
+    const pastToggle = document.createElement('div');
+    pastToggle.className = 'past-toggle';
+    pastToggle.innerHTML = `
+      <span class="past-toggle-label">${pastExpanded ? '▼' : '▶'} Past Events</span>
+      <span class="past-toggle-count">${past.length} event${past.length!==1?'s':''}</span>
+    `;
+    pastToggle.addEventListener('click', () => {
+      pastExpanded = !pastExpanded;
+      renderCards();
+    });
+    list.appendChild(pastToggle);
+
+    if (pastExpanded) {
+      renderMonthGroups(list, past);
+    }
+
+    const divider = document.createElement('div');
+    divider.className = 'upcoming-divider';
+    divider.innerHTML = `<span class="upcoming-label">⚡ Upcoming</span><div class="month-line" style="flex:1"></div>`;
+    list.appendChild(divider);
+  }
+
+  renderMonthGroups(list, upcoming);
+}
+
+function renderMonthGroups(list, events) {
+  const months = {};
+  events.forEach(ev => {
+    if (!months[ev.mon]) months[ev.mon] = [];
+    months[ev.mon].push(ev);
+  });
+
+  const monthOrder = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  monthOrder.forEach(mon => {
+    if (!months[mon]) return;
+    const evs = months[mon];
+
+    // Month divider
+    const div = document.createElement('div');
+    div.className = 'month-divider';
+    div.innerHTML = `<span class="month-name">${mon} 2026</span><div class="month-line"></div><span class="month-count">${evs.length} event${evs.length!==1?'s':''}</span>`;
+    list.appendChild(div);
+
+    // Cards
+    const container = document.createElement('div');
+    container.className = 'cards-container';
+
+    evs.forEach((ev, idx) => {
+      const isFest = ev.type === 'festival';
+      const card = document.createElement('div');
+      card.className = `event-card card-enter ${isFest?'festival':''} ${ev.must?'must':''}`;
+      card.style.animationDelay = (idx * 0.04) + 's';
+
+      const mustBadge = ev.must ? `<span class="must-badge">⚡ Must</span>` : '';
+      const festTag  = ev.fest ? `<span class="tag tag-fest">${ev.fest}</span>` : '';
+      const cityTag  = ev.city ? `<span class="tag tag-city">${ev.city}</span>` : '';
+      const priceClass = ev.price === 'FREE' ? 'free' : '';
+
+      let noteHTML = '';
+      if (ev.note) {
+        noteHTML = `<div style="font-size:11px;color:var(--dim);font-style:italic;margin-top:4px;line-height:1.4">${ev.note}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="card-inner">
+          <div class="date-pill">
+            <div class="date-day">${ev.day}</div>
+            <div class="date-mon">${ev.mon}</div>
+            <div class="date-dow">${ev.dow}</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <div class="card-title">${ev.title}${mustBadge}</div>
+              ${demandHTML(ev.demand||3)}
+            </div>
+            <div class="card-sub">${ev.sub}</div>
+            <div class="card-tags">
+              ${cityTag}
+              <span class="tag tag-genre ${genreClass(ev.genre)}">${ev.genre}</span>
+              <span class="tag tag-venue">${ev.venue}</span>
+              ${festTag}
+            </div>
+            <div class="card-footer">
+              <span class="price-tag ${priceClass}">${ev.price}</span>
+            </div>
+            ${noteHTML}
+          </div>
+        </div>
+        ${isFest && ev.lineup ? `
+          <div class="festival-toggle" onclick="toggleLineup(this)">
+            <span class="festival-toggle-label">▶ View Lineup (${ev.lineup.length} artists)</span>
+            <span class="toggle-arrow">▼</span>
+          </div>
+          <div class="lineup-panel">
+            <div class="lineup-panel-title">Full Lineup</div>
+            <div class="lineup-grid">
+              ${ev.lineup.map(a=>`
+                <div class="lineup-artist">
+                  <div class="lineup-name">${a.name}</div>
+                  <div class="lineup-genre">${a.genre}</div>
+                  <div class="lineup-stars">${lineupDemandHTML(a.stars)}</div>
+                </div>`).join('')}
+            </div>
+          </div>` : ''}
+      `;
+
+      container.appendChild(card);
+    });
+
+    list.appendChild(container);
+  });
+}
+
+function toggleLineup(btn) {
+  const panel = btn.nextElementSibling;
+  const arrow = btn.querySelector('.toggle-arrow');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  arrow.classList.toggle('open', !isOpen);
+  btn.querySelector('.festival-toggle-label').textContent =
+    isOpen ? `▶ View Lineup (${panel.querySelectorAll('.lineup-artist').length} artists)` :
+             `▼ Hide Lineup`;
+}
+
+// ── FILTERS ────────────────────────────────────────────────────────────────
+document.getElementById('typeFilters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('#typeFilters .filter-btn').forEach(b => b.classList.remove('active','cyan','pink','green'));
+  btn.classList.add('active', 'cyan');
+  typeFilter = btn.dataset.filter;
+  renderCards();
+});
+
+document.getElementById('genreFilters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('#genreFilters .filter-btn').forEach(b => b.classList.remove('active','cyan','pink','green'));
+  btn.classList.add('active', 'pink');
+  genreFilter = btn.dataset.filter;
+  renderCards();
+});
+
+document.getElementById('cityFilters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('#cityFilters .filter-btn').forEach(b => b.classList.remove('active','cyan','pink','green'));
+  btn.classList.add('active', 'cyan');
+  cityFilter = btn.dataset.filter;
+  renderCards();
+});
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  renderCards();
+});
+
+// ── FAB: scroll to next upcoming event ─────────────────────────────────────
+function scrollToNext() {
+  const today = new Date();
+  const cards = document.querySelectorAll('.event-card');
+  // Find first card whose date >= today (using data in EVENTS order)
+  const firstCard = cards[0];
+  if (firstCard) {
+    firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+// FAB tooltip on touch
+const fab = document.getElementById('fab');
+fab.addEventListener('touchstart', () => {
+  document.getElementById('fabTooltip').classList.add('show');
+  setTimeout(() => document.getElementById('fabTooltip').classList.remove('show'), 2000);
+}, { passive: true });
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+document.getElementById('stat-total').textContent = EVENTS.length;
+document.getElementById('header-sub').textContent =
+  `6 CITIES · 12 MONTHS · JAN–DEC`;
+renderCards();
+</script>
+</body>
+</html>
