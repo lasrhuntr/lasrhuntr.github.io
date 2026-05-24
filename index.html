@@ -197,30 +197,119 @@ body::after {
   color: var(--dim); font-size: 16px; pointer-events: none;
 }
 
-/* ── FILTER TABS ── */
-.filter-section {
+/* ── FILTER BAR ── */
+.filter-bar {
   position: relative; z-index: 10;
-  padding: 14px 16px 0;
+  padding: 10px 16px 0;
+  display: flex; gap: 8px; align-items: center;
 }
-.filter-label {
-  font-size: 10px; font-weight: 600; color: var(--dim);
-  letter-spacing: 0.15em; text-transform: uppercase;
-  margin-bottom: 8px;
+.filter-toggle-btn {
+  display: flex; align-items: center; gap: 8px;
+  flex: 1;
+  background: rgba(13,0,32,0.8);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 11px 14px;
+  color: var(--dim);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
 }
-.filter-row {
-  display: flex; gap: 6px;
-  overflow-x: auto; scrollbar-width: none;
-  padding-bottom: 4px;
+.filter-toggle-btn.has-filters {
+  border-color: var(--cyan);
+  color: var(--white);
+  box-shadow: 0 0 0 1px rgba(0,245,255,0.2);
+}
+.filter-toggle-btn:active { transform: scale(0.98); }
+.filter-toggle-icon { font-size: 16px; opacity: 0.7; }
+.filter-active-badge {
+  display: none;
+  background: var(--cyan);
+  color: var(--black);
+  font-size: 10px; font-weight: 700;
+  border-radius: 10px;
+  padding: 1px 7px;
+  margin-left: auto;
+}
+.filter-active-badge.visible { display: block; }
+
+/* ── FILTER DRAWER (bottom sheet) ── */
+.filter-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 200;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s;
+  backdrop-filter: blur(2px);
+}
+.filter-overlay.open { opacity: 1; pointer-events: all; }
+
+.filter-drawer {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 201;
+  background: #0D0020;
+  border-top: 1px solid var(--border);
+  border-radius: 16px 16px 0 0;
+  padding: 0 0 40px;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  max-height: 85vh;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-.filter-row::-webkit-scrollbar { display: none; }
+.filter-drawer.open { transform: translateY(0); }
+
+.drawer-handle {
+  display: flex; justify-content: center;
+  padding: 12px 0 8px;
+}
+.drawer-handle-bar {
+  width: 36px; height: 4px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.2);
+}
+
+.drawer-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.drawer-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  color: var(--white); letter-spacing: 0.15em;
+}
+.drawer-clear {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px; font-weight: 600;
+  color: var(--dim); letter-spacing: 0.05em;
+  background: none; border: none; cursor: pointer;
+  text-transform: uppercase; padding: 4px 8px;
+  -webkit-tap-highlight-color: transparent;
+}
+.drawer-clear.active-clear { color: var(--pink); }
+
+.drawer-section {
+  padding: 16px 20px 8px;
+}
+.drawer-section-label {
+  font-size: 10px; font-weight: 600; color: var(--dim);
+  letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.drawer-chips {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
 
 .filter-btn {
   flex: 0 0 auto;
   font-family: 'Rajdhani', sans-serif;
   font-size: 13px; font-weight: 600;
-  padding: 7px 14px;
-  border-radius: 4px;
+  padding: 8px 16px;
+  border-radius: 20px;
   border: 1px solid var(--border);
   background: rgba(13,0,32,0.6);
   color: var(--dim);
@@ -232,7 +321,7 @@ body::after {
 }
 .filter-btn:active { transform: scale(0.95); }
 .filter-btn.active {
-  background: rgba(176,38,255,0.2);
+  background: rgba(176,38,255,0.25);
   border-color: var(--purple);
   color: var(--white);
   box-shadow: var(--glow-purple);
@@ -240,6 +329,23 @@ body::after {
 .filter-btn.active.cyan  { background: rgba(0,245,255,0.15); border-color: var(--cyan);   color: var(--white); box-shadow: var(--glow-cyan); }
 .filter-btn.active.pink  { background: rgba(255,0,200,0.15); border-color: var(--pink);   color: var(--white); box-shadow: var(--glow-pink); }
 .filter-btn.active.green { background: rgba(57,255,20,0.15); border-color: var(--green);  color: var(--white); box-shadow: var(--glow-green); }
+
+.drawer-apply {
+  margin: 16px 20px 0;
+  width: calc(100% - 40px);
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: var(--white);
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.15s;
+}
+.drawer-apply:active { opacity: 0.85; }
 
 /* ── MONTH DIVIDER ── */
 .month-divider {
@@ -539,11 +645,13 @@ body::after {
 /* ── RESPONSIVE ── */
 @media (min-width: 600px) {
   .cards-container { padding: 0 20px; max-width: 680px; margin: 0 auto; }
-  .stats-bar, .search-wrap, .filter-section, .month-divider { max-width: 680px; margin-left: auto; margin-right: auto; }
+  .stats-bar, .search-wrap, .filter-bar, .month-divider { max-width: 680px; margin-left: auto; margin-right: auto; }
   .month-divider { padding-left: 20px; padding-right: 20px; }
-  .filter-section { padding-left: 20px; padding-right: 20px; }
+  .filter-bar { padding-left: 20px; padding-right: 20px; }
   .search-wrap { padding-left: 20px; padding-right: 20px; }
   .stats-bar { padding-left: 20px; justify-content: center; }
+  .filter-drawer { max-width: 680px; left: 50%; transform: translateX(-50%) translateY(100%); border-radius: 16px 16px 0 0; }
+  .filter-drawer.open { transform: translateX(-50%) translateY(0); }
 }
 
 /* ── DEMAND INDICATOR ── */
@@ -692,67 +800,86 @@ body::after {
   <input class="search-box" type="text" id="searchInput" placeholder="Search artist, venue, genre…" autocomplete="off" autocorrect="off" spellcheck="false">
 </div>
 
-<!-- FILTERS ROW 1: TYPE -->
-<div class="filter-section">
-  <div class="filter-label">Filter by type</div>
-  <div class="filter-row" id="typeFilters">
-    <button class="filter-btn active cyan" data-filter="all" data-group="type">All Events</button>
-    <button class="filter-btn" data-filter="festival" data-group="type">🎪 Festivals</button>
-    <button class="filter-btn" data-filter="show" data-group="type">🎧 Shows</button>
-    <button class="filter-btn" data-filter="must" data-group="type">⚡ Must-Sees</button>
-  </div>
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <button class="filter-toggle-btn" id="filterToggleBtn" onclick="openDrawer()">
+    <span class="filter-toggle-icon">⚙</span>
+    <span id="filterToggleLabel">Filters</span>
+    <span class="filter-active-badge" id="filterBadge"></span>
+  </button>
 </div>
 
-<!-- FILTERS ROW 2: GENRE -->
-<div class="filter-section" style="padding-top:10px">
-  <div class="filter-label">Filter by genre</div>
-  <div class="filter-row" id="genreFilters">
-    <button class="filter-btn active pink" data-filter="all" data-group="genre">All Genres</button>
-    <button class="filter-btn" data-filter="House" data-group="genre">House</button>
-    <button class="filter-btn" data-filter="Tech House" data-group="genre">Tech House</button>
-    <button class="filter-btn" data-filter="Techno" data-group="genre">Techno</button>
-    <button class="filter-btn" data-filter="Melodic Techno" data-group="genre">Melodic</button>
-    <button class="filter-btn" data-filter="Hard Techno" data-group="genre">Hard Techno</button>
-    <button class="filter-btn" data-filter="Bass / Dubstep" data-group="genre">Bass</button>
-    <button class="filter-btn" data-filter="Drum & Bass" data-group="genre">D&B</button>
-    <button class="filter-btn" data-filter="Indie Electronic" data-group="genre">Indie</button>
-    <button class="filter-btn" data-filter="Big Room / EDM" data-group="genre">Big Room</button>
-    <button class="filter-btn" data-filter="Trance" data-group="genre">Trance</button>
-  </div>
-</div>
+<!-- FILTER DRAWER OVERLAY -->
+<div class="filter-overlay" id="filterOverlay" onclick="closeDrawer()"></div>
 
-<!-- FILTERS ROW 3: CITY -->
-<div class="filter-section" style="padding-top:10px">
-  <div class="filter-label">Filter by city</div>
-  <div class="filter-row" id="cityFilters">
-    <button class="filter-btn active" data-filter="all" data-group="city">🌎 All Cities</button>
-    <button class="filter-btn" data-filter="Chicago" data-group="city">CHI · Chicago</button>
-    <button class="filter-btn" data-filter="Miami" data-group="city">MIA · Miami</button>
-    <button class="filter-btn" data-filter="Las Vegas" data-group="city">LAS · Las Vegas</button>
-    <button class="filter-btn" data-filter="New York" data-group="city">NYC · New York</button>
-    <button class="filter-btn" data-filter="Los Angeles" data-group="city">LA · Los Angeles</button>
-    <button class="filter-btn" data-filter="San Francisco" data-group="city">SF · Bay Area</button>
+<!-- FILTER DRAWER -->
+<div class="filter-drawer" id="filterDrawer">
+  <div class="drawer-handle"><div class="drawer-handle-bar"></div></div>
+  <div class="drawer-header">
+    <div class="drawer-title">FILTERS</div>
+    <button class="drawer-clear" id="drawerClear" onclick="clearAllFilters()">Clear All</button>
   </div>
-</div>
 
-<!-- FILTERS ROW 4: MONTH -->
-<div class="filter-section" style="padding-top:10px">
-  <div class="filter-label">Filter by month</div>
-  <div class="filter-row" id="monthFilters">
-    <button class="filter-btn active" data-filter="all" data-group="month">All Months</button>
-    <button class="filter-btn" data-filter="JAN" data-group="month">Jan</button>
-    <button class="filter-btn" data-filter="FEB" data-group="month">Feb</button>
-    <button class="filter-btn" data-filter="MAR" data-group="month">Mar</button>
-    <button class="filter-btn" data-filter="APR" data-group="month">Apr</button>
-    <button class="filter-btn" data-filter="MAY" data-group="month">May</button>
-    <button class="filter-btn" data-filter="JUN" data-group="month">Jun</button>
-    <button class="filter-btn" data-filter="JUL" data-group="month">Jul</button>
-    <button class="filter-btn" data-filter="AUG" data-group="month">Aug</button>
-    <button class="filter-btn" data-filter="SEP" data-group="month">Sep</button>
-    <button class="filter-btn" data-filter="OCT" data-group="month">Oct</button>
-    <button class="filter-btn" data-filter="NOV" data-group="month">Nov</button>
-    <button class="filter-btn" data-filter="DEC" data-group="month">Dec</button>
+  <div class="drawer-section">
+    <div class="drawer-section-label">Type</div>
+    <div class="drawer-chips" id="typeFilters">
+      <button class="filter-btn active cyan" data-filter="all" data-group="type">All Events</button>
+      <button class="filter-btn" data-filter="festival" data-group="type">🎪 Festivals</button>
+      <button class="filter-btn" data-filter="show" data-group="type">🎧 Shows</button>
+      <button class="filter-btn" data-filter="must" data-group="type">⚡ Must-Sees</button>
+    </div>
   </div>
+
+  <div class="drawer-section">
+    <div class="drawer-section-label">City</div>
+    <div class="drawer-chips" id="cityFilters">
+      <button class="filter-btn active" data-filter="all" data-group="city">🌎 All Cities</button>
+      <button class="filter-btn" data-filter="Chicago" data-group="city">Chicago</button>
+      <button class="filter-btn" data-filter="Miami" data-group="city">Miami</button>
+      <button class="filter-btn" data-filter="Las Vegas" data-group="city">Las Vegas</button>
+      <button class="filter-btn" data-filter="New York" data-group="city">New York</button>
+      <button class="filter-btn" data-filter="Los Angeles" data-group="city">Los Angeles</button>
+      <button class="filter-btn" data-filter="San Francisco" data-group="city">San Francisco</button>
+    </div>
+  </div>
+
+  <div class="drawer-section">
+    <div class="drawer-section-label">Month</div>
+    <div class="drawer-chips" id="monthFilters">
+      <button class="filter-btn active" data-filter="all" data-group="month">All</button>
+      <button class="filter-btn" data-filter="JAN" data-group="month">Jan</button>
+      <button class="filter-btn" data-filter="FEB" data-group="month">Feb</button>
+      <button class="filter-btn" data-filter="MAR" data-group="month">Mar</button>
+      <button class="filter-btn" data-filter="APR" data-group="month">Apr</button>
+      <button class="filter-btn" data-filter="MAY" data-group="month">May</button>
+      <button class="filter-btn" data-filter="JUN" data-group="month">Jun</button>
+      <button class="filter-btn" data-filter="JUL" data-group="month">Jul</button>
+      <button class="filter-btn" data-filter="AUG" data-group="month">Aug</button>
+      <button class="filter-btn" data-filter="SEP" data-group="month">Sep</button>
+      <button class="filter-btn" data-filter="OCT" data-group="month">Oct</button>
+      <button class="filter-btn" data-filter="NOV" data-group="month">Nov</button>
+      <button class="filter-btn" data-filter="DEC" data-group="month">Dec</button>
+    </div>
+  </div>
+
+  <div class="drawer-section">
+    <div class="drawer-section-label">Genre</div>
+    <div class="drawer-chips" id="genreFilters">
+      <button class="filter-btn active pink" data-filter="all" data-group="genre">All Genres</button>
+      <button class="filter-btn" data-filter="House" data-group="genre">House</button>
+      <button class="filter-btn" data-filter="Tech House" data-group="genre">Tech House</button>
+      <button class="filter-btn" data-filter="Techno" data-group="genre">Techno</button>
+      <button class="filter-btn" data-filter="Melodic Techno" data-group="genre">Melodic</button>
+      <button class="filter-btn" data-filter="Hard Techno" data-group="genre">Hard Techno</button>
+      <button class="filter-btn" data-filter="Bass / Dubstep" data-group="genre">Bass</button>
+      <button class="filter-btn" data-filter="Drum & Bass" data-group="genre">D&B</button>
+      <button class="filter-btn" data-filter="Indie Electronic" data-group="genre">Indie</button>
+      <button class="filter-btn" data-filter="Big Room / EDM" data-group="genre">Big Room</button>
+      <button class="filter-btn" data-filter="Trance" data-group="genre">Trance</button>
+    </div>
+  </div>
+
+  <button class="drawer-apply" onclick="closeDrawer()">Show Results</button>
 </div>
 
 <!-- EVENTS LIST -->
@@ -1485,6 +1612,50 @@ function toggleLineup(btn) {
              `▼ Hide Lineup`;
 }
 
+// ── DRAWER ─────────────────────────────────────────────────────────────────
+function openDrawer() {
+  document.getElementById('filterDrawer').classList.add('open');
+  document.getElementById('filterOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  document.getElementById('filterDrawer').classList.remove('open');
+  document.getElementById('filterOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function updateFilterBar() {
+  const count = [typeFilter, genreFilter, cityFilter, monthFilter].filter(f => f !== 'all').length;
+  const badge = document.getElementById('filterBadge');
+  const btn = document.getElementById('filterToggleBtn');
+  const label = document.getElementById('filterToggleLabel');
+  const clear = document.getElementById('drawerClear');
+  if (count > 0) {
+    badge.textContent = count;
+    badge.classList.add('visible');
+    btn.classList.add('has-filters');
+    label.textContent = 'Filters';
+    clear.classList.add('active-clear');
+  } else {
+    badge.classList.remove('visible');
+    btn.classList.remove('has-filters');
+    label.textContent = 'Filters';
+    clear.classList.remove('active-clear');
+  }
+}
+function clearAllFilters() {
+  typeFilter = 'all'; genreFilter = 'all'; cityFilter = 'all'; monthFilter = 'all';
+  document.querySelectorAll('#typeFilters .filter-btn').forEach(b => { b.classList.remove('active','cyan','pink','green'); });
+  document.querySelector('#typeFilters [data-filter="all"]').classList.add('active','cyan');
+  document.querySelectorAll('#genreFilters .filter-btn').forEach(b => { b.classList.remove('active','cyan','pink','green'); });
+  document.querySelector('#genreFilters [data-filter="all"]').classList.add('active','pink');
+  document.querySelectorAll('#cityFilters .filter-btn').forEach(b => { b.classList.remove('active','cyan','pink','green'); });
+  document.querySelector('#cityFilters [data-filter="all"]').classList.add('active','cyan');
+  document.querySelectorAll('#monthFilters .filter-btn').forEach(b => { b.classList.remove('active','cyan','pink','green'); });
+  document.querySelector('#monthFilters [data-filter="all"]').classList.add('active','cyan');
+  updateFilterBar();
+  renderCards();
+}
+
 // ── FILTERS ────────────────────────────────────────────────────────────────
 document.getElementById('typeFilters').addEventListener('click', e => {
   const btn = e.target.closest('.filter-btn');
@@ -1492,7 +1663,7 @@ document.getElementById('typeFilters').addEventListener('click', e => {
   document.querySelectorAll('#typeFilters .filter-btn').forEach(b => b.classList.remove('active','cyan','pink','green'));
   btn.classList.add('active', 'cyan');
   typeFilter = btn.dataset.filter;
-  renderCards();
+  updateFilterBar(); renderCards();
 });
 
 document.getElementById('genreFilters').addEventListener('click', e => {
@@ -1501,7 +1672,7 @@ document.getElementById('genreFilters').addEventListener('click', e => {
   document.querySelectorAll('#genreFilters .filter-btn').forEach(b => b.classList.remove('active','cyan','pink','green'));
   btn.classList.add('active', 'pink');
   genreFilter = btn.dataset.filter;
-  renderCards();
+  updateFilterBar(); renderCards();
 });
 
 document.getElementById('cityFilters').addEventListener('click', e => {
@@ -1510,7 +1681,7 @@ document.getElementById('cityFilters').addEventListener('click', e => {
   document.querySelectorAll('#cityFilters .filter-btn').forEach(b => b.classList.remove('active','cyan','pink','green'));
   btn.classList.add('active', 'cyan');
   cityFilter = btn.dataset.filter;
-  renderCards();
+  updateFilterBar(); renderCards();
 });
 
 document.getElementById('monthFilters').addEventListener('click', e => {
@@ -1519,7 +1690,7 @@ document.getElementById('monthFilters').addEventListener('click', e => {
   document.querySelectorAll('#monthFilters .filter-btn').forEach(b => b.classList.remove('active','cyan','pink','green'));
   btn.classList.add('active', 'cyan');
   monthFilter = btn.dataset.filter;
-  renderCards();
+  updateFilterBar(); renderCards();
 });
 
 document.getElementById('searchInput').addEventListener('input', e => {
