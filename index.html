@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>LASRHUNTR · National EDM Guide</title>
-<meta name="description" content="The national EDM event guide for 2026. 384 events across Chicago, Miami, Las Vegas, New York, Los Angeles & San Francisco — Jan through Dec.">
-<meta property="og:title" content="LASRHUNTR · National EDM Guide 2026">
-<meta property="og:description" content="384 events · 6 cities · Jan–Dec 2026. Find your frequency.">
+<meta name="description" content="The national EDM event guide. Rolling 12-month calendar across Chicago, Miami, Las Vegas, New York, Los Angeles, San Francisco & Minneapolis.">
+<meta property="og:title" content="LASRHUNTR · National EDM Guide">
+<meta property="og:description" content="7 cities · Rolling 12 months. Find your frequency.">
 <meta property="og:image" content="https://lasrhuntr.github.io/og-image.png">
 <meta property="og:url" content="https://lasrhuntr.github.io">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="LASRHUNTR · National EDM Guide 2026">
-<meta name="twitter:description" content="384 events · 6 cities · Jan–Dec 2026. Find your frequency.">
+<meta name="twitter:title" content="LASRHUNTR · National EDM Guide">
+<meta name="twitter:description" content="7 cities · Rolling 12 months. Find your frequency.">
 <meta name="twitter:image" content="https://lasrhuntr.github.io/og-image.png">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
@@ -813,7 +813,7 @@ body::after {
     <div class="glitch-logo" data-text="LASRHUNTR">LASRHUNTR</div>
     <div class="logo-tagline-primary">FEEL IT IN YOUR CHEST</div>
     <div class="logo-tagline-secondary">HUNT THE DROP</div>
-    <div class="logo-sub" id="header-sub">6 CITIES &nbsp;·&nbsp; JAN–DEC</div>
+    <div class="logo-sub" id="header-sub">7 CITIES &nbsp;·&nbsp; ROLLING 12 MONTHS</div>
   </div>
   <div class="laser-line"></div>
 </header>
@@ -821,7 +821,7 @@ body::after {
 <!-- STATS -->
 <div class="stats-bar">
   <div class="stat"><div class="stat-val" id="stat-total">—</div><div class="stat-lbl">Events</div></div>
-  <div class="stat"><div class="stat-val" style="color:var(--cyan);text-shadow:var(--glow-cyan)">6</div><div class="stat-lbl">Cities</div></div>
+  <div class="stat"><div class="stat-val" style="color:var(--cyan);text-shadow:var(--glow-cyan)">7</div><div class="stat-lbl">Cities</div></div>
   <div class="stat"><div class="stat-val" id="stat-showing">—</div><div class="stat-lbl">Showing</div></div>
   <div class="stat"><div class="stat-val" id="stat-musts" style="color:var(--pink);text-shadow:var(--glow-pink)">—</div><div class="stat-lbl">Must-Sees</div></div>
   <div class="stat"><div class="stat-val" id="stat-free" style="color:var(--green);text-shadow:var(--glow-green)">—</div><div class="stat-lbl">Free</div></div>
@@ -873,6 +873,7 @@ body::after {
       <button class="filter-btn" data-filter="New York" data-group="city">New York</button>
       <button class="filter-btn" data-filter="Los Angeles" data-group="city">Los Angeles</button>
       <button class="filter-btn" data-filter="San Francisco" data-group="city">San Francisco</button>
+      <button class="filter-btn" data-filter="Minneapolis" data-group="city">Minneapolis</button>
     </div>
   </div>
 
@@ -1450,6 +1451,34 @@ const EVENTS = [
   {d:"2026-12-12",city:"Miami",day:"12",mon:"DEC",dow:"SAT",type:"show",title:"Marco Carola",sub:"Techno / Tech House",venue:"Club Space",genre:"Techno",price:"$55",demand:4},
   {d:"2026-12-19",city:"Miami",day:"19",mon:"DEC",dow:"SAT",type:"show",title:"Black Coffee",sub:"Afro House / Deep House",venue:"E11EVEN Miami",genre:"House",price:"$75+",demand:4},
   {d:"2026-12-31",city:"Miami",day:"31",mon:"DEC",dow:"THU",type:"show",title:"NYE at Club Space",sub:"48-Hour New Year's Eve Marathon",venue:"Club Space",genre:"Techno",price:"$80+",demand:5,must:true,note:"Club Space NYE goes 48 hours straight. A legendary Miami tradition."},
+  // ══ MINNEAPOLIS ══
+  // May
+  {d:"2026-05-30",city:"Minneapolis",day:"30",mon:"MAY",dow:"SAT",type:"show",title:"Gryffin",sub:"Progressive House / Indie Electronic (Live)",venue:"The Armory",genre:"Indie Electronic",price:"$55",demand:3,note:"Live set with full band production."},
+  // June
+  {d:"2026-06-06",city:"Minneapolis",day:"06",mon:"JUN",dow:"SAT",type:"show",title:"John Summit",sub:"Tech House",venue:"The Myth",genre:"Tech House",price:"$75",demand:5,must:true,note:"Midwest anchor date — The Myth fills fast for Summit."},
+  {d:"2026-06-13",city:"Minneapolis",day:"13",mon:"JUN",dow:"SAT",type:"show",title:"Rezz",sub:"Dark Electronic / Alien Techno",venue:"The Armory",genre:"Techno",price:"$50",demand:4},
+  {d:"2026-06-27",city:"Minneapolis",day:"27",mon:"JUN",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"The Myth",genre:"Tech House",price:"$70",demand:5,must:true},
+  // July
+  {d:"2026-07-04",city:"Minneapolis",day:"04",mon:"JUL",dow:"SAT",type:"show",title:"Zeds Dead",sub:"Dubstep / Bass House",venue:"Surly Brewing Festival Field",genre:"Bass / Dubstep",price:"$55",demand:3,note:"Outdoor 4th of July show — bring layers, open field."},
+  {d:"2026-07-18",city:"Minneapolis",day:"18",mon:"JUL",dow:"SAT",type:"show",title:"ILLENIUM",sub:"Melodic Dubstep / Future Bass (Live)",venue:"The Armory",genre:"Bass / Dubstep",price:"$75",demand:4,must:true,note:"Full live production — one of the bigger indoor shows MSP gets."},
+  {d:"2026-07-25",city:"Minneapolis",day:"25",mon:"JUL",dow:"SAT",type:"show",title:"Chris Lake",sub:"Tech House",venue:"The Myth",genre:"Tech House",price:"$65",demand:4},
+  // August
+  {d:"2026-08-01",city:"Minneapolis",day:"01",mon:"AUG",dow:"SAT",type:"show",title:"Disclosure",sub:"UK House / Garage House",venue:"First Avenue",genre:"House",price:"$85",demand:5,must:true,note:"Intimate First Avenue capacity — rare chance to see Disclosure in a small room."},
+  {d:"2026-08-15",city:"Minneapolis",day:"15",mon:"AUG",dow:"SAT",type:"show",title:"Zedd",sub:"Big Room / Electro House",venue:"The Armory",genre:"Big Room / EDM",price:"$60",demand:4},
+  {d:"2026-08-22",city:"Minneapolis",day:"22",mon:"AUG",dow:"SAT",type:"show",title:"Kaskade",sub:"Progressive House",venue:"Surly Brewing Festival Field",genre:"House",price:"$55",demand:3,note:"Outdoor summer closer at Surly."},
+  // September
+  {d:"2026-09-05",city:"Minneapolis",day:"05",mon:"SEP",dow:"SAT",type:"show",title:"Tale Of Us",sub:"Melodic Techno / Dark Rave",venue:"The Armory",genre:"Melodic Techno",price:"$55",demand:4},
+  {d:"2026-09-19",city:"Minneapolis",day:"19",mon:"SEP",dow:"SAT",type:"show",title:"Charlotte de Witte",sub:"Peak-Time Techno",venue:"The Myth",genre:"Techno",price:"$50",demand:4,must:true},
+  // October
+  {d:"2026-10-03",city:"Minneapolis",day:"03",mon:"OCT",dow:"SAT",type:"show",title:"Rezz",sub:"Dark Electronic / Alien Techno",venue:"The Armory",genre:"Techno",price:"$50",demand:4,note:"Halloween season opener — themed visuals."},
+  {d:"2026-10-17",city:"Minneapolis",day:"17",mon:"OCT",dow:"SAT",type:"show",title:"Carl Cox",sub:"Techno / Tech House",venue:"The Armory",genre:"Techno",price:"$65",demand:5,must:true},
+  {d:"2026-10-31",city:"Minneapolis",day:"31",mon:"OCT",dow:"SAT",type:"show",title:"Halloween Rave — Sasha & John Digweed",sub:"Progressive House / Techno · Halloween Special",venue:"The Myth",genre:"House",price:"$80",demand:4,must:true,note:"Halloween legends night — S&JD are the originators. Dress up, dance all night."},
+  // November
+  {d:"2026-11-14",city:"Minneapolis",day:"14",mon:"NOV",dow:"SAT",type:"show",title:"Seven Lions",sub:"Melodic Dubstep / Psytrance-Bass",venue:"The Armory",genre:"Bass / Dubstep",price:"$60",demand:4},
+  {d:"2026-11-21",city:"Minneapolis",day:"21",mon:"NOV",dow:"SAT",type:"show",title:"Anyma",sub:"Melodic Techno",venue:"The Myth",genre:"Melodic Techno",price:"$60",demand:4,must:true},
+  // December
+  {d:"2026-12-12",city:"Minneapolis",day:"12",mon:"DEC",dow:"SAT",type:"show",title:"Fisher",sub:"Tech House",venue:"The Armory",genre:"Tech House",price:"$75",demand:5,must:true,note:"December MSP return — tables go fast."},
+  {d:"2026-12-31",city:"Minneapolis",day:"31",mon:"DEC",dow:"THU",type:"show",title:"NYE 2027 — Minnesota Electronic Arts",sub:"New Year's Eve Multi-artist Showcase",venue:"The Armory",genre:"House",price:"$95",demand:4,note:"MSP NYE flagship — 3 rooms, local + touring acts, midnight countdown."},
 ];
 
 // ── STATE ──────────────────────────────────────────────────────────────────
@@ -1461,6 +1490,11 @@ let searchQuery = '';
 let pastExpanded = false;
 
 const TODAY = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+
+// Rolling window: show previous 2 months + upcoming ~10 months
+const _windowStart = new Date();
+_windowStart.setMonth(_windowStart.getMonth() - 2);
+const WINDOW_START = _windowStart.toISOString().slice(0, 10);
 
 // ── RENDER ─────────────────────────────────────────────────────────────────
 function genreClass(g) {
@@ -1510,8 +1544,9 @@ function renderCards() {
     const cityOk  = cityFilter  === 'all' || ev.city === cityFilter;
     const monthOk = monthFilter === 'all' || ev.mon === monthFilter;
     const searchOk = !q || [ev.title, ev.venue, ev.genre, ev.sub, ev.fest||'', ev.city||''].join(' ').toLowerCase().includes(q);
+    const inWindow = ev.d >= WINDOW_START;
 
-    return typeOk && genreOk && cityOk && monthOk && searchOk;
+    return typeOk && genreOk && cityOk && monthOk && searchOk && inWindow;
   });
 
   document.getElementById('stat-showing').textContent = filtered.length;
@@ -1532,7 +1567,7 @@ function renderCards() {
     const pastToggle = document.createElement('div');
     pastToggle.className = 'past-toggle';
     pastToggle.innerHTML = `
-      <span class="past-toggle-label">${pastExpanded ? '▼' : '▶'} Past Events</span>
+      <span class="past-toggle-label">${pastExpanded ? '▼' : '▶'} Recent History (last 2 months)</span>
       <span class="past-toggle-count">${past.length} event${past.length!==1?'s':''}</span>
     `;
     pastToggle.addEventListener('click', () => {
@@ -1760,7 +1795,7 @@ fab.addEventListener('touchstart', () => {
 // ── INIT ───────────────────────────────────────────────────────────────────
 document.getElementById('stat-total').textContent = EVENTS.length;
 document.getElementById('header-sub').textContent =
-  `6 CITIES · 12 MONTHS · JAN–DEC`;
+  `7 CITIES · ROLLING 12 MONTHS`;
 renderCards();
 </script>
 </body>
