@@ -799,6 +799,115 @@ body::after {
   from { opacity: 0; transform: translateY(-20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── ARTIST INFO BUTTON ── */
+.artist-info-btn {
+  background: none;
+  border: 1px solid rgba(0,245,255,0.25);
+  border-radius: 4px;
+  color: var(--cyan);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  padding: 3px 9px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-left: auto;
+  opacity: 0.7;
+  -webkit-tap-highlight-color: transparent;
+}
+.artist-info-btn:hover, .artist-info-btn:active {
+  background: rgba(0,245,255,0.1);
+  border-color: var(--cyan);
+  box-shadow: var(--glow-cyan);
+  opacity: 1;
+}
+
+/* ── ARTIST POPUP ── */
+.artist-popup-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.artist-popup-overlay.open { opacity: 1; pointer-events: all; }
+
+.artist-popup {
+  background: #0D0020;
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--cyan);
+  border-radius: 12px;
+  padding: 28px 24px 24px;
+  max-width: min(420px, 100%);
+  width: 100%;
+  position: relative;
+  transform: translateY(24px);
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: 0 0 60px rgba(0,245,255,0.08), 0 20px 60px rgba(0,0,0,0.6);
+}
+.artist-popup-overlay.open .artist-popup { transform: translateY(0); }
+
+.artist-popup-close {
+  position: absolute; top: 12px; right: 14px;
+  background: none; border: none;
+  color: var(--dim); font-size: 18px; cursor: pointer;
+  padding: 4px 8px; line-height: 1;
+  transition: color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.artist-popup-close:hover { color: var(--white); }
+
+.artist-popup-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; letter-spacing: 0.22em;
+  color: var(--cyan); opacity: 0.6;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.artist-popup-name {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(17px, 5vw, 22px);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+.artist-popup-sounds {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 16px;
+}
+.artist-popup-sound-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; letter-spacing: 0.1em;
+  color: var(--pink);
+  border: 1px solid rgba(255,0,200,0.3);
+  border-radius: 3px;
+  padding: 2px 8px;
+  text-transform: uppercase;
+}
+.artist-popup-bio {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px; font-weight: 500; line-height: 1.6;
+  color: #A8A0C0;
+  margin-bottom: 20px;
+}
+.artist-popup-listen {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #1DB954;
+  color: #000;
+  font-family: 'Orbitron', monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-decoration: none;
+  border-radius: 20px;
+  padding: 9px 20px;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.artist-popup-listen:hover { opacity: 0.88; transform: scale(1.02); }
 </style>
 </head>
 <body>
@@ -914,6 +1023,18 @@ body::after {
   </div>
 
   <button class="drawer-apply" onclick="closeDrawer()">Show Results</button>
+</div>
+
+<!-- ARTIST POPUP -->
+<div class="artist-popup-overlay" id="artistPopupOverlay" onclick="closeArtistInfo()">
+  <div class="artist-popup" onclick="event.stopPropagation()">
+    <button class="artist-popup-close" onclick="closeArtistInfo()">✕</button>
+    <div class="artist-popup-eyebrow">ARTIST</div>
+    <div class="artist-popup-name" id="artistPopupName"></div>
+    <div class="artist-popup-sounds" id="artistPopupSounds"></div>
+    <div class="artist-popup-bio" id="artistPopupBio"></div>
+    <a class="artist-popup-listen" id="artistPopupListen" href="#" target="_blank" rel="noopener">▶ Listen on Spotify</a>
+  </div>
 </div>
 
 <!-- EVENTS LIST -->
@@ -1481,6 +1602,283 @@ const EVENTS = [
   {d:"2026-12-31",city:"Minneapolis",day:"31",mon:"DEC",dow:"THU",type:"show",title:"NYE 2027 — Minnesota Electronic Arts",sub:"New Year's Eve Multi-artist Showcase",venue:"The Armory",genre:"House",price:"$95",demand:4,note:"MSP NYE flagship — 3 rooms, local + touring acts, midnight countdown."},
 ];
 
+// ── ARTIST DATA ────────────────────────────────────────────────────────────
+const ARTISTS = {
+  "John Summit": {
+    bio: "Chicago-born DJ who went from tax accountant to the world's most-booked act in under four years. His tech house anthems hit like freight trains — dense, relentless, built for large rooms.",
+    sounds: ["Tech House","Peak-Time","Chicago"],
+    spotify: "https://open.spotify.com/artist/1kCHru7uhxBUdzkm4gzRQc"
+  },
+  "Fisher": {
+    bio: "Australian commercial fisherman turned tech house heavyweight. FISHER's sets are loud, unapologetic, and built for festival main stages — 'Losing It' became one of the defining tracks of the decade.",
+    sounds: ["Tech House","Bass House","Big Room"],
+    spotify: "https://open.spotify.com/artist/5dXlBhCkJqPFGBDV2fUPxB"
+  },
+  "Carl Cox": {
+    bio: "Three-decade techno legend who helped define the sound of Ibiza and the global rave scene. Still one of the hardest-working DJs alive — his sets are master classes in building and releasing pressure.",
+    sounds: ["Techno","Tech House","Classic Rave"],
+    spotify: "https://open.spotify.com/artist/5ZsFI1h6hIdQRw2be0QEEY"
+  },
+  "Chris Lake": {
+    bio: "British-born tech house architect behind labels Black Book Records and Factory 93. Surgical track selection and a knack for building a room's energy over four-hour sets.",
+    sounds: ["Tech House","Bass House","Deep Tech"],
+    spotify: "https://open.spotify.com/artist/7jy3rLJdenlgcKkni2iiuH"
+  },
+  "Charlotte de Witte": {
+    bio: "Belgian techno force who plays the genre at its most punishing and hypnotic. Her DJ Mag #1 ranking confirmed what Berghain already knew — she's the future of peak-time techno.",
+    sounds: ["Techno","Peak-Time","Industrial"],
+    spotify: "https://open.spotify.com/artist/3MHaV05u0io8fQbZ2XPtlC"
+  },
+  "Disclosure": {
+    bio: "Brothers Guy and Howard Lawrence turned UK garage and soulful house into a mainstream phenomenon. From 'Latch' to stadium sets — they never lost the underground instincts that made them.",
+    sounds: ["UK House","Garage","Deep House"],
+    spotify: "https://open.spotify.com/artist/6nS5roXSAGhTGr34W6n7Et"
+  },
+  "Peggy Gou": {
+    bio: "Korean-born, Berlin-based DJ whose blend of disco, house, and nu-italo made her one of the most recognizable names in electronic music. Her debut album hit #1 in the UK charts.",
+    sounds: ["House","Disco","Nu-Italo"],
+    spotify: "https://open.spotify.com/artist/7G15OqKXHhbMvMqaB8LdoE"
+  },
+  "Solomun": {
+    bio: "Bosnian-born DJ whose Diynamic label and legendary Pacha Ibiza residency defined a decade of melodic house. His sets can stretch five hours and still feel like they end too soon.",
+    sounds: ["Melodic Techno","Deep House","Minimal"],
+    spotify: "https://open.spotify.com/artist/3Nq6QoFBMse2cYFcjQEJfZ"
+  },
+  "Tale Of Us": {
+    bio: "Italian duo who craft dark, cinematic electronic music that blurs the line between techno and art installation. Their Afterlife label is home to modern melodic techno's finest work.",
+    sounds: ["Melodic Techno","Cinematic","Dark Rave"],
+    spotify: "https://open.spotify.com/artist/1GrBGNEFm3D9ORpNAquPhE"
+  },
+  "Amelie Lens": {
+    bio: "Belgian DJ whose thunderous peak-time techno and magnetic personality have made her one of the fastest-rising names in European clubbing. Founder of the EXHALE label.",
+    sounds: ["Techno","Peak-Time","Industrial"],
+    spotify: "https://open.spotify.com/artist/3FgGLTjqkV7gNXYGSHpE4D"
+  },
+  "ILLENIUM": {
+    bio: "Denver producer Nick Miller turned melodic bass and emotional dubstep into stadium-filling live shows. His full live production is one of the most visually spectacular in American electronic music.",
+    sounds: ["Melodic Dubstep","Future Bass","Emotional Bass"],
+    spotify: "https://open.spotify.com/artist/45eNHdiiabvmbp4erw26rg"
+  },
+  "Rezz": {
+    bio: "The self-described 'Space Mom' makes hypnotic, alien techno that defies every convention of crowd-pleasing dance music — and still sells out arenas. Her spinning goggles are now iconic.",
+    sounds: ["Dark Electronic","Hypnotic Techno","Psych"],
+    spotify: "https://open.spotify.com/artist/2SRIVGDkdqQnDbcCWFHJ4Z"
+  },
+  "Martin Garrix": {
+    bio: "Dutch producer who became the youngest DJ Mag #1 at 17 with 'Animals.' Runs STMPD RCRDS and headlines the world's biggest festivals with precision-crafted big-room drops.",
+    sounds: ["Big Room","Progressive House","Future Rave"],
+    spotify: "https://open.spotify.com/artist/60d24wfXkVzDSfLS6hyCjZ"
+  },
+  "Tiësto": {
+    bio: "Three-time DJ Mag #1 who evolved from trance pioneer to pop-crossover superstar. His 2023 Vegas residency deal broke industry records — and his shows still hit harder than they should.",
+    sounds: ["Tech House","Big Room","Pop-Electronic"],
+    spotify: "https://open.spotify.com/artist/2o5jDhtHVPhrJdv3cEQ99Z"
+  },
+  "Deadmau5": {
+    bio: "Toronto producer Joel Zimmermann built a worldwide following on meticulous progressive house and one of the most recognizable stage setups in music history. Still deeply underground at heart.",
+    sounds: ["Progressive House","Electro","Techno-Adjacent"],
+    spotify: "https://open.spotify.com/artist/1Cs0zKBU1kc0i8ypK3B9ai"
+  },
+  "Honey Dijon": {
+    bio: "Chicago-born, Berlin-adopted DJ whose music honors the Black and queer roots of house while pushing it firmly into the future. Every set is a history lesson and a dance floor.",
+    sounds: ["Chicago House","Disco","Nu-Disco"],
+    spotify: "https://open.spotify.com/artist/4j56EQDQu5XnL7R3E9iFJT"
+  },
+  "Marco Carola": {
+    bio: "Naples-born techno minimalist who ran his Music On party at Amnesia Ibiza for over a decade. His stripped-back, hypnotic style is one of the most studied approaches in the genre.",
+    sounds: ["Techno","Minimal","Tech House"],
+    spotify: "https://open.spotify.com/artist/0hqiXaYxFLWJXIBJqhAXBT"
+  },
+  "Black Coffee": {
+    bio: "South African DJ who brought Afro house to global stages without softening its edges. Runs his own Silo Sound label and remains one of the most distinctive voices in modern house.",
+    sounds: ["Afro House","Deep House","Organic"],
+    spotify: "https://open.spotify.com/artist/3gd8FJtBJFrbx9SXH7MJFo"
+  },
+  "Anyma": {
+    bio: "Matteo Milleri's solo alias diverges from Tale Of Us into something more celestial and euphoric. His Afterlife label events have become the defining melodic techno experience of this era.",
+    sounds: ["Melodic Techno","Cinematic","Rave Euphoria"],
+    spotify: "https://open.spotify.com/artist/7gSQv1OHpkIoAdUiuLx9nh"
+  },
+  "Zedd": {
+    bio: "Russian-German producer Anton Zaslavski became a pop crossover icon with 'Clarity,' but his DJ sets carry the precision of a classically trained musician who still loves a big room.",
+    sounds: ["Big Room","Electro House","Pop-Electronic"],
+    spotify: "https://open.spotify.com/artist/2qxJFvFYMEDqd7ui9kx2w2"
+  },
+  "Porter Robinson": {
+    bio: "North Carolina producer who helped define the emotional core of American electronic music with 'Worlds.' His live sets are rare, deeply personal events — some of the most moving in dance music.",
+    sounds: ["Indie Electronic","Future Bass","Emotional EDM"],
+    spotify: "https://open.spotify.com/artist/3dz0NnIZhtKKeXZxYuph3E"
+  },
+  "Four Tet": {
+    bio: "Kieran Hebden's leftfield electronic project has influenced every subgenre it's touched over 25 years. His DJ sets are unpredictable, eclectic, and always the most interesting set of any festival.",
+    sounds: ["Electronic","Leftfield","Experimental House"],
+    spotify: "https://open.spotify.com/artist/7Eu1txygG6nJttLHbZdQOh"
+  },
+  "Adam Beyer": {
+    bio: "Stockholm techno institution and Drumcode label founder who has kept peak-time techno commercially viable without ever compromising its aggression.",
+    sounds: ["Techno","Peak-Time","Drumcode"],
+    spotify: "https://open.spotify.com/artist/4kvqpnCxAFJKxFiRS1SMCS"
+  },
+  "Nina Kraviz": {
+    bio: "Siberian-born DJ whose acid house, Detroit techno, and experimental selections have made her трип label one of underground electronic music's most interesting imprints.",
+    sounds: ["Techno","Acid House","Experimental"],
+    spotify: "https://open.spotify.com/artist/5YUKmR6rMuaGHBZaQjKgWh"
+  },
+  "Eric Prydz": {
+    bio: "Swedish producer whose HOLO live show remains the most technologically advanced production in electronic music. As Pryda he defined progressive house; as Cirez D he defined dark techno.",
+    sounds: ["Progressive House","Techno","Trance"],
+    spotify: "https://open.spotify.com/artist/5DId6LLMF9exjqEhFHhKCC"
+  },
+  "Armin van Buuren": {
+    bio: "Five-time DJ Mag #1 and the face of trance for over two decades. His A State of Trance radio show has aired 1,000+ episodes — the longest-running electronic music show in history.",
+    sounds: ["Trance","Progressive Trance","Big Room"],
+    spotify: "https://open.spotify.com/artist/0eDvMgVFoNV3TpwtrVCoTj"
+  },
+  "Hardwell": {
+    bio: "Dutch DJ who held DJ Mag #1 twice before surprising everyone by retiring in 2018 — then returning in 2022 with harder, darker music. One of EDM's most dramatic comebacks.",
+    sounds: ["Big Room","Hardstyle","Future Rave"],
+    spotify: "https://open.spotify.com/artist/6BrvowZPSCJMfO2xBFSNqg"
+  },
+  "Steve Aoki": {
+    bio: "Japanese-American DJ, record label founder (Dim Mak), and cake-throwing festival performer who has released more music and done more shows than almost anyone in EDM history.",
+    sounds: ["Big Room","Electro House","Trap"],
+    spotify: "https://open.spotify.com/artist/07X2jSJhMCsWFkEBNzGCKr"
+  },
+  "Kygo": {
+    bio: "Norwegian producer Kyrre Gørvell-Dahll pioneered tropical house and accumulated billions of streams before turning 25. His productions are warm, melodic, and built for summer.",
+    sounds: ["Tropical House","Electronic Pop","Chill"],
+    spotify: "https://open.spotify.com/artist/23fqKkggKUBHNkbKtXEls4"
+  },
+  "Skrillex": {
+    bio: "The LA producer who brought dubstep to American stadiums, then quietly became one of the most influential music makers of his generation across rap, house, and experimental music.",
+    sounds: ["Dubstep","Bass Music","Experimental"],
+    spotify: "https://open.spotify.com/artist/5HJ2kX5UTwN4Ns8fB5Rn1I"
+  },
+  "Seven Lions": {
+    bio: "Jeff Montalvo blends melodic bass, psytrance influences, and cinematic scale into shows that are equal parts rave and emotional journey. His Worlds Apart festival showcases his curatorial eye.",
+    sounds: ["Melodic Dubstep","Psytrance-Bass","Cinematic"],
+    spotify: "https://open.spotify.com/artist/2nMVLy3BhMiD7r7GQQLd5M"
+  },
+  "Madeon": {
+    bio: "French producer Hugo Leclercq has been making infectious electronic music since his teens — from the viral 'Pop Culture' mashup to the deeply personal 'Good Faith' album. A meticulous live craftsman.",
+    sounds: ["French Electronic","Future Pop","Indie Dance"],
+    spotify: "https://open.spotify.com/artist/4bwSMcJPHPHN7oTWgXgMwY"
+  },
+  "Dixon": {
+    bio: "German DJ whose patient, wandering sets at Panorama Bar set the template for deep, unhurried dance floor DJing. His Innervisions label (with Âme) is equally essential listening.",
+    sounds: ["Deep House","Minimal","Organic"],
+    spotify: "https://open.spotify.com/artist/2YXB0A2Q3qKW0ZMM8RKQR7"
+  },
+  "Jamie Jones": {
+    bio: "Welsh DJ whose Paradise party at DC-10 Ibiza helped popularize deep tech house. His Hot Creations label has launched more careers than most entire booking agencies.",
+    sounds: ["Deep Tech House","Minimal","Groovy"],
+    spotify: "https://open.spotify.com/artist/4CZ9TSDl3JlGCPa62BVNGq"
+  },
+  "Kaskade": {
+    bio: "Chicago-born Ryan Raddon is one of America's most beloved progressive house DJs — known for melodic, emotionally resonant sets and one of the genre's most devoted fan communities.",
+    sounds: ["Progressive House","Deep House","Melodic"],
+    spotify: "https://open.spotify.com/artist/6yJ6QQ3Y5l8Q4bVjl4oQjz"
+  },
+  "CamelPhat": {
+    bio: "Liverpool duo Dave Whelan and Mike Di Scala broke through with 'Cola' and earned a Grammy nomination. Their productions layer deep basslines under brooding, hypnotic builds.",
+    sounds: ["Tech House","Deep House","Dark Grooves"],
+    spotify: "https://open.spotify.com/artist/3CWQ5XGfQSAGgEGxBAi4rp"
+  },
+  "The Midnight": {
+    bio: "LA duo Tyler Lyle and Tim McEwan make lush synthwave that sounds like a perfect 1986 summer you never actually had. Their full live band production is one of the most emotionally resonant in the genre.",
+    sounds: ["Synthwave","Indietronica","Nostalgia-Pop"],
+    spotify: "https://open.spotify.com/artist/2BBvBYPj0qKXoKa5pTNAhg"
+  },
+  "Zeds Dead": {
+    bio: "Toronto duo DC and Hooks blend dubstep, drum & bass, hip-hop, and house in shows that never feel genre-locked. Their Deadbeats label is one of North America's most eclectic bass imprints.",
+    sounds: ["Dubstep","Bass House","D&B"],
+    spotify: "https://open.spotify.com/artist/0WwSkZ7LtFUFjGjMZBMt6T"
+  },
+  "San Holo": {
+    bio: "Dutch artist Sander van Dijck makes guitar-infused future bass that sounds like electronic music falling in love with itself. His 'album1' is one of the genre's most cohesive debut statements.",
+    sounds: ["Future Bass","Guitar Electronic","Melodic"],
+    spotify: "https://open.spotify.com/artist/3RGLhK1IP9jnYFH4BRFJBS"
+  },
+  "The Chainsmokers": {
+    bio: "New York duo who turned festival EDM and indie-pop into a streaming juggernaut. More pop sensibility than dance floor credibility, but undeniably effective at scale.",
+    sounds: ["Big Room","Pop-Electronic","Festival EDM"],
+    spotify: "https://open.spotify.com/artist/69GGBxA162lTqCwzJG5jLp"
+  },
+  "Mau P": {
+    bio: "Amsterdam producer who exploded onto the scene with 'Drugs From Amsterdam' and became one of the most in-demand tech house names of 2024–25. Relentless energy, relentless bookings.",
+    sounds: ["Tech House","Peak-Time","Festival"],
+    spotify: "https://open.spotify.com/artist/5CJShWt7MTPV8WRN8kRmUl"
+  },
+  "Green Velvet": {
+    bio: "Chicago's Curtis Jones is a living bridge between the city's acid house origins and modern tech house — his alter ego Cajmere produced gospel-influenced house classics in the 90s.",
+    sounds: ["Chicago House","Acid House","Tech House"],
+    spotify: "https://open.spotify.com/artist/4q4S30VzHe3P8MOBDPn2D5"
+  },
+  "Gene Farris": {
+    bio: "Chicago house veteran whose Smart Bar residency has made him a cornerstone of the city's scene for three decades. His acid-inflected sets are a direct line to the genre's origins.",
+    sounds: ["Chicago House","Acid","Deep House"],
+    spotify: "https://open.spotify.com/artist/2mXXmk1RVTnLwQCGKkExNc"
+  },
+  "Above & Beyond": {
+    bio: "London trio whose progressive trance and Group Therapy radio show have built one of electronic music's most dedicated global fan communities. Every ABGT show feels like a shared catharsis.",
+    sounds: ["Trance","Progressive House","Emotional"],
+    spotify: "https://open.spotify.com/artist/0N8LEMeaFiXSLLbPMaGVoe"
+  },
+  "Gryffin": {
+    bio: "LA producer and guitarist Dan Griffith creates melodic electronic music that bridges indie rock and dance. His live sets incorporate live guitar alongside synths for something genuinely different.",
+    sounds: ["Progressive House","Indie Electronic","Live"],
+    spotify: "https://open.spotify.com/artist/4YPqbAiLzBg5DIfogKHQNi"
+  },
+  "Joseph Capriati": {
+    bio: "Italian techno force whose relentless touring and Redimension label have made him one of the most consistent names in peak-time European techno since the early 2010s.",
+    sounds: ["Techno","Peak-Time","Drumcode"],
+    spotify: "https://open.spotify.com/artist/7aBrL4cFqM2XLKBK9MXfmf"
+  },
+  "Dillon Francis": {
+    bio: "LA DJ who helped bring moombahton to mainstream audiences. His IDGAFOS attitude and genre-blending sets are as entertaining as they are unpredictable — part comedy show, part banger session.",
+    sounds: ["Moombahton","Trap","Electro"],
+    spotify: "https://open.spotify.com/artist/5AEnNqmGeQBULwHfFkX0LS"
+  },
+  "SLANDER": {
+    bio: "LA duo who became the defining voice of melodic dubstep's Heaven Trap subgenre — dark, emotional, and built for the moment the crowd surrenders completely.",
+    sounds: ["Melodic Dubstep","Heaven Trap","Bass"],
+    spotify: "https://open.spotify.com/artist/3bIkc8XMUcHMFRCQA1RQKN"
+  },
+  "Kaytranada": {
+    bio: "Haitian-Canadian producer Louis Kevin Celestin blends neo-soul, funk, and house into something that moves both your head and your feet. His 2020 Grammy win for Best Dance/Electronic Album was long overdue.",
+    sounds: ["Funk House","Nu-Soul","Deep House"],
+    spotify: "https://open.spotify.com/artist/6dMYCH0sHBVW1Dk4yCFrDD"
+  },
+};
+
+function getArtistKey(title) {
+  return title
+    .replace(/NYE\s*[—–-]\s*/i, '')
+    .replace(/\s*—\s*(Day|Night)\s*\d+.*/i, '')
+    .replace(/\s*\(Night\s*\d+\).*/i, '')
+    .replace(/\s*(b2b|b3b|&|feat\.?|vs\.?|x\s)\s*.*/i, '')
+    .replace(/\s*\(.*?\)\s*$/, '')
+    .trim();
+}
+
+function showArtistInfo(name) {
+  const artist = ARTISTS[name];
+  if (!artist) return;
+  document.getElementById('artistPopupName').textContent = name;
+  document.getElementById('artistPopupBio').textContent = artist.bio;
+  document.getElementById('artistPopupSounds').innerHTML =
+    artist.sounds.map(s => `<span class="artist-popup-sound-tag">${s}</span>`).join('');
+  const listenBtn = document.getElementById('artistPopupListen');
+  listenBtn.href = artist.spotify;
+  document.getElementById('artistPopupOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeArtistInfo() {
+  document.getElementById('artistPopupOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 // ── STATE ──────────────────────────────────────────────────────────────────
 let typeFilter  = 'all';
 let genreFilter = 'all';
@@ -1621,6 +2019,10 @@ function renderMonthGroups(list, events) {
       const festTag  = ev.fest ? `<span class="tag tag-fest">${ev.fest}</span>` : '';
       const cityTag  = ev.city ? `<span class="tag tag-city">${ev.city}</span>` : '';
       const priceClass = ev.price === 'FREE' ? 'free' : '';
+      const artistKey = getArtistKey(ev.title);
+      const artistBtn = ARTISTS[artistKey]
+        ? `<button class="artist-info-btn" onclick="event.stopPropagation();showArtistInfo('${artistKey.replace(/'/g,"\\'")}')" aria-label="Artist info">ⓘ Artist</button>`
+        : '';
 
       let noteHTML = '';
       if (ev.note) {
@@ -1648,6 +2050,7 @@ function renderMonthGroups(list, events) {
             </div>
             <div class="card-footer">
               <span class="price-tag ${priceClass}">${ev.price}</span>
+              ${artistBtn}
             </div>
             ${noteHTML}
           </div>
