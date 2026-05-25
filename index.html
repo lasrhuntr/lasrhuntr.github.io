@@ -1869,7 +1869,7 @@ function showArtistInfo(name) {
   document.getElementById('artistPopupSounds').innerHTML =
     artist.sounds.map(s => `<span class="artist-popup-sound-tag">${s}</span>`).join('');
   const listenBtn = document.getElementById('artistPopupListen');
-  listenBtn.href = artist.spotify;
+  listenBtn.href = 'https://open.spotify.com/search/' + encodeURIComponent(name);
   document.getElementById('artistPopupOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
