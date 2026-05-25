@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>LASRHUNTR · Store</title>
+<meta name="description" content="LASRHUNTR merch — Feel it in your chest. Hunt the drop.">
+<meta property="og:title" content="LASRHUNTR · Store">
+<meta property="og:description" content="Feel it in your chest. Hunt the drop.">
+<meta property="og:image" content="https://lasrhuntr.github.io/og-image.png">
+<meta property="og:url" content="https://lasrhuntr.github.io/store.html">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:   #03000A;
+  --deep:    #0D0020;
+  --panel:   #130029;
+  --border:  #2a0050;
+  --pink:    #FF00C8;
+  --cyan:    #00F5FF;
+  --green:   #39FF14;
+  --purple:  #B026FF;
+  --white:   #F0EEFF;
+  --dim:     #8888AA;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Rajdhani', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(176,38,255,0.15) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ── NAV / HEADER ── */
+.header { position: relative; z-index: 10; padding: 24px 16px 0; text-align: center; }
+.site-nav {
+  display: flex; justify-content: center; gap: 32px;
+  margin-bottom: 16px;
+}
+.nav-link {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.3em;
+  color: var(--dim); text-decoration: none;
+  padding: 6px 0; border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.nav-link:hover { color: var(--cyan); border-color: var(--cyan); }
+.nav-link.active { color: var(--pink); border-color: var(--pink); }
+
+.logo-wrap { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; }
+.glitch-logo {
+  font-family: 'Orbitron', monospace; font-weight: 900;
+  font-size: clamp(36px, 10vw, 64px); letter-spacing: 0.1em;
+  color: var(--pink); text-shadow: 0 0 8px #FF00C8, 0 0 20px #FF00C880;
+  position: relative; display: inline-block;
+  animation: glitch 4s infinite; line-height: 1;
+}
+.glitch-logo::before {
+  content: attr(data-text); position: absolute; left: 3px; top: 0;
+  clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+  animation: glitchTop 4s infinite; color: var(--cyan); opacity: 0.8;
+}
+.glitch-logo::after {
+  content: attr(data-text); position: absolute; left: -3px; top: 0;
+  clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+  animation: glitchBot 4s infinite; color: #FFE500; opacity: 0.7;
+}
+@keyframes glitch { 0%,90%,100%{transform:translate(0)} 91%{transform:translate(-2px,1px)} 93%{transform:translate(2px,-1px)} 95%{transform:translate(-1px,2px)} 97%{transform:translate(1px,0)} }
+@keyframes glitchTop { 0%,88%,100%{transform:translate(0);opacity:0} 89%{transform:translate(-3px,0);opacity:0.8} 91%{transform:translate(3px,0);opacity:0.8} 93%{transform:translate(0);opacity:0} }
+@keyframes glitchBot { 0%,92%,100%{transform:translate(0);opacity:0} 93%{transform:translate(3px,0);opacity:0.7} 95%{transform:translate(-3px,0);opacity:0.7} 97%{transform:translate(0);opacity:0} }
+
+.logo-tagline-primary {
+  font-family: 'Orbitron', monospace; font-size: clamp(11px, 3.2vw, 16px);
+  font-weight: 700; letter-spacing: 0.25em; color: var(--white); margin-top: 8px;
+}
+.logo-tagline-secondary {
+  font-family: 'Orbitron', monospace; font-size: clamp(9px, 2.2vw, 11px);
+  font-weight: 400; letter-spacing: 0.3em; color: var(--pink); opacity: 0.75; margin-top: 4px;
+}
+.laser-line { width: 100%; height: 1px; margin: 20px 0 0; background: linear-gradient(90deg, transparent, var(--pink), var(--cyan), var(--pink), transparent); opacity: 0.4; }
+
+/* ── STORE HERO ── */
+.store-hero {
+  position: relative; z-index: 1;
+  padding: 32px 16px 16px;
+  text-align: center;
+}
+.store-hero-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px; letter-spacing: 0.4em;
+  color: var(--cyan); opacity: 0.7;
+  margin-bottom: 6px;
+}
+.store-hero-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(20px, 6vw, 32px); font-weight: 900;
+  color: var(--white); letter-spacing: 0.08em;
+}
+
+/* ── PRODUCT GRID ── */
+.product-grid {
+  position: relative; z-index: 1;
+  padding: 16px 16px 60px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+@media (min-width: 700px) {
+  .product-grid { grid-template-columns: 1fr 1fr; max-width: 860px; }
+}
+
+.product-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.product-card:hover { border-color: var(--pink); transform: translateY(-2px); }
+
+.product-img-wrap {
+  background: #0a0015;
+  padding: 32px 24px;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 260px;
+  position: relative;
+}
+.product-badge {
+  position: absolute; top: 12px; right: 12px;
+  font-family: 'Orbitron', monospace;
+  font-size: 9px; letter-spacing: 0.2em;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--pink);
+  color: var(--pink);
+  background: rgba(255,0,200,0.08);
+}
+
+/* SVG tee mockup embedded inline */
+.tee-preview { width: 100%; max-width: 220px; }
+
+.product-info { padding: 16px; }
+.product-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 14px; font-weight: 700;
+  color: var(--white); letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+.product-desc {
+  font-size: 14px; color: var(--dim);
+  line-height: 1.4; margin-bottom: 12px;
+}
+.product-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.product-price {
+  font-family: 'Orbitron', monospace;
+  font-size: 18px; font-weight: 700;
+  color: var(--green);
+  text-shadow: 0 0 8px #39FF1480;
+}
+.size-row {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.size-chip {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 0.1em;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--dim);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.size-chip:hover, .size-chip.selected {
+  border-color: var(--pink); color: var(--pink);
+  background: rgba(255,0,200,0.08);
+}
+
+.btn-notify {
+  width: 100%;
+  padding: 13px;
+  font-family: 'Orbitron', monospace;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.2em;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: #fff; border: none; border-radius: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.btn-notify:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-notify:active { transform: scale(0.98); }
+
+.btn-secondary {
+  width: 100%; margin-top: 8px;
+  padding: 10px;
+  font-family: 'Orbitron', monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+  background: transparent;
+  color: var(--cyan); border: 1px solid var(--cyan);
+  border-radius: 8px; cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-secondary:hover { background: rgba(0,245,255,0.08); }
+
+/* ── NOTIFY MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  align-items: flex-end; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px 16px 0 0;
+  padding: 32px 24px 48px;
+  width: 100%; max-width: 480px;
+  text-align: center;
+}
+.modal-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 16px; font-weight: 900;
+  color: var(--pink); letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.modal-sub { font-size: 15px; color: var(--dim); margin-bottom: 20px; line-height: 1.4; }
+.modal-input {
+  width: 100%; padding: 13px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border); border-radius: 8px;
+  color: var(--white); font-size: 15px;
+  font-family: 'Rajdhani', sans-serif;
+  margin-bottom: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.modal-input:focus { border-color: var(--pink); }
+.modal-submit {
+  width: 100%; padding: 13px;
+  font-family: 'Orbitron', monospace;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.2em;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: #fff; border: none; border-radius: 8px; cursor: pointer;
+}
+.modal-cancel {
+  display: block; margin-top: 12px;
+  font-size: 12px; color: var(--dim);
+  cursor: pointer; letter-spacing: 0.1em;
+  background: none; border: none; font-family: 'Orbitron', monospace;
+}
+.modal-success { display: none; }
+.modal-success-icon { font-size: 40px; margin-bottom: 12px; }
+.modal-success-msg {
+  font-family: 'Orbitron', monospace; font-size: 14px;
+  color: var(--green); letter-spacing: 0.1em; margin-bottom: 8px;
+}
+
+/* ── COMING SOON BANNER ── */
+.coming-soon-bar {
+  position: relative; z-index: 1;
+  margin: 0 16px 24px;
+  padding: 14px 20px;
+  background: rgba(255,0,200,0.06);
+  border: 1px solid rgba(255,0,200,0.25);
+  border-radius: 10px;
+  text-align: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 11px; letter-spacing: 0.25em;
+  color: var(--pink); opacity: 0.85;
+}
+
+/* ── FOOTER ── */
+.footer {
+  position: relative; z-index: 1;
+  padding: 32px 24px 40px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+.footer-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.2em;
+  color: var(--pink); margin-bottom: 8px;
+}
+.footer-sub { font-size: 12px; color: var(--dim); letter-spacing: 0.08em; line-height: 1.6; }
+.footer-nav { margin-top: 16px; display: flex; justify-content: center; gap: 24px; }
+.footer-nav a {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px; letter-spacing: 0.2em;
+  color: var(--dim); text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-nav a:hover { color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <nav class="site-nav">
+    <a class="nav-link" href="index.html">EVENTS</a>
+    <a class="nav-link active" href="store.html">STORE</a>
+  </nav>
+  <div class="logo-wrap">
+    <div class="glitch-logo" data-text="LASRHUNTR">LASRHUNTR</div>
+    <div class="logo-tagline-primary">FEEL IT IN YOUR CHEST</div>
+    <div class="logo-tagline-secondary">HUNT THE DROP</div>
+  </div>
+  <div class="laser-line"></div>
+</header>
+
+<section class="store-hero">
+  <div class="store-hero-label">· MERCH DROP 001 ·</div>
+  <div class="store-hero-title">THE COLLECTION</div>
+</section>
+
+<div class="coming-soon-bar">
+  ⚡ &nbsp; PRE-LAUNCH — DROP COMING SOON &nbsp; · &nbsp; JOIN THE LIST TO GET FIRST ACCESS
+</div>
+
+<div class="product-grid">
+
+  <!-- PRODUCT 1: Glitch Logo Tee -->
+  <div class="product-card">
+    <div class="product-img-wrap">
+      <div class="product-badge">COMING SOON</div>
+      <!-- Inline tee SVG mockup -->
+      <svg class="tee-preview" viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg">
+        <!-- Tee body -->
+        <path d="M80,60 L30,100 L70,120 L70,380 L330,380 L330,120 L370,100 L320,60 L270,40 Q250,20 200,20 Q150,20 130,40 Z" fill="#111" stroke="#2a0050" stroke-width="1"/>
+        <!-- Collar -->
+        <path d="M130,40 Q165,10 200,8 Q235,10 270,40" fill="none" stroke="#1a0035" stroke-width="1.5"/>
+        <!-- Print area: laser lines -->
+        <g opacity="0.35">
+          <line x1="80" y1="200" x2="320" y2="120" stroke="#FF00C8" stroke-width="0.6"/>
+          <line x1="80" y1="200" x2="320" y2="160" stroke="#FF00C8" stroke-width="0.6"/>
+          <line x1="80" y1="200" x2="320" y2="240" stroke="#00F5FF" stroke-width="0.6"/>
+          <line x1="80" y1="200" x2="320" y2="280" stroke="#00F5FF" stroke-width="0.6"/>
+          <line x1="200" y1="80" x2="100" y2="340" stroke="#FF00C8" stroke-width="0.5"/>
+          <line x1="200" y1="80" x2="300" y2="340" stroke="#00F5FF" stroke-width="0.5"/>
+          <polygon points="200,120 230,170 200,220 170,170" fill="none" stroke="#FF00C8" stroke-width="0.8"/>
+          <polygon points="200,100 250,180 200,260 150,180" fill="none" stroke="#00F5FF" stroke-width="0.5"/>
+        </g>
+        <!-- LASRHUNTR text -->
+        <text x="200" y="185" text-anchor="middle" font-family="'Orbitron', monospace" font-size="28" font-weight="900" fill="#fff" letter-spacing="2">LASRHUNTR</text>
+        <!-- Glitch offset layers -->
+        <text x="203" y="185" text-anchor="middle" font-family="'Orbitron', monospace" font-size="28" font-weight="900" fill="#FF00C8" letter-spacing="2" opacity="0.35" clip-path="url(#glitch1)">LASRHUNTR</text>
+        <text x="197" y="185" text-anchor="middle" font-family="'Orbitron', monospace" font-size="28" font-weight="900" fill="#00F5FF" letter-spacing="2" opacity="0.3" clip-path="url(#glitch2)">LASRHUNTR</text>
+        <defs>
+          <clipPath id="glitch1"><rect x="0" y="160" width="400" height="10"/></clipPath>
+          <clipPath id="glitch2"><rect x="0" y="176" width="400" height="8"/></clipPath>
+        </defs>
+        <!-- Taglines -->
+        <text x="200" y="210" text-anchor="middle" font-family="'Orbitron', monospace" font-size="10" font-weight="700" fill="#F0EEFF" letter-spacing="3">FEEL IT IN YOUR CHEST</text>
+        <text x="200" y="226" text-anchor="middle" font-family="'Orbitron', monospace" font-size="8" fill="#FF00C8" letter-spacing="3" opacity="0.7">HUNT THE DROP</text>
+        <!-- Bottom text -->
+        <text x="200" y="310" text-anchor="middle" font-family="'Orbitron', monospace" font-size="7" fill="#8888AA" letter-spacing="3">· LASRHUNTR · 2026 ·</text>
+      </svg>
+    </div>
+    <div class="product-info">
+      <div class="product-name">GLITCH LOGO TEE</div>
+      <div class="product-desc">Heavyweight black tee · Neon red + cyan glitch print · Front chest print</div>
+      <div class="product-meta">
+        <div class="product-price">$38</div>
+        <div style="font-size:12px;color:var(--dim)">100% Cotton · Heavyweight</div>
+      </div>
+      <div class="size-row" id="sizes-1">
+        <button class="size-chip" onclick="selectSize(this,'sizes-1')">XS</button>
+        <button class="size-chip" onclick="selectSize(this,'sizes-1')">S</button>
+        <button class="size-chip selected" onclick="selectSize(this,'sizes-1')">M</button>
+        <button class="size-chip" onclick="selectSize(this,'sizes-1')">L</button>
+        <button class="size-chip" onclick="selectSize(this,'sizes-1')">XL</button>
+        <button class="size-chip" onclick="selectSize(this,'sizes-1')">XXL</button>
+      </div>
+      <button class="btn-notify" onclick="openModal('Glitch Logo Tee')">⚡ NOTIFY ME AT LAUNCH</button>
+      <button class="btn-secondary" onclick="openModal('Glitch Logo Tee')">JOIN DROP LIST</button>
+    </div>
+  </div>
+
+  <!-- PRODUCT 2: Hunt the Drop Hoodie (teaser) -->
+  <div class="product-card">
+    <div class="product-img-wrap">
+      <div class="product-badge">COMING SOON</div>
+      <svg class="tee-preview" viewBox="0 0 400 460" xmlns="http://www.w3.org/2000/svg">
+        <!-- Hoodie body -->
+        <path d="M70,90 L20,140 L65,165 L65,400 L335,400 L335,165 L380,140 L330,90 L280,60 Q260,30 200,28 Q140,30 120,60 Z" fill="#0e0e0e" stroke="#2a0050" stroke-width="1"/>
+        <!-- Hood -->
+        <path d="M120,60 Q145,0 200,0 Q255,0 280,60" fill="#0e0e0e" stroke="#1a0035" stroke-width="1.5"/>
+        <!-- Pocket -->
+        <rect x="135" y="270" width="130" height="70" rx="4" fill="none" stroke="#1a0035" stroke-width="1"/>
+        <!-- Center diamond -->
+        <polygon points="200,140 240,200 200,260 160,200" fill="none" stroke="#FF00C8" stroke-width="0.8" opacity="0.5"/>
+        <!-- Question mark / unrevealed -->
+        <text x="200" y="215" text-anchor="middle" font-family="'Orbitron', monospace" font-size="60" font-weight="900" fill="#1a0035">?</text>
+        <text x="200" y="215" text-anchor="middle" font-family="'Orbitron', monospace" font-size="60" font-weight="900" fill="#FF00C8" opacity="0.15">?</text>
+        <text x="200" y="320" text-anchor="middle" font-family="'Orbitron', monospace" font-size="9" fill="#8888AA" letter-spacing="3">DESIGN UNREVEALED</text>
+      </svg>
+    </div>
+    <div class="product-info">
+      <div class="product-name">HUNT THE DROP HOODIE</div>
+      <div class="product-desc">Heavyweight fleece hoodie · Design drops with the launch · Limited run</div>
+      <div class="product-meta">
+        <div class="product-price">$68</div>
+        <div style="font-size:12px;color:var(--dim)">Fleece · Limited run</div>
+      </div>
+      <div class="size-row" id="sizes-2">
+        <button class="size-chip" onclick="selectSize(this,'sizes-2')">XS</button>
+        <button class="size-chip" onclick="selectSize(this,'sizes-2')">S</button>
+        <button class="size-chip selected" onclick="selectSize(this,'sizes-2')">M</button>
+        <button class="size-chip" onclick="selectSize(this,'sizes-2')">L</button>
+        <button class="size-chip" onclick="selectSize(this,'sizes-2')">XL</button>
+        <button class="size-chip" onclick="selectSize(this,'sizes-2')">XXL</button>
+      </div>
+      <button class="btn-notify" onclick="openModal('Hunt the Drop Hoodie')">⚡ NOTIFY ME AT LAUNCH</button>
+      <button class="btn-secondary" onclick="openModal('Hunt the Drop Hoodie')">JOIN DROP LIST</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── NOTIFY MODAL ── -->
+<div class="modal-overlay" id="notifyModal" onclick="handleOverlayClick(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div id="modalForm">
+      <div class="modal-title" id="modalTitle">JOIN THE DROP LIST</div>
+      <div class="modal-sub">Be first to know when this drops. No spam — just the launch notification.</div>
+      <input class="modal-input" type="email" id="notifyEmail" placeholder="your@email.com" autocomplete="email">
+      <button class="modal-submit" onclick="submitNotify()">⚡ NOTIFY ME</button>
+      <button class="modal-cancel" onclick="closeModal()">CANCEL</button>
+    </div>
+    <div class="modal-success" id="modalSuccess">
+      <div class="modal-success-icon">⚡</div>
+      <div class="modal-success-msg">YOU'RE ON THE LIST</div>
+      <div class="modal-sub">We'll hit you when this drops.</div>
+      <button class="modal-cancel" onclick="closeModal()">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-logo">LASRHUNTR · FEEL IT IN YOUR CHEST</div>
+  <div class="footer-sub">Hunt the drop &nbsp;·&nbsp; lasrhuntr.github.io</div>
+  <div class="footer-nav">
+    <a href="index.html">EVENTS</a>
+    <a href="store.html">STORE</a>
+  </div>
+  <div class="footer-sub" style="margin-top:8px;opacity:0.5;font-size:11px;letter-spacing:0.15em">LAST UPDATED: MAY 2026</div>
+</div>
+
+<script>
+function selectSize(btn, groupId) {
+  document.querySelectorAll('#' + groupId + ' .size-chip').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+let currentProduct = '';
+function openModal(product) {
+  currentProduct = product;
+  document.getElementById('modalTitle').textContent = 'JOIN THE DROP LIST — ' + product.toUpperCase();
+  document.getElementById('modalForm').style.display = '';
+  document.getElementById('modalSuccess').style.display = 'none';
+  document.getElementById('notifyEmail').value = '';
+  document.getElementById('notifyModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('notifyModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('notifyModal')) closeModal();
+}
+function submitNotify() {
+  const email = document.getElementById('notifyEmail').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('notifyEmail').style.borderColor = '#FF00C8';
+    return;
+  }
+  // Store in localStorage as a simple list (replace with a real backend / Formspree / Mailchimp)
+  const list = JSON.parse(localStorage.getItem('lh_notify') || '[]');
+  list.push({ email, product: currentProduct, ts: Date.now() });
+  localStorage.setItem('lh_notify', JSON.stringify(list));
+
+  document.getElementById('modalForm').style.display = 'none';
+  document.getElementById('modalSuccess').style.display = 'block';
+}
+</script>
+</body>
+</html>

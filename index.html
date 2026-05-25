@@ -81,14 +81,43 @@ body::after {
   gap: 4px;
 }
 
-.logo-top {
+/* ── SITE NAV ── */
+.site-nav {
+  display: flex; justify-content: center; gap: 32px;
+  margin-bottom: 16px;
+}
+.nav-link {
   font-family: 'Orbitron', monospace;
-  font-size: clamp(11px, 3vw, 13px);
-  font-weight: 400;
-  color: var(--cyan);
-  letter-spacing: 0.35em;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--dim);
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.nav-link:hover { color: var(--cyan); border-color: var(--cyan); }
+.nav-link.active { color: var(--pink); border-color: var(--pink); }
+
+/* ── TAGLINES ── */
+.logo-tagline-primary {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(11px, 3.2vw, 16px);
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: var(--white);
+  margin-top: 8px;
   text-transform: uppercase;
-  opacity: 0.8;
+}
+.logo-tagline-secondary {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(9px, 2.2vw, 11px);
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: var(--pink);
+  opacity: 0.75;
+  margin-top: 4px;
+  text-transform: uppercase;
 }
 
 .logo-main {
@@ -776,11 +805,15 @@ body::after {
 
 <!-- HEADER -->
 <header class="header">
+  <nav class="site-nav">
+    <a class="nav-link active" href="index.html">EVENTS</a>
+    <a class="nav-link" href="store.html">STORE</a>
+  </nav>
   <div class="logo-wrap">
-    <div class="logo-top">&#9660; National EDM Guide &#9660;</div>
     <div class="glitch-logo" data-text="LASRHUNTR">LASRHUNTR</div>
-    <div class="logo-main" style="font-size:clamp(13px,3.5vw,18px);margin-top:6px">NATIONAL EDM GUIDE</div>
-    <div class="logo-sub" id="header-sub">6 CITIES &nbsp;·&nbsp; MAR–OCT</div>
+    <div class="logo-tagline-primary">FEEL IT IN YOUR CHEST</div>
+    <div class="logo-tagline-secondary">HUNT THE DROP</div>
+    <div class="logo-sub" id="header-sub">6 CITIES &nbsp;·&nbsp; JAN–DEC</div>
   </div>
   <div class="laser-line"></div>
 </header>
@@ -891,7 +924,7 @@ body::after {
 
 <!-- FOOTER -->
 <div class="footer">
-  <div class="footer-logo">LASRHUNTR · NATIONAL EDM GUIDE</div>
+  <div class="footer-logo">LASRHUNTR · FEEL IT IN YOUR CHEST</div>
   <div class="footer-sub">Data sourced from Songkick · EDMtrain · Resident Advisor · Festicket<br>Prices approximate &nbsp;·&nbsp; Always verify before purchasing</div>
   <div class="footer-sub" style="margin-top:8px;opacity:0.5;font-size:11px;letter-spacing:0.15em">LAST UPDATED: MAY 2026</div>
 </div>
