@@ -1956,14 +1956,14 @@ const artistCache = new Map();
 const SITE_ARTISTS = new Set(EVENTS.map(e => getArtistKey(e.title)).filter(Boolean));
 
 function showArtistInfo(name) {
-  const artist = ARTISTS[name];
-  if (!artist) return;
+  const artist = ARTISTS[name] || null;
 
-  // Reset popup to static state immediately
+  // Reset popup — show name and static data immediately if we have it
   document.getElementById('artistPopupName').textContent = name;
-  document.getElementById('artistPopupBio').textContent = artist.bio;
-  document.getElementById('artistPopupSounds').innerHTML =
-    artist.sounds.map(s => `<span class="artist-popup-sound-tag">${s}</span>`).join('');
+  document.getElementById('artistPopupBio').textContent = artist ? artist.bio : '';
+  document.getElementById('artistPopupSounds').innerHTML = artist
+    ? artist.sounds.map(s => `<span class="artist-popup-sound-tag">${s}</span>`).join('')
+    : '';
   document.getElementById('artistPopupListen').href =
     'https://open.spotify.com/search/' + encodeURIComponent(name);
 
@@ -2193,7 +2193,7 @@ function renderMonthGroups(list, events) {
       const cityTag  = ev.city ? `<span class="tag tag-city">${ev.city}</span>` : '';
       const priceClass = ev.price === 'FREE' ? 'free' : '';
       const artistKey = getArtistKey(ev.title);
-      const artistBtn = ARTISTS[artistKey]
+      const artistBtn = artistKey
         ? `<button class="artist-info-btn" onclick="event.stopPropagation();showArtistInfo('${artistKey.replace(/'/g,"\\'")}')" aria-label="Artist info">ⓘ Artist</button>`
         : '';
 
