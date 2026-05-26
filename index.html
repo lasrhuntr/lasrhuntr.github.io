@@ -1989,48 +1989,52 @@ function showArtistInfo(name) {
     return;
   }
 
-  const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(name)}&api_key=${LASTFM_KEY}&format=json`;
-  fetch(url)
-    .then(r => r.json())
-    .then(data => {
-      if (data.error || !data.artist) { loading.style.display = 'none'; return; }
-      artistCache.set(name, data.artist);
-      applyLiveData(data.artist);
-    })
-    .catch(() => { loading.style.display = 'none'; });
+  const lfmUrl = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(name)}&api_key=${LASTFM_KEY}&format=json`;
+  const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`;
+
+  Promise.all([
+    fetch(lfmUrl).then(r => r.json()).catch(() => null),
+    fetch(wikiUrl).then(r => r.json()).catch(() => null)
+  ]).then(([lfm, wiki]) => {
+    const combined = { lfm: lfm?.artist || null, wiki: wiki || null };
+    artistCache.set(name, combined);
+    applyLiveData(combined);
+  });
 }
 
-function applyLiveData(a) {
+function applyLiveData({ lfm, wiki }) {
   const loading = document.getElementById('artistPopupLoading');
   loading.style.display = 'none';
 
-  // Photo — pick largest non-empty image
-  const imgs = (a.image || []).slice().reverse();
-  const imgUrl = (imgs.find(i => i['#text'] && !i['#text'].includes('2a96cbd8b46e442fc41c2b86b821562f')) || {})['#text'];
+  // Photo — Wikipedia thumbnail (Last.fm deprecated their image CDN)
+  const imgUrl = wiki?.thumbnail?.source || wiki?.originalimage?.source;
   if (imgUrl) {
     const photo = document.getElementById('artistPopupPhoto');
     const placeholder = document.getElementById('artistPopupPlaceholder');
     photo.onload = () => { photo.classList.add('loaded'); placeholder.style.display = 'none'; };
+    photo.onerror = () => {};
     photo.src = imgUrl;
   }
 
-  // Listener count
-  const count = parseInt(a.stats?.listeners || 0);
+  // Listener count from Last.fm
+  const count = parseInt(lfm?.stats?.listeners || 0);
   if (count > 0) {
     const listenersEl = document.getElementById('artistPopupListeners');
     listenersEl.textContent = count.toLocaleString() + ' monthly listeners';
     listenersEl.classList.add('visible');
   }
 
-  // Bio — strip Last.fm "Read more" anchor and HTML tags
-  const rawBio = a.bio?.summary || '';
+  // Bio — prefer Last.fm (more detailed), fall back to Wikipedia extract
+  const rawBio = lfm?.bio?.summary || '';
   const cleanBio = rawBio.replace(/<a\b[^>]*>.*?<\/a>/gi, '').replace(/<[^>]+>/g, '').trim();
-  if (cleanBio && cleanBio.length > 30) {
-    document.getElementById('artistPopupBio').textContent = cleanBio;
+  const wikiBio = wiki?.extract || '';
+  const finalBio = (cleanBio.length > 30 ? cleanBio : wikiBio);
+  if (finalBio.length > 30) {
+    document.getElementById('artistPopupBio').textContent = finalBio;
   }
 
-  // Similar artists
-  const similars = (a.similar?.artist || []).slice(0, 8);
+  // Similar artists from Last.fm
+  const similars = (lfm?.similar?.artist || []).slice(0, 8);
   if (similars.length > 0) {
     const chips = document.getElementById('artistPopupSimilarChips');
     chips.innerHTML = similars.map(s => {
