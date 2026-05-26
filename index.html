@@ -908,6 +908,82 @@ body::after {
   transition: opacity 0.15s, transform 0.15s;
 }
 .artist-popup-listen:hover { opacity: 0.88; transform: scale(1.02); }
+
+/* ── ARTIST POPUP — PHOTO + LIVE DATA ── */
+.artist-popup-header {
+  display: flex; gap: 16px; align-items: flex-start;
+  margin-bottom: 14px;
+}
+.artist-popup-photo {
+  flex: 0 0 80px; width: 80px; height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  display: none; /* shown once image loads */
+}
+.artist-popup-photo.loaded { display: block; }
+.artist-popup-photo-placeholder {
+  flex: 0 0 80px; width: 80px; height: 80px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(176,38,255,0.2), rgba(0,245,255,0.1));
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; color: var(--dim);
+}
+.artist-popup-meta { flex: 1; min-width: 0; }
+.artist-popup-listeners {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 0.08em;
+  color: var(--green);
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.artist-popup-listeners.visible { opacity: 1; }
+.artist-popup-similar {
+  margin-top: 16px; padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: none;
+}
+.artist-popup-similar.visible { display: block; }
+.artist-popup-similar-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; letter-spacing: 0.18em;
+  color: var(--dim); text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.artist-popup-similar-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.artist-popup-similar-chip {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px; font-weight: 600;
+  color: var(--cyan);
+  border: 1px solid rgba(0,245,255,0.25);
+  border-radius: 4px;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.artist-popup-similar-chip:hover {
+  background: rgba(0,245,255,0.1);
+  border-color: var(--cyan);
+}
+.artist-popup-similar-chip.on-site::after {
+  content: ' ·on site';
+  font-size: 10px; color: var(--green); opacity: 0.8;
+}
+.artist-popup-loading {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 0.1em;
+  color: var(--dim); opacity: 0.6;
+  margin-top: 6px;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
 </style>
 </head>
 <body>
@@ -1030,9 +1106,21 @@ body::after {
   <div class="artist-popup" onclick="event.stopPropagation()">
     <button class="artist-popup-close" onclick="closeArtistInfo()">✕</button>
     <div class="artist-popup-eyebrow">ARTIST</div>
-    <div class="artist-popup-name" id="artistPopupName"></div>
+    <div class="artist-popup-header">
+      <div class="artist-popup-photo-placeholder" id="artistPopupPlaceholder">♪</div>
+      <img class="artist-popup-photo" id="artistPopupPhoto" alt="" />
+      <div class="artist-popup-meta">
+        <div class="artist-popup-name" id="artistPopupName"></div>
+        <div class="artist-popup-listeners" id="artistPopupListeners"></div>
+        <div class="artist-popup-loading" id="artistPopupLoading">loading…</div>
+      </div>
+    </div>
     <div class="artist-popup-sounds" id="artistPopupSounds"></div>
     <div class="artist-popup-bio" id="artistPopupBio"></div>
+    <div class="artist-popup-similar" id="artistPopupSimilar">
+      <div class="artist-popup-similar-label">Fans also like</div>
+      <div class="artist-popup-similar-chips" id="artistPopupSimilarChips"></div>
+    </div>
     <a class="artist-popup-listen" id="artistPopupListen" href="#" target="_blank" rel="noopener">▶ Listen on Spotify</a>
   </div>
 </div>
@@ -1861,17 +1949,98 @@ function getArtistKey(title) {
     .trim();
 }
 
+const LASTFM_KEY = '1f8d2df262c41fd8500ce2e28d08e112';
+const artistCache = new Map();
+
+// Build a set of all artist names in EVENTS for "on site" matching
+const SITE_ARTISTS = new Set(EVENTS.map(e => getArtistKey(e.title)).filter(Boolean));
+
 function showArtistInfo(name) {
   const artist = ARTISTS[name];
   if (!artist) return;
+
+  // Reset popup to static state immediately
   document.getElementById('artistPopupName').textContent = name;
   document.getElementById('artistPopupBio').textContent = artist.bio;
   document.getElementById('artistPopupSounds').innerHTML =
     artist.sounds.map(s => `<span class="artist-popup-sound-tag">${s}</span>`).join('');
-  const listenBtn = document.getElementById('artistPopupListen');
-  listenBtn.href = 'https://open.spotify.com/search/' + encodeURIComponent(name);
+  document.getElementById('artistPopupListen').href =
+    'https://open.spotify.com/search/' + encodeURIComponent(name);
+
+  // Reset live elements
+  const photo = document.getElementById('artistPopupPhoto');
+  const placeholder = document.getElementById('artistPopupPlaceholder');
+  const listeners = document.getElementById('artistPopupListeners');
+  const loading = document.getElementById('artistPopupLoading');
+  const similar = document.getElementById('artistPopupSimilar');
+
+  photo.classList.remove('loaded');
+  placeholder.style.display = 'flex';
+  listeners.classList.remove('visible');
+  loading.style.display = 'block';
+  similar.classList.remove('visible');
+
   document.getElementById('artistPopupOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+
+  // Fetch live data (use cache if available)
+  if (artistCache.has(name)) {
+    applyLiveData(artistCache.get(name));
+    return;
+  }
+
+  const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(name)}&api_key=${LASTFM_KEY}&format=json`;
+  fetch(url)
+    .then(r => r.json())
+    .then(data => {
+      if (data.error || !data.artist) { loading.style.display = 'none'; return; }
+      artistCache.set(name, data.artist);
+      applyLiveData(data.artist);
+    })
+    .catch(() => { loading.style.display = 'none'; });
+}
+
+function applyLiveData(a) {
+  const loading = document.getElementById('artistPopupLoading');
+  loading.style.display = 'none';
+
+  // Photo — pick largest non-empty image
+  const imgs = (a.image || []).slice().reverse();
+  const imgUrl = (imgs.find(i => i['#text'] && !i['#text'].includes('2a96cbd8b46e442fc41c2b86b821562f')) || {})['#text'];
+  if (imgUrl) {
+    const photo = document.getElementById('artistPopupPhoto');
+    const placeholder = document.getElementById('artistPopupPlaceholder');
+    photo.onload = () => { photo.classList.add('loaded'); placeholder.style.display = 'none'; };
+    photo.src = imgUrl;
+  }
+
+  // Listener count
+  const count = parseInt(a.stats?.listeners || 0);
+  if (count > 0) {
+    const listenersEl = document.getElementById('artistPopupListeners');
+    listenersEl.textContent = count.toLocaleString() + ' monthly listeners';
+    listenersEl.classList.add('visible');
+  }
+
+  // Bio — strip Last.fm "Read more" anchor and HTML tags
+  const rawBio = a.bio?.summary || '';
+  const cleanBio = rawBio.replace(/<a\b[^>]*>.*?<\/a>/gi, '').replace(/<[^>]+>/g, '').trim();
+  if (cleanBio && cleanBio.length > 30) {
+    document.getElementById('artistPopupBio').textContent = cleanBio;
+  }
+
+  // Similar artists
+  const similars = (a.similar?.artist || []).slice(0, 8);
+  if (similars.length > 0) {
+    const chips = document.getElementById('artistPopupSimilarChips');
+    chips.innerHTML = similars.map(s => {
+      const onSite = SITE_ARTISTS.has(s.name);
+      return `<button class="artist-popup-similar-chip${onSite?' on-site':''}"
+        onclick="closeArtistInfo();setTimeout(()=>{document.getElementById('searchInput').value='${s.name.replace(/'/g,"\\'")}';searchQuery='${s.name.replace(/'/g,"\\'")}';renderCards();},200)"
+      >${s.name}</button>`;
+    }).join('');
+    document.getElementById('artistPopupSimilar').classList.add('visible');
+  }
 }
 
 function closeArtistInfo() {
